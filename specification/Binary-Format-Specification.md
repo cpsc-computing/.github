@@ -21,7 +21,7 @@ All rights are reserved.
 
 ## Abstract
 
-This document specifies the **CPSC Binary Format**, a deterministic, streamable binary representation used to encode degrees of freedom, optional residuals, and reconstruction metadata for Constraint-Projected State Computing (CPSC). The format is designed for efficient software execution, direct mapping to FPGA/RTL hardware, and deterministic reconstruction of valid system state.
+This document specifies the **CPSC Binary Format**, a deterministic, streamable binary representation used to encode degrees of freedom, optional residuals, and reconstruction metadata for Constraint-Projected State Computing (CPSC). The format is designed for efficient software execution, compatibility with hardware implementations, and deterministic reconstruction of valid system state.
 
 ---
 
@@ -32,7 +32,7 @@ The CPSC Binary Format defines how CPSC state information is serialized for:
 - storage
 - transmission
 - compression pipelines
-- hardware streaming interfaces
+- streaming interfaces
 
 This format is **not** a general-purpose container.
 It exists solely to support CPSC reconstruction semantics.
@@ -46,7 +46,7 @@ The binary format is designed to be:
 - Deterministic
 - Self-describing
 - Streamable
-- Hardware-friendly
+- Hardware-compatible
 - Versioned
 - Minimal
 
@@ -132,7 +132,7 @@ The stage table describes which pipeline stages were applied during encoding.
 This enables:
 - forward compatibility
 - partial decoding
-- hardware routing decisions
+- implementation-specific routing decisions
 
 ---
 
@@ -198,27 +198,15 @@ This section is optional and may be omitted if not required.
 
 ---
 
-## 9. Streaming and Hardware Mapping
+## 9. Streaming Properties
 
-### 9.1 Streaming Properties
+The binary format is designed to support streaming operation:
 
-- Header and metadata are small and fixed
-- DoF vector is sequential and bounded
-- Residual stream may be processed incrementally
+- Header and metadata are small and fixed-size
+- The degree-of-freedom vector is sequential and bounded
+- The residual stream may be processed incrementally
 
----
-
-### 9.2 RTL / FPGA Mapping
-
-| Section | Hardware Mapping |
-|-------|------------------|
-| Header | FSM parser |
-| Metadata | Registers / ROM |
-| Stage Table | Static decode |
-| DoF Vector | Register bank or FIFO |
-| Residual Stream | Streaming decoder |
-
-No dynamic memory or instruction sequencing is required.
+Streaming behavior MUST preserve determinism.
 
 ---
 
@@ -230,7 +218,7 @@ To reconstruct a valid state:
 2. Validate format version
 3. Read model metadata
 4. Load CAS-YAML model
-5. Inject DoF vector
+5. Inject degree-of-freedom values
 6. Apply residuals (if present)
 7. Run CPSC projection
 8. Emit valid state
@@ -243,10 +231,10 @@ Failure at any step MUST abort reconstruction.
 
 A binary blob is valid only if:
 
-- Magic and version match
-- Model hash matches CAS-YAML
-- DoF count matches model
-- Numeric modes are compatible
+- Magic and version match expected values
+- Model hash matches the resolved CAS-YAML
+- Degree-of-freedom count matches the model
+- Numeric modes and precision are compatible
 - Reserved fields are zero
 
 ---
@@ -254,15 +242,20 @@ A binary blob is valid only if:
 ## 12. Relationship to Other Specifications
 
 This document depends on:
-- CPSC-Specification.md
-- CAS-YAML-Specification.md
 
-It does not redefine execution or constraint semantics.
+- `CPSC-Specification.md`
+- `CAS-YAML-Specification.md`
+
+Hardware signal-level interpretation and RTL mapping are defined in:
+
+- `Binary-Format-RTL-Mapping.md`
+
+This document does not define execution, projection, or constraint semantics.
 
 ---
 
 ## 13. Summary
 
-The CPSC Binary Format provides a deterministic, compact, and hardware-aligned representation of CPSC state information. It enables efficient storage, transmission, and reconstruction across software and hardware implementations.
+The CPSC Binary Format provides a deterministic, compact, and implementation-agnostic representation of CPSC state information. It enables efficient storage, transmission, and reconstruction across software and hardware systems while remaining independent of specific execution architectures.
 
 This document is the authoritative specification for the CPSC binary format.
