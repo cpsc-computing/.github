@@ -1,8 +1,9 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Security / Responsible Disclosure
+    url: mailto:support@bitconcepts.tech
+    about: Report security-sensitive issues privately to BitConcepts.
+
   - name: Licensing / Commercial Use
-    url: https://example.com/contact
-    about: Contact BitConcepts, LLC for commercial licensing inquiries.
-  - name: Security / Sensitive Reports
-    url: https://example.com/security
-    about: Please report security-sensitive issues privately.
+    url: mailto:info@bitconcepts.tech
+    about: Contact BitConcepts for commercial licensing and usage inquiries.
