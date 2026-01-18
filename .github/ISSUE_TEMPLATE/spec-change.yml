@@ -1,0 +1,107 @@
+name: Spec Change Proposal
+description: Propose a normative or structural change to the CPSC specification
+labels: ["spec-change", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for proposing changes to the CPSC specifications.
+        Please follow WARP.md and AGENTS.md. Spec-first is required.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is changing and why?
+      placeholder: Concise overview of the proposed change.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What limitation/ambiguity exists today? Who is affected?
+      placeholder: Provide context and impact.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope of change
+      description: Which documents are affected?
+      multiple: true
+      options:
+        - specification/CPSC-Specification.md
+        - specification/CAS-YAML-Specification.md
+        - specification/Binary-Format-Specification.md
+        - specification/Binary-Format-RTL-Mapping.md
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: normative_impact
+    attributes:
+      label: Normative impact
+      description: Check all that apply.
+      options:
+        - label: Semantics change
+        - label: Determinism guarantees affected
+        - label: Binary compatibility impacted
+        - label: Hardware mapping assumptions impacted
+        - label: Reconstruction behavior impacted
+
+  - type: textarea
+    id: proposed_changes
+    attributes:
+      label: Proposed specification changes
+      description: Reference sections and propose exact wording. Use MUST/SHOULD/MAY where appropriate.
+      placeholder: Provide section references and draft text.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Backward compatibility
+      options:
+        - No impact
+        - Breaking change (mitigation required)
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches were considered and why were they rejected?
+      placeholder: List alternatives and rationale.
+    validations:
+      required: false
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and open questions
+      description: Edge cases, risks, unresolved questions.
+      placeholder: List risks and unknowns.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: review_checklist
+    attributes:
+      label: Review checklist
+      options:
+        - label: Spec-first rule followed
+          required: true
+        - label: Determinism preserved
+          required: true
+        - label: Hardware implications considered
+          required: true
+        - label: Licensing unaffected
+          required: true
+        - label: WARP.md and AGENTS.md respected
+          required: true
