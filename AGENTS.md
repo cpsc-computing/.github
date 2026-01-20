@@ -30,10 +30,12 @@ Agents MAY:
 - Identify inconsistencies or ambiguities
 - Propose alternative wording
 - Generate examples explicitly marked as non-normative
+- Use external tooling such as MCP servers (for example, USPTO PTAB search) to gather non-normative background information for patent and prior-art review
 
 Agents MUST:
 - Preserve existing semantics
 - Reference authoritative specs
+- Treat external tool output as informational, not normative
 - Flag uncertainty explicitly
 
 ---
@@ -135,7 +137,34 @@ Both documents are authoritative.
 
 ---
 
-## 11. Summary
+## 11. Patent research workflows (non-normative)
+
+When assisting with patent research, prior-art searches, or landscape analysis, agents MUST:
+
+- Treat all documents under `patents/` as **non-normative legal and planning material**, not specifications.
+- Treat all MCP-backed patent tools (including the `patents` MCP server and any PPUBS or PatentSearch/PatentsView endpoints) as **informational**.
+- Avoid making legal conclusions or altering normative specifications based on tool output.
+
+When a user issues a chat command beginning with `prior-art protocol:` (see `WARP.md` §14.3), agents SHOULD:
+
+1. Re-read the current non-normative prior-art protocol text under `patents/`.
+2. Identify which parts of the protocol are executable given currently configured tools (for example, PPUBS-only if PatentSearch is not yet configured).
+3. Run the relevant portions using the `patents` MCP server, staying within the protocol’s scope.
+4. Propose a Run ID and capture run metadata (date, trigger, coverage, and conclusion summary) in the chat.
+5. If a ledger file such as `LEDGER.md` or a protocol-embedded ledger section exists, append a concise, machine-searchable run entry there, respecting any existing structure.
+
+Recognized non-normative command patterns include (examples, not a closed list):
+
+- `prior-art protocol: start Themes A+B (PPUBS only)`
+- `prior-art protocol: extend with PatentSearch`
+- `prior-art protocol: status`
+- `prior-art protocol: rerun since <reason>`
+
+Agents MUST make clear in their responses which portions of the protocol were executed, which data sources were used (PPUBS vs PatentSearch/PatentsView), and what changes would require a re-run.
+
+---
+
+## 12. Summary
 
 Agents are tools to support rigor, not shortcuts around it.
 

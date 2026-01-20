@@ -33,6 +33,7 @@
   * constraint systems
   * safety-critical computing
   * hybrid software/hardware execution
+  * semantic system specification and constraint-based execution across heterogeneous backends (classical, AI-assisted, quantum, and non-von-neumann)
 
 Purpose of this section:
 
@@ -74,6 +75,8 @@ Purpose of this section:
 
 > No existing paradigm defines computation itself as deterministic projection of state into an explicitly constrained space, independent of instruction sequencing, learning, or heuristic optimization.
 
+Certain emerging paradigms, including quantum computing, further illustrate this gap. Existing quantum programming approaches typically describe low-level gate sequences, algorithm families, or Hamiltonian energy functions, and do not provide a stable, declarative layer for specifying what must be true of acceptable solutions, what constraints define correctness, or what invariants must hold across different hardware generations and algorithmic realizations. As a result, semantic intent is often entangled with execution methods and hardware details, complicating audit, governance, and long-term reuse.
+
 This paragraph is **critical**.
 
 ---
@@ -87,12 +90,13 @@ This paragraph is **critical**.
 
 ### 3.2 Core Contributions (Bullet Form)
 
-* Explicit state + constraint model
-* Deterministic projection operator
-* Degrees of freedom (DoF) identification
-* Canonical valid states
-* Validation-time recursion-stability
-* Hardware and software embodiments
+*  Explicit state + constraint model
+*  Deterministic projection operator
+*  Degrees of freedom (DoF) identification
+*  Canonical valid states
+*  Validation-time recursion-stability
+*  Semantic System Specification (SSS) layer for declaring variables, roles, invariants, and acceptable outcomes independently of execution mechanics
+*  Constraint architectures and execution backends spanning classical processors, quantum systems, AI/ML models, and other non-von-neumann hardware
 
 ### 3.3 Applications (Non-Limiting)
 
@@ -127,6 +131,7 @@ Formal, examiner-friendly definitions:
 * Epoch
 * Canonical valid state
 * Constraint fabric
+* Semantic System Specification (SSS) — a design-time representation describing system intent, variable roles, and invariant relationships independently of execution mechanics, which may in some embodiments be expressed in a structured text format such as a YAML-based encoding (for example, "Semantic-YAML"), without limiting the invention to any particular syntax
 
 These definitions are later **referenced in claims**.
 
@@ -190,6 +195,17 @@ This section protects claim interpretation.
 * Compute
 * Evaluate
 * Commit
+
+### 8.4 Backend-Agnostic and Non-Von-Neumann Execution
+
+Describe how the same semantic system specification and constraint architecture can drive multiple execution backends:
+
+* Classical deterministic CPSC engines
+* Quantum realizations (gate-based circuits, Hamiltonians, annealing)
+* Neuromorphic or analog fabrics
+* Learned or AI-assisted proposal mechanisms (NN, RL, LLM)
+
+Emphasize that correctness conditions and acceptable outcome sets are defined at the SSS / constraint-architecture level, not by any specific backend.
 
 ---
 
@@ -271,9 +287,10 @@ Each subsection becomes a **dependent claim cluster** later.
 
 ### 13.2 Constraint-Projected Adaptive Compression (CPAC)
 
-* Structural elimination
-* Prediction-optional
-* Entropy backend independence
+* Structural elimination by CPSC/CAS projection and DoF extraction applied before any prediction
+* Prediction-optional, with predictors (AI or non-AI) operating only on DoF sequences, not raw bytes
+* Learned predictor embodiments as described in a dedicated specification section (for example, linear and non-linear models, class-aware models, CAS/SSS-derived feature inputs, offline training over CAS-projected DoF sequences, quantized deployment, model identification in the bitstream, and residual- and distribution-based entropy coding variants)
+* Entropy backend independence, with entropy coding applied last over residual and/or DoF streams
 
 ### 13.3 Real-Time Control Systems
 
@@ -293,6 +310,7 @@ Each subsection becomes a **dependent claim cluster** later.
 * Post-processing
 * Policy enforcement
 * No model modification
+* Learned systems propose candidate states or degrees of freedom; deterministic projection enforces SSS-defined constraints
 
 ### 13.6 Security & Integrity Enforcement
 
@@ -310,6 +328,12 @@ Each subsection becomes a **dependent claim cluster** later.
 * MCU-class
 * No training
 * Energy bounded
+
+### 13.9 Quantum and Non-Von-Neumann Execution Backends
+
+* SSS-driven constraint architectures compiled into quantum circuits or Hamiltonians while preserving declared constraints and acceptable outcomes
+* Hybrid classical–quantum execution targeting the same SSS without changing semantic intent
+* Extension to neuromorphic, analog, in-memory, or other non-von-neumann architectures as interchangeable execution backends under common SSS-defined semantics
 
 ---
 

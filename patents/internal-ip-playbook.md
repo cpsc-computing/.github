@@ -16,7 +16,7 @@ Filed patent documents live separately under `docs/patents/` and are immutable o
 
 Constraint-Projected State Computing (CPSC) defines a **new computing paradigm** in which computation is performed by **deterministic projection of system state into a constraint-defined space**, rather than by executing ordered instructions, heuristic solvers, or learned models.
 
-Constraint-Projected Adaptive Compression (CPAC) is a **high-value application layer** built on CPSC that exploits structural redundancy elimination via degrees of freedom (DoF) extraction prior to optional prediction and entropy coding.
+Constraint-Projected Adaptive Compression (CPAC) is a **high-value application layer** built on CPSC that exploits structural redundancy elimination via degrees of freedom (DoF) extraction prior to optional prediction and entropy coding. In CPAC, CPSC/CAS-style projection and DoF extraction run first; any predictors (AI or non-AI) operate only on the resulting DoF sequences, and entropy coding runs last over residual and/or DoF streams.
 
 The IP strategy is organized around:
 - one **foundational (anchor) patent family**, and
@@ -75,6 +75,7 @@ Any system that uses constraints as the **primary computational mechanism** for 
 #### Scope
 - Structural redundancy elimination via CPSC
 - DoF extraction for compression
+- Learned and non-learned prediction stages operating over CPSC-projected degrees of freedom
 - Prediction-optional correctness
 - Entropy-backend independence
 - Streaming and replayable state containers
@@ -87,7 +88,7 @@ Any system that uses constraints as the **primary computational mechanism** for 
 - Industrial monitoring systems
 
 #### Licensing Narrative
-This family covers lossless compression that removes **implied and derived structure**, not just statistical redundancy. Deterministic projection guarantees correct reconstruction and enables built-in validation and replay.
+This family covers lossless compression that removes **implied and derived structure**, not just statistical redundancy. Deterministic projection guarantees correct reconstruction and enables built-in validation and replay. Learned or data-driven predictors may be used to further reduce redundancy by predicting degrees of freedom in the constraint-defined space, with residuals or probability distributions encoded by generic entropy coders.
 
 #### Why Licensees Pay
 - Better compression for structured data

@@ -71,6 +71,38 @@ Reference implementations will follow.
 
 ---
 
+## Patent and prior-art research
+
+This organization maintains a separate `patents/` directory for non-normative patent and IP materials related to Constraint-Projected State Computing (CPSC) and Constraint-Projected Adaptive Compression (CPAC).
+
+- Documents under `patents/` are **legal disclosure and planning artifacts**, not specifications.
+- A non-normative **prior-art search protocol** for CPSC/CPAC Themes A and B (paradigm-level computing model and DoF-based compression) is maintained there, together with a simple ledger structure for recording what has been searched and when.
+- Contributors using Warp and the local `patent_mcp_server` MCP backend MAY follow this protocol to run reproducible prior-art and landscape searches using USPTO-backed APIs (PPUBS, PatentSearch/PatentsView), but results remain informational only.
+- Standard chat commands beginning with `prior-art protocol:` (documented in `WARP.md` and `AGENTS.md`) provide a repeatable way to ask agents to execute or summarize these searches; they do **not** change the meaning of any specification.
+
+### USPTO / PatentSearch API keys and environment variables
+
+To use the MCP-backed patent tools with live USPTO data, contributors MUST obtain and configure API keys outside this repository:
+
+1. **USPTO Open Data Portal API key (`USPTO_API_KEY`)**
+   - Create or sign in to a MyUSPTO account at `https://my.uspto.gov/`.
+   - Visit the USPTO Open Data Portal at `https://data.uspto.gov/home`.
+   - Use the key management page at `https://data.uspto.gov/myodp/key-reveal` to generate or reveal your Open Data Portal API key.
+   - Store the key as a user-level environment variable so it is available as `$env:USPTO_API_KEY` (for example, using the PowerShell instructions in `WARP.md` §14.2), or in a local `.env` file consumed by `patent_mcp_server`.
+
+2. **PatentsView / PatentSearch API key (`PATENTSVIEW_API_KEY`)**
+   - Request a PatentsView PatentSearch API key via the official support portal at `https://patentsview-support.atlassian.net/servicedesk/customer/portal/1/group/1/create/18`.
+   - General PatentsView information is available at `https://patentsview.org/home`.
+   - Once issued, store the key so it is available to tools as `$env:PATENTSVIEW_API_KEY` (for example, as a user-level environment variable or in a local `.env` file that `patent_mcp_server` reads).
+
+3. **Security and repository hygiene**
+   - API keys MUST NOT be committed to this repository in any form (no checked-in `.env` files, scripts, or JSON containing secrets).
+   - MCP configuration examples in `WARP.md` and related scripts are designed to read keys from the environment (`USPTO_API_KEY`, `PATENTSVIEW_API_KEY`) rather than from tracked files.
+
+All patent-related work must respect the repository’s licensing and IP reservations. Patent rights are governed solely by filed applications and issued patents, not by this repository or any MCP-backed tooling.
+
+---
+
 ## Licensing
 
 The CPSC specification and related documents are released under the

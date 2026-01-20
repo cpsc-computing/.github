@@ -31,6 +31,7 @@ Constraint-Projected State Computing Systems and Applications
 **Scope (High-Level):**
 - CPSC as a new computing paradigm
 - CPAC as a structural compression and enforcement layer
+- Semantic system specification and deterministic lowering into constraint architectures
 - Deterministic constraint projection
 - Hardware and software embodiments
 - Security, control, AI governance, and mission-critical systems
@@ -89,3 +90,22 @@ This directory is intended for:
 - legal coordination
 
 It should remain **private** unless and until disclosure is required.
+
+---
+
+## MCP-Backed Prior Art and Background Tools
+
+For non-normative background research, contributors MAY use external MCP servers
+backed by USPTO data, such as the `patent_mcp_server` used in this repository's
+MCP configuration examples.
+
+These tools are intended to support:
+- prior-art searches,
+- background and landscape review,
+- identification of potentially relevant patents and publications for citation.
+
+They MUST NOT be treated as authoritative or complete. Any search results should
+be validated against official USPTO search tools or commercial equivalents, and
+legal conclusions MUST be made by a qualified practitioner.
+
+See `WARP.md` §14 for setup details and JSON configuration examples.
