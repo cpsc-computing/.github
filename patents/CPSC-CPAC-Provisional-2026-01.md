@@ -2,8 +2,10 @@ PROVISIONAL PATENT APPLICATION
 
 CONSTRAINT-PROJECTED STATE COMPUTING SYSTEMS, SEMANTIC SYSTEM SPECIFICATION, AND APPLICATIONS
 
-Inventor(s): Tristen Kyle Pierson
+Inventor: Tristen Kyle Pierson
+
 Applicant/Assignee: Tristen Kyle Pierson
+
 Filing Date: TBD
 
 ---
@@ -355,9 +357,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Semantic System Specification (SSS)<br/>e.g., Semantic-YAML]
-    B[Constraint / Optimization Representation<br/>(Constraint IR, QUBO, Ising, Logic)]
-    C[Execution Backends<br/>Classical • AI-Assisted • Quantum]
+    A["Semantic System Specification (SSS)\n(e.g., Semantic-YAML)"]
+    B["Constraint / Optimization Representation\n(Constraint IR, QUBO, Ising, Logic)"]
+    C["Execution Backends\nClassical • AI-Assisted • Quantum"]
 
     A --> B
     B --> C

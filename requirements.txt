@@ -1,0 +1,2 @@
+pypandoc>=1.13
+pandoc-mermaid-filter>=1.0.0
