@@ -1,0 +1,354 @@
+# NON-PROVISIONAL PATENT OUTLINE
+
+## Constraint-Projected State Computing Systems and Methods
+
+---
+
+## 0. Metadata (Administrative)
+
+* Title
+  **Constraint-Projected State Computing Systems and Methods**
+
+* Cross-Reference to Related Applications
+
+  * Claims priority to:
+
+    * U.S. Provisional Patent Application
+      *Constraint-Projected State Computing Systems and Applications*
+      filed [DATE], Application No. [63/XXX,XXX]
+
+* Government Rights (if any)
+
+  * Typically “None”
+
+---
+
+## 1. Technical Field
+
+* General field: computing systems and architectures
+* Sub-fields:
+
+  * deterministic computation
+  * hardware acceleration
+  * constraint systems
+  * safety-critical computing
+  * hybrid software/hardware execution
+
+Purpose of this section:
+
+* Put the examiner in the **right art units**
+* Avoid pigeonholing as “compression” or “SAT”
+
+---
+
+## 2. Background
+
+### 2.1 Instruction-Driven Computing
+
+* Define instruction execution, control flow, mutable state
+* Limitations:
+
+  * implicit invariants
+  * difficulty enforcing correctness
+  * complexity in safety-critical systems
+
+### 2.2 Constraint Programming & Solvers
+
+* SAT / MaxSAT / CSP systems as *tools*, not substrates
+* Episodic invocation
+* Lack of system-wide state semantics
+
+### 2.3 Optimization & Numerical Methods
+
+* Floating-point dependence
+* Tolerance-based convergence
+* Platform variance
+
+### 2.4 Learned & Adaptive Systems
+
+* Opaque behavior
+* Non-determinism
+* Certification difficulty
+
+### 2.5 Unsolved Problem
+
+> No existing paradigm defines computation itself as deterministic projection of state into an explicitly constrained space, independent of instruction sequencing, learning, or heuristic optimization.
+
+This paragraph is **critical**.
+
+---
+
+## 3. Summary of the Invention
+
+### 3.1 Paradigm Statement (Must Be Explicit)
+
+* CPSC defines computation as **state projection**, not instruction execution
+* Correctness derives from constraints + projection semantics
+
+### 3.2 Core Contributions (Bullet Form)
+
+* Explicit state + constraint model
+* Deterministic projection operator
+* Degrees of freedom (DoF) identification
+* Canonical valid states
+* Validation-time recursion-stability
+* Hardware and software embodiments
+
+### 3.3 Applications (Non-Limiting)
+
+* Compression (CPAC)
+* Optimization (SAT / MaxSAT)
+* Control systems
+* Autonomous safety layers
+* Hardware resource governance
+* AI / LLM policy enforcement
+* Security & integrity enforcement
+
+---
+
+## 4. Brief Description of the Drawings
+
+Enumerate figures (FIG. 1–FIG. N)
+Each with **one-sentence purpose**
+
+This is largely identical to your provisional, but formalized.
+
+---
+
+## 5. Definitions
+
+Formal, examiner-friendly definitions:
+
+* State
+* Constraint
+* Projection
+* Valid state
+* Degree of freedom
+* Epoch
+* Canonical valid state
+* Constraint fabric
+
+These definitions are later **referenced in claims**.
+
+---
+
+## 6. System Overview
+
+### 6.1 CPSC System Model
+
+* State variables
+* Constraint set
+* Projection engine
+* Output valid state or failure
+
+### 6.2 What CPSC Is Not (Explicit)
+
+* Not a solver
+* Not a filter
+* Not a preprocessor
+* Not a learned system
+
+This section protects claim interpretation.
+
+---
+
+## 7. State and Constraint Model
+
+### 7.1 State Variable Representation
+
+* Types
+* Domains
+* Fixed vs derived vs free
+
+### 7.2 Constraint Semantics
+
+* Declarative
+* Side-effect free
+* Hard vs weighted
+* Structural vs numeric
+
+---
+
+## 8. Projection and Execution Semantics
+
+### 8.1 Projection Operator
+
+* Deterministic mapping
+* Bounded execution
+* Explicit failure modes
+
+### 8.2 Determinism Guarantees
+
+* Numeric modes
+* Precision
+* Update bounds
+* Ordering rules
+
+### 8.3 Epoch / Commit Execution (Optional Embodiment)
+
+* Sense
+* Compute
+* Evaluate
+* Commit
+
+---
+
+## 9. Degrees of Freedom (DoF)
+
+### 9.1 Identification of DoF
+
+* Explicit declaration
+* Derived variables
+* Fixed variables
+
+### 9.2 Reconstruction from DoF
+
+* Injection
+* Projection
+* Validation
+
+This section supports **compression, logging, replay, and transmission claims**.
+
+---
+
+## 10. Validation and Certification
+
+### 10.1 Canonical Valid State
+
+* Deterministic representative state
+
+### 10.2 Recursion-Stability (Validation-Only)
+
+* P(S) = S
+* DoF invariance
+* Non-runtime
+* Certification use
+
+This is a **claim differentiator** later.
+
+---
+
+## 11. Hardware Embodiments
+
+### 11.1 Constraint Fabric Architecture
+
+* State registers
+* Constraint evaluation units
+* Projection network
+* Commit logic
+
+### 11.2 FPGA / ASIC Implementations
+
+* Static RTL
+* No instruction execution
+* Deterministic observables
+
+### 11.3 On-Chip Policy & Resource Enforcement
+
+* Realms
+* Bandwidth
+* Power
+* Device access
+
+This enables **hardware-focused continuations**.
+
+---
+
+## 12. Software and Hybrid Embodiments
+
+* Pure software execution
+* CPU + accelerator
+* PS/PL systems
+* Streaming vs batch
+
+---
+
+## 13. Application Embodiments (Non-Limiting)
+
+Each subsection becomes a **dependent claim cluster** later.
+
+### 13.1 Constraint Optimization (SAT / MaxSAT)
+
+### 13.2 Constraint-Projected Adaptive Compression (CPAC)
+
+* Structural elimination
+* Prediction-optional
+* Entropy backend independence
+
+### 13.3 Real-Time Control Systems
+
+* Safety envelopes
+* Deterministic actuation
+* Explicit failure
+
+### 13.4 Autonomous Driving & Robotics
+
+* Safety layer
+* Trajectory validation
+* Actuator gating
+
+### 13.5 AI / LLM / Neural Governance
+
+* Pre-processing
+* Post-processing
+* Policy enforcement
+* No model modification
+
+### 13.6 Security & Integrity Enforcement
+
+* Protocol invariants
+* Access control
+* Tamper detection
+
+### 13.7 Telemetry, Logging, and Replay
+
+* Validated state logging
+* Deterministic replay
+
+### 13.8 Embedded & Low-Power Systems
+
+* MCU-class
+* No training
+* Energy bounded
+
+---
+
+## 14. Advantages Over Prior Art
+
+Explicit comparison table style:
+
+* Determinism
+* Explainability
+* Hardware suitability
+* Certification readiness
+* Structural correctness
+
+This section helps during **prosecution**.
+
+---
+
+## 15. Example Claim Strategy (Outline Only)
+
+(Not claims themselves, but structure)
+
+### Independent Claim (Very Broad)
+
+* “A method of computation comprising projecting system state into a constraint-defined space…”
+
+### Dependent Claims
+
+* DoF extraction
+* Hardware fabrics
+* Epoch execution
+* CPAC compression
+* Control systems
+* AI policy enforcement
+* Recursion-stability validation
+
+---
+
+## 16. Non-Limiting Statement
+
+* Explicit preservation of scope
+* Combination of embodiments
+* No requirement of all features
