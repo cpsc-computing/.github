@@ -194,7 +194,33 @@ has already decided to save and publish the current state.
 
 ---
 
-## 13. Summary
+## 13. Save/load session chat commands (non-normative)
+
+When a user issues explicit session-management commands, agents SHOULD treat them as
+high-level orchestration hints around the version control workflows above:
+
+- `save session` – update any relevant README/usage docs for the current work scope
+  (for example, documenting new scripts or flows in `README.md`, `WARP.md`, and
+  `AGENTS.md` as appropriate), then stage and commit those changes locally **without**
+  pushing. The commit MUST still include a `Co-Authored-By: Warp <agent@warp.dev>` line
+  when the agent has materially contributed.
+- `save session and push` – perform the same documentation and commit steps as
+  `save session`, and then push the resulting commit(s) to the default remote/branch
+  (for example `origin/main`) unless the user specifies otherwise.
+- `load session` – pull or fetch and checkout the current default branch tip
+  (for example `git pull` on the active branch) and summarize any relevant changes
+  that affect the current task context.
+- `pull and load session` – explicitly update the local repository from the default
+  remote (for example `git pull origin main`) and then treat the result as a fresh
+  session state, summarizing any changes for the user.
+
+These commands are non-normative and do not alter specification semantics; they exist
+purely to codify expected agent behavior around saving, restoring, and synchronizing
+work sessions.
+
+---
+
+## 14. Summary
 
 Agents are tools to support rigor, not shortcuts around it.
 
