@@ -1,51 +1,113 @@
 CPSC Research & Evaluation License
-Version 1.0
-Published: January 17, 2026
+Version 1.1
+Published: January 19, 2026
 
 Copyright © 2026
 BitConcepts, LLC
 All rights reserved.
 
-This license governs the use of the Constraint-Projected State Computing (CPSC) specification, documentation, and related materials (the “Licensed Materials”). The Licensed Materials are made available for research, evaluation, and educational purposes only.
+PURPOSE
 
-This license is intended to enable academic study, technical review, and non-commercial experimentation, while reserving all commercial rights to BitConcepts, LLC.
+This license governs the use of the Constraint-Projected State Computing (CPSC)
+specification, documentation, and related materials (the “Licensed Materials”).
 
-Grant of Rights
+The Licensed Materials are made available for research, evaluation, and
+educational purposes only.
 
-Subject to the terms of this license, BitConcepts, LLC grants you a non-exclusive, non-transferable, revocable license to read, copy, and share the Licensed Materials in unmodified or modified form; to use the Licensed Materials solely for non-commercial research, evaluation, or educational purposes; to cite or reference the Licensed Materials in academic publications, presentations, or research; and to create derivative works of the Licensed Materials solely for non-commercial research or evaluation.
+This license is intended to enable academic study, technical review, and
+non-commercial experimentation, while reserving all commercial and patent
+rights to BitConcepts, LLC.
 
-Restrictions
+GRANT OF RIGHTS
 
-You may not, directly or indirectly, use the Licensed Materials, or any derivative thereof, for any commercial purpose; implement the Licensed Materials in any commercial product, service, or system; deploy implementations of the Licensed Materials in production or revenue-generating environments; sell, license, sublicense, or otherwise commercially exploit the Licensed Materials; use the Licensed Materials to provide paid services, hosted offerings, or commercial consulting; or circumvent the intent of this license through clean-room implementation, functional reimplementation, or similar methods intended to avoid licensing obligations.
+Subject to the terms of this license, BitConcepts, LLC grants you a
+non-exclusive, non-transferable, revocable license to:
 
-Any commercial use requires a separate, explicit commercial license from BitConcepts, LLC.
+read, copy, and share the Licensed Materials in unmodified or modified form;
+use the Licensed Materials solely for non-commercial research, evaluation,
+or educational purposes;
+cite or reference the Licensed Materials in academic publications,
+presentations, or research;
+create derivative works of the Licensed Materials solely for non-commercial
+research or evaluation, provided that such derivative works are not used to
+design, implement, or inform any commercial product, service, or system.
 
-Patent Rights
+Publication or disclosure of the Licensed Materials does not constitute a
+dedication to the public domain and does not authorize the practice of any
+patented or patent-pending invention.
 
-This license does not grant any patent rights. The Licensed Materials may describe technologies that are subject to existing or future patent applications. All patent rights are expressly reserved.
+RESTRICTIONS
 
-Attribution
+You may not, directly or indirectly:
 
-Any redistribution or publication of the Licensed Materials or derivative works must include the following attribution: “Constraint-Projected State Computing (CPSC) — used under the CPSC Research & Evaluation License.”
+use the Licensed Materials, or any derivative thereof, for any commercial
+purpose;
+implement the Licensed Materials in any commercial product, service, or
+system;
+deploy implementations of the Licensed Materials in production or
+revenue-generating environments;
+sell, license, sublicense, or otherwise commercially exploit the Licensed
+Materials;
+use the Licensed Materials to provide paid services, hosted offerings, or
+commercial consulting;
+circumvent the intent of this license through clean-room implementation,
+functional reimplementation, or similar methods intended to avoid licensing
+obligations.
 
-No Warranty
+Any commercial use requires a separate, explicit commercial license from
+BitConcepts, LLC.
 
-The Licensed Materials are provided “as is”, without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.
+PATENT RIGHTS
 
-Limitation of Liability
+This license does not grant any patent rights.
 
-In no event shall BitConcepts, LLC or any contributors be liable for any claim, damages, or other liability arising from, out of, or in connection with the Licensed Materials or their use.
+The Licensed Materials may describe technologies that are subject to existing or
+future patent applications. All patent rights are expressly reserved.
 
-Termination
+NO IMPLIED LICENSE
 
-This license terminates automatically if you violate any of its terms. Upon termination, you must immediately cease all use of the Licensed Materials and destroy any copies in your possession or control.
+Nothing in this license shall be construed as granting, by implication,
+estoppel, or otherwise, any rights under any patent or patent application,
+whether existing now or filed in the future.
 
-Commercial Licensing
+ATTRIBUTION
 
-Commercial use, production deployment, or incorporation of the Licensed Materials into products or services requires a separate commercial license. For commercial licensing inquiries, contact BitConcepts, LLC.
+Any redistribution or publication of the Licensed Materials or derivative works
+must include the following attribution:
 
-Governing Law
+Constraint-Projected State Computing (CPSC) — used under the CPSC Research &
+Evaluation License.
 
-This license shall be governed by and construed in accordance with the laws of the jurisdiction in which BitConcepts, LLC is organized, without regard to conflict-of-law principles.
+NO WARRANTY
 
-End of License
+The Licensed Materials are provided “as is”, without warranty of any kind,
+express or implied, including but not limited to warranties of merchantability,
+fitness for a particular purpose, or non-infringement.
+
+LIMITATION OF LIABILITY
+
+In no event shall BitConcepts, LLC or any contributors be liable for any claim,
+damages, or other liability, whether in an action of contract, tort, or
+otherwise, arising from, out of, or in connection with the Licensed Materials
+or their use.
+
+TERMINATION
+
+This license terminates automatically if you violate any of its terms. Upon
+termination, you must immediately cease all use of the Licensed Materials and
+destroy any copies in your possession or control.
+
+COMMERCIAL LICENSING
+
+Commercial use, production deployment, or incorporation of the Licensed
+Materials into products or services requires a separate commercial license.
+
+For commercial licensing inquiries, contact BitConcepts, LLC.
+
+GOVERNING LAW
+
+This license shall be governed by and construed in accordance with the laws of
+the jurisdiction in which BitConcepts, LLC is organized, without regard to
+conflict-of-law principles.
+
+END OF LICENSE
