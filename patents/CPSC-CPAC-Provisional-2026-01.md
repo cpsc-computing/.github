@@ -78,13 +78,21 @@ The disclosed embodiments are illustrative and non-limiting.
 5. BRIEF DESCRIPTION OF THE DRAWINGS
 
 FIG. 1 — High-level CPSC computation model
+
 FIG. 2 — Degrees-of-freedom extraction and reconstruction
+
 FIG. 3 — Deterministic epoch-based projection schedule
+
 FIG. 4 — Hardware constraint fabric architecture
+
 FIG. 5 — CPAC compression and decompression pipeline
+
 FIG. 6 — Recursion-stability validation (validation-time only)
+
 FIG. 7 — AI or learned-system governance using CPSC
+
 FIG. 8 — Hardware-based resource and security governance
+
 FIG. 9 — Semantic system specification and lowering pipeline
 
 ---

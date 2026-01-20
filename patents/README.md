@@ -109,3 +109,22 @@ be validated against official USPTO search tools or commercial equivalents, and
 legal conclusions MUST be made by a qualified practitioner.
 
 See `WARP.md` §14 for setup details and JSON configuration examples.
+
+---
+
+## Preparing draft PDFs
+
+For local preparation of draft PDFs (for example, generating a PDF version of
+`CPSC-CPAC-Provisional-2026-01.md` before filing), contributors MAY use the
+helper script `scripts/render_markdown_to_pdf.py` in the repository root. This
+script invokes Pandoc with a Mermaid-aware filter so that the diagrams defined
+at the end of the provisional render into the PDF.
+
+Example usage from the repository root:
+
+- `python scripts/render_markdown_to_pdf.py` — renders the default provisional
+  Markdown to `patents/CPSC-CPAC-Provisional-2026-01.pdf`.
+
+This tooling is provided for convenience only and does not modify the legal
+status of any document. The filed PDF and associated USPTO records remain the
+authoritative artifacts.
