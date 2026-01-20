@@ -80,6 +80,20 @@ This organization maintains a separate `patents/` directory for non-normative pa
 - Contributors using Warp and the local `patent_mcp_server` MCP backend MAY follow this protocol to run reproducible prior-art and landscape searches using USPTO-backed APIs (PPUBS, PatentSearch/PatentsView), but results remain informational only.
 - Standard chat commands beginning with `prior-art protocol:` (documented in `WARP.md` and `AGENTS.md`) provide a repeatable way to ask agents to execute or summarize these searches; they do **not** change the meaning of any specification.
 
+### Patent draft rendering helpers
+
+For local draft PDFs of the CPSC/CPAC provisional (including Mermaid figures),
+this repository provides:
+
+- A Python wrapper script: `.github/scripts/render_markdown_to_pdf.py`
+- PowerShell helpers: `.github/scripts/setup-provisional-render-env.ps1` and
+  `.github/scripts/render-provisional-pdf.ps1`
+
+These are convenience tools around the `md2pdf` CLI from the `md2pdf-mermaid`
+package and use a headless Chromium engine to render Markdown (with Mermaid
+blocks) to PDF. They do not change the legal status or semantics of any
+document; they only control local formatting for review.
+
 ### USPTO / PatentSearch API keys and environment variables
 
 To use the MCP-backed patent tools with live USPTO data, contributors MUST obtain and configure API keys outside this repository:

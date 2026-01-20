@@ -115,16 +115,59 @@ See `WARP.md` §14 for setup details and JSON configuration examples.
 ## Preparing draft PDFs
 
 For local preparation of draft PDFs (for example, generating a PDF version of
-`CPSC-CPAC-Provisional-2026-01.md` before filing), contributors MAY use the
-helper script `scripts/render_markdown_to_pdf.py` in the repository root. This
-script invokes Pandoc with a Mermaid-aware filter so that the diagrams defined
-at the end of the provisional render into the PDF.
+`CPSC-CPAC-Provisional-2026-01.md` before filing), contributors SHOULD use the
+Python-based `md2pdf` CLI provided by the `md2pdf-mermaid` package. This tool
+renders Markdown to PDF using an HTML/Chromium engine and includes built-in
+support for Mermaid diagrams.
 
-Example usage from the repository root:
+You can either call `md2pdf` directly or use the helper scripts under
+`.github/scripts/`.
 
-- `python scripts/render_markdown_to_pdf.py` — renders the default provisional
-  Markdown to `patents/CPSC-CPAC-Provisional-2026-01.pdf`.
+### 1. One-time setup (Python environment)
 
-This tooling is provided for convenience only and does not modify the legal
-status of any document. The filed PDF and associated USPTO records remain the
-authoritative artifacts.
+From the repository root (or any Python environment you prefer):
+
+- Install the renderer and its browser dependency:
+
+  - `pip install md2pdf-mermaid playwright`
+  - `python -m playwright install chromium`
+
+This installs the `md2pdf` command and downloads a local Chromium build used for
+HTML-to-PDF conversion.
+
+On Windows / PowerShell, you MAY instead run:
+
+- `pwsh -File .github/scripts/setup-provisional-render-env.ps1`
+
+This script installs `md2pdf-mermaid` and the required Playwright Chromium
+runtime into the selected Python environment (`python` by default).
+
+### 2. Rendering the provisional to PDF
+
+From the repository root, you MAY run `md2pdf` directly:
+
+- `md2pdf patents/CPSC-CPAC-Provisional-2026-01.md -o patents/CPSC-CPAC-Provisional-2026-01.pdf`
+
+or, on Windows / PowerShell, use the helper script:
+
+- `pwsh -File .github/scripts/render-provisional-pdf.ps1`
+
+This will:
+
+- parse the Markdown provisional,
+- render Mermaid diagrams (including the figures at the end of the document), and
+- produce a PDF at `patents/CPSC-CPAC-Provisional-2026-01.pdf`.
+
+The render script also supports a small test mode to verify Mermaid rendering
+without touching the provisional:
+
+- `pwsh -File .github/scripts/render-provisional-pdf.ps1 -TestDiagrams`
+
+### 3. Notes
+
+- This tooling is provided for convenience only and does not modify the legal
+  status of any document. The filed PDF and associated USPTO records remain the
+  authoritative artifacts.
+- The choice of renderer (md2pdf-mermaid vs. other tools) does not affect the
+  semantics or priority date of the filing; it only affects the local draft
+  formatting used for review.

@@ -164,7 +164,37 @@ Agents MUST make clear in their responses which portions of the protocol were ex
 
 ---
 
-## 12. Summary
+## 12. Version control workflows (non-normative)
+
+When a user explicitly requests that changes be staged, committed, and pushed (for
+example by issuing commands such as `push to git`, `push to vc`, or `commit and push`),
+agents MAY execute the necessary version control commands on the user's behalf,
+subject to the following constraints:
+
+- Agents MUST operate only within the current repository context and MUST NOT attempt
+to push unrelated repositories.
+- Agents SHOULD perform any repository-specific "save session" behavior first if such
+a convention exists (for example, appending a ledger entry describing the current
+work and its status).
+- Agents SHOULD then:
+  - inspect the current VCS status;
+  - stage only the changes that are relevant to the requested task;
+  - construct a concise, honest commit message describing the work; and
+  - include a `Co-Authored-By: Warp <agent@warp.dev>` line in the commit message when
+the agent has materially contributed to the edits being committed.
+- Agents SHOULD push to the repository's default remote and branch (for example,
+`origin/main`) unless the user has specified a different target.
+- If the pending changes are unexpectedly broad, touch normative specifications
+without a clear plan, or appear to include unrelated work, agents SHOULD summarize the
+situation and request explicit confirmation before committing.
+
+These behaviors are non-normative and do not change the meaning of any specification
+or patent document; they exist solely to streamline repository hygiene when the user
+has already decided to save and publish the current state.
+
+---
+
+## 13. Summary
 
 Agents are tools to support rigor, not shortcuts around it.
 

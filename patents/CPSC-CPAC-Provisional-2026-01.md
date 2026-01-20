@@ -287,6 +287,7 @@ The foregoing description is illustrative and not limiting. Variations, modifica
 ### FIG. 1 — High-Level CPSC Model
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     S[Proposed State] --> P[Projection Engine]
     C[Constraints] --> P
@@ -296,6 +297,7 @@ flowchart LR
 ### FIG. 2 — DoF Extraction and Reconstruction
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     S[Full State] --> C[Constraints]
     C --> D[Derived Variables]
@@ -307,6 +309,7 @@ flowchart LR
 ### FIG. 3 — Epoch-Based Projection
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     O[Observe] --> E[Evaluate] --> U[Update] --> C[Commit]
     C --> T{Converged?}
@@ -317,6 +320,7 @@ flowchart LR
 ### FIG. 4 — Hardware Constraint Fabric
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     SR[State Registers] --> CE[Constraint Units] --> PN[Projection Network] --> CL[Commit Logic]
     CL --> SR
@@ -325,6 +329,7 @@ flowchart LR
 ### FIG. 5 — CPAC Pipeline
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     D[Input Data] --> P[CPSC Projection] --> R[DoF] --> E[Entropy Coding]
     E --> Z[Compressed Output]
@@ -333,6 +338,7 @@ flowchart LR
 ### FIG. 6 — Recursion-Stability Validation
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     S1[Canonical State] --> P1[Project]
     P1 --> S2[Reprojected State]
@@ -344,6 +350,7 @@ flowchart LR
 ### FIG. 7 — AI Governance Layer
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     NN[Learned Model] --> O[Candidate Output]
     O --> P[CPSC Projection]
@@ -354,6 +361,7 @@ flowchart LR
 ### FIG. 8 — Hardware Realm Governance
 
 ```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
 flowchart LR
     R1[Realm A] --> P[CPSC Policy Fabric]
     R2[Realm B] --> P
@@ -364,10 +372,11 @@ flowchart LR
 ### FIG. 9 — Semantic System Specification Layer and Execution Backends
 
 ```mermaid
-flowchart TD
-    A["Semantic System Specification (SSS)\n(e.g., Semantic-YAML)"]
-    B["Constraint / Optimization Representation\n(Constraint IR, QUBO, Ising, Logic)"]
-    C["Execution Backends\nClassical • AI-Assisted • Quantum"]
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+flowchart LR
+    A[SSS]
+    B[Constraint / Opt Rep]
+    C[Exec Backends]
 
     A --> B
     B --> C

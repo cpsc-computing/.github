@@ -333,3 +333,36 @@ These commands are intended to:
 - make it obvious which data sources (PPUBS vs PatentSearch/PatentsView) were used in any given run.
 
 Agents MUST continue to treat all MCP tool output as **informational only** and MUST NOT treat any search result as changing the semantics of `specification/` documents.
+
+### 14.4 Version-control chat commands
+
+For convenience and reproducibility, contributors MAY use natural-language commands to
+request that agents stage, commit, and push changes to version control. These commands
+are **non-normative orchestration hints** but DO authorize agents to run VCS commands
+for the current repository when explicitly requested.
+
+Recognized patterns include (examples, not a closed list):
+
+- `push to git`
+- `push to vc`
+- `commit and push`
+- `stage, commit, and push`
+
+When such a command is issued, agents SHOULD:
+
+1. Perform any repository-appropriate "save session" behavior for the current scope, if
+a convention or ledger file (for example `LEDGER.md` or an embedded ledger section in
+`patents/`) exists.
+2. Run `git status` (or the appropriate VCS status command) to determine which files
+have changed.
+3. Stage the relevant changes (for example using `git add`), avoiding unintentional
+inclusion of generated artifacts unless explicitly requested.
+4. Propose or infer a concise commit message based on the work performed in this
+session, ensuring that each commit message includes a `Co-Authored-By: Warp <agent@warp.dev>`
+line when the agent has made material edits.
+5. Push the commit to the default remote and branch for this repository (for example,
+`origin/main`) unless the user has specified a different target.
+
+If the scope of staged changes is unexpectedly large or appears to include unrelated
+work, agents SHOULD pause, summarize the pending changes, and ask the user for
+confirmation before committing and pushing.

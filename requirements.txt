@@ -1,2 +1,2 @@
-pypandoc>=1.13
-pandoc-mermaid-filter>=1.0.0
+md2pdf-mermaid>=1.4.3
+playwright>=1.57.0
