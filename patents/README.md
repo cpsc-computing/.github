@@ -98,19 +98,45 @@ It should remain **private** unless and until disclosure is required.
 ## MCP-Backed Prior Art and Background Tools
 
 For non-normative background research, contributors MAY use external MCP servers
-backed by USPTO data, such as the `patent_mcp_server` used in this repository's
-MCP configuration examples.
+backed by USPTO data, in particular:
+
+- the `patents` MCP server (`patent_mcp_server` from riemannzeta) for PPUBS full-text
+  search and PatentsView/ODP/Office Action/Litigation tooling; and
+- the John Walkoe USPTO MCP servers described in `WARP.md` §14 (PTAB, Patent
+  File Wrapper, Final Petition Decisions, and Enriched Citations).
 
 These tools are intended to support:
-- prior-art searches,
-- background and landscape review,
-- identification of potentially relevant patents and publications for citation.
+- prior-art and background searches over PPUBS full-text patents/applications,
+- prior-art and background searches over PTAB decisions and appeals,
+- review of prosecution history and office actions via the Patent File Wrapper API,
+- analysis of petition outcomes via the Final Petition Decisions API,
+- citation-based landscape and relationship analysis via the Enriched Citation API.
+
+### Theme A – recorded prior-art notes (non-normative)
+
+The following notes record non-normative observations about adjacent art for Theme A (CPSC paradigm). They are for internal reasoning only and are not part of any claim set.
+
+- **ML-based safety / governance controllers (example: clinician hazardous behavior + wasting station)**
+  - Representative independent claim pattern:
+    - Use a machine-learning model with on-duty/off-duty states over transaction logs to identify a clinician shift.
+    - Determine, based on the shift, that a clinician is a candidate for hazardous behavior.
+    - Configure a physical control system (e.g., a wasting station) to behave differently (isolate returned substance) for flagged clinicians.
+  - Overlaps with Theme A:
+    - ML-informed risk scoring and domain-specific safety control.
+    - Closed-loop actuation from model inference to physical system behavior.
+  - Gaps relative to Theme A / CPSC:
+    - No explicit constraint-structured control plane orchestrating multiple heterogeneous components under a shared constraint program.
+    - No first-class constraint structure (graph/lattice/hierarchy) or multi-constraint reasoning; only an implicit rule of the form "if risk, then isolate." 
+    - No constraint-centric state model (active/satisfied/violated constraints) or constraint-based justification artifacts.
+    - No separation between a configurable constraint program/policy layer and the underlying ML model/infrastructure.
+
+These gaps are candidates for strengthening Theme A independent claims along the axes of (i) explicit constraint structures, (ii) generalized control planes, and (iii) governance/justification artifacts rather than domain-specific risk flags alone.
 
 They MUST NOT be treated as authoritative or complete. Any search results should
 be validated against official USPTO search tools or commercial equivalents, and
 legal conclusions MUST be made by a qualified practitioner.
 
-See `WARP.md` §14 for setup details and JSON configuration examples.
+See `WARP.md` §14 for setup details and MCP JSON configuration examples.
 
 ---
 

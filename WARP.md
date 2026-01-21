@@ -225,66 +225,137 @@ This directory is intended for internal IP tracking and planning and should rema
 
 When performing prior-art searches, patent landscape reviews, or PTAB decision analysis, contributors and agents MAY use external services and MCP servers as non-normative inputs.
 
-A supported example is the USPTO-backed patent MCP server (`patent_mcp_server`), which exposes programmatic access to patent and PTAB-related information via MCP.
+Supported examples are:
 
-To install and update this server on a development machine, use:
+- The USPTO Patent MCP server (`patent_mcp_server`, from riemannzeta), which exposes PPUBS full-text search, ODP, PatentsView, PTAB, Office Action, citation, and litigation tools via a single MCP endpoint; and
+- USPTO-backed MCP servers from John Walkoe, which expose programmatic access to PTAB, Patent File Wrapper, Final Petition Decisions, and Enriched Citation APIs via MCP:
 
-- `scripts/setup-ptab-mcp-for-warp.ps1` – clones or updates the upstream `patent_mcp_server` repository and runs `uv sync` so it can be launched locally by Warp or other MCP clients.
+  - `uspto_ptab_mcp` – PTAB Open Data v3 (IPR/PGR/CBM proceedings, appeals, decisions)
+  - `uspto_pfw_mcp` – Patent File Wrapper (prosecution documents, office actions)
+  - `uspto_fpd_mcp` – Final Petition Decisions
+  - `uspto_enriched_citation_mcp` – Enriched Citation API v3
+
+To install and update these servers on a development machine, use:
+
+- `scripts/setup-ptab-mcp-for-warp.ps1` – clones or updates the four upstream USPTO MCP repositories under `$env:USERPROFILE` and invokes each repository's `deploy/windows_setup.ps1` (when not run with `-SkipSetup`). Those upstream scripts install dependencies, prompt for USPTO/Mistral API keys, store them securely via Windows DPAPI, and can optionally configure Claude/Warp MCP integration.
 
 Workflow rules for these tools:
 - Results from MCP servers and external patent tools are **informational only** and MUST NOT be treated as normative specifications.
 - Any conclusions or text derived from such tools MUST be reviewed and, where appropriate, restated in human-authored, spec-aligned language.
 - Specifications under `specification/` remain the sole source of normative technical behavior, regardless of external legal or search tools.
 
-### 14.1 Warp MCP JSON configuration example
+### 14.1 Warp MCP JSON configuration examples (Warp / Claude Code)
 
-Warp discovers MCP servers via JSON configuration. Two common patterns for configuring
-the local patent MCP server are:
+Warp discovers MCP servers via JSON configuration. For manual configuration of these USPTO MCP servers, use entries of the following form (paths may be adjusted as needed):
 
-**Option A – Pass the repo path via `--directory`:**
+**Patent MCP server (`patent_mcp_server` from riemannzeta, PPUBS/ODP/PatentsView/Office Actions/Litigation):**
 
 ```json
 {
-  "mcpServers": {
-    "patents": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "%USERPROFILE%/patent_mcp_server",
-        "run",
-        "patent-mcp-server"
-      ]
-    }
+  "patents": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "C:/Users/trist/patent_mcp_server",
+      "run",
+      "patent-mcp-server"
+    ]
   }
 }
 ```
 
-**Option B – Use `working_directory` and keep `args` minimal:**
+**PTAB MCP (`uspto_ptab_mcp`):**
 
 ```json
 {
-  "mcpServers": {
-    "patents": {
-      "command": "uv",
-      "args": [
-        "run",
-        "patent-mcp-server"
-      ],
-      "working_directory": "%USERPROFILE%/patent_mcp_server"
-    }
+  "uspto_ptab": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "C:/Users/trist/uspto_ptab_mcp",
+      "run",
+      "ptab-mcp"
+    ]
   }
 }
 ```
 
-On Windows, `%USERPROFILE%` refers to the current user's home directory (for example,
-`C:\\Users\\trist`). If your MCP client (including Warp) does not expand environment
-variables inside JSON strings, replace `%USERPROFILE%/patent_mcp_server` with the
-full absolute path to your clone instead.
+**Patent File Wrapper MCP (`uspto_pfw_mcp`):**
 
-The `command`, `args`, and `working_directory` values MUST be adjusted if the repository
-lives in a different subdirectory or if you prefer to launch it through a wrapper
-script. Additional fields such as `env` MAY be supplied following Warp MCP documentation
-if you want Warp to inject environment variables like `USPTO_API_KEY` at launch time.
+```json
+{
+  "uspto_pfw": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "C:/Users/trist/uspto_pfw_mcp",
+      "run",
+      "patent-filewrapper-mcp"
+    ]
+  }
+}
+```
+
+**Final Petition Decisions MCP (`uspto_fpd_mcp`):**
+
+```json
+{
+  "uspto_fpd": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "C:/Users/trist/uspto_fpd_mcp",
+      "run",
+      "fpd-mcp"
+    ]
+  }
+}
+```
+***Enriched Citations MCP (`uspto_enriched_citation_mcp`):**
+
+```json
+{
+  "uspto_enriched_citations": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "C:/Users/trist/uspto_enriched_citation_mcp",
+      "run",
+      "uspto-enriched-citation-mcp"
+    ]
+  }
+}
+```
+
+### 14.2 PPUBS behavior and reliability notes
+
+The `patents` MCP server (`patent_mcp_server`) depends on the USPTO Patent Public Search (PPUBS) API for search functionality. In practice:
+
+- "by-number" and "by-GUID" lookups (for example, `ppubs_get_patent_by_number` and `ppubs_get_full_document`) currently succeed and can return full text and metadata for known documents (e.g., US 10,000,000).
+- Search-style endpoints (for example, `ppubs_search_patents` and `ppubs_search_applications`) may intermittently or persistently return HTTP 500 `INTERNAL_SERVER_ERROR` with an `"Unable to Process"` developer message even for simple queries.
+
+When running prior-art protocols that rely on PPUBS via MCP, treat 500 errors from these search endpoints as an upstream service issue rather than a wiring/config problem, and fall back to PatentsView or the USPTO v3 MCP servers (PTAB, PFW, FPD, Enriched Citations) where possible.
+
+### 14.3 Division of labor: patent_mcp_server vs John Walkoe MCPs
+
+For practical work:
+
+- Use `patent_mcp_server` (the `patents` MCP server) primarily for:
+  - PPUBS full-text search and by-number access (when PPUBS is behaving),
+  - PatentsView/PatentSearch text and entity search (once the MCP glue is updated),
+  - One-stop access to ODP, PTAB, office actions, litigation, and citations when you are comfortable with some fragility.
+- Use the John Walkoe MCP servers (`uspto_ptab_mcp`, `uspto_pfw_mcp`, `uspto_fpd_mcp`, `uspto_enriched_citation_mcp`) as the **canonical, task-focused interfaces** for:
+  - PTAB trials/appeals (progressive-disclosure search tiers, document workflows),
+  - File wrapper / prosecution history (minimal/balanced searches, document-code filtered access to CLM/NOA/CTFR/CTNF/892/IDS/etc.),
+  - Final Petition Decisions,
+  - Enriched office-action citations and citation neighborhoods.
+
+Agents should therefore prefer the John Walkoe MCPs for structured PTAB/prosecution/citation workflows (Theme A–G prior-art protocols) and treat `patent_mcp_server` as a complementary source for PPUBS front-door search and PatentsView-based landscape work, rather than as a replacement for the specialized v3 MCPs.
+```
+
+On Windows, `C:/Users/trist` corresponds to `$env:USERPROFILE` for this machine. If your MCP client does not expand environment variables inside JSON strings, keep absolute paths as in the examples above.
+
+Additional fields such as `env` MAY be supplied following Warp MCP documentation if you choose to use the "traditional" (plain-text env) configuration instead of the secure DPAPI storage used by the upstream installers.
 
 ### 14.2 Persisting USPTO_API_KEY in PowerShell
 
@@ -304,33 +375,29 @@ After running this command, restart Warp or open a new PowerShell session. The k
 
 ### 14.3 Standard patent research chat commands
 
-To keep patent research reproducible and auditable, contributors and agents SHOULD use a small set of standard natural-language commands when interacting with MCP-backed patent tools. These commands are **non-normative orchestration hints**; they do not change the meaning of any specification or patent document.
+To keep patent research reproducible and auditable, contributors and agents SHOULD use a small set of standard natural-language commands when interacting with MCP-backed USPTO tools. These commands are **non-normative orchestration hints**; they do not change the meaning of any specification or patent document.
 
 Recognized patterns include:
 
-- `prior-art protocol: start Themes A+B (PPUBS only)`
+- `prior-art protocol: start Themes A–G (PTAB+PFW+CitA only)`
   - Re-reads the non-normative prior-art search protocol under `patents/`.
-  - Runs the **PPUBS-only** portions of the protocol for CPSC/CPAC Themes A and B using the `patents` MCP server (granted patents and published applications).
-  - Proposes a Run ID and captures run metadata (date, spec version if available, coverage, and conclusion summary) in the chat transcript and, if a ledger file such as `LEDGER.md` exists, in that file.
-  - Clearly marks the run as **PPUBS-only** and notes any tools that are not yet configured (for example, PatentSearch/PatentsView APIs).
+  - Runs the PTAB/File-Wrapper/Enriched-Citation portions of the protocol for CPSC/CPAC Themes A–G using `uspto_ptab`, `uspto_pfw`, and `uspto_enriched_citations` MCP servers (trial decisions, prosecution history, and citation data).
+  - Proposes a Run ID and captures run metadata (date, spec/non-provisional version if available, coverage, and conclusion summary) in the chat transcript and, if a ledger file such as `LEDGER.md` exists, in that file.
+  - Clearly marks the run as **USPTO-PTAB/PFW/CitA-only** and notes any tools that are not yet configured (for example, commercial full-text search APIs).
 
-- `prior-art protocol: extend with PatentSearch`
-  - Once PatentSearch/PatentsView credentials (for example `PATENTSVIEW_API_KEY`) are correctly configured for the `patents` MCP server, runs or extends the protocol using PatentSearch text filters, CPC-based sweeps, and citation tools.
-  - Records a new run (or an extension of a previous run) with explicit coverage flags (PPUBS abstracts, PPUBS full text, PatentSearch text, CPC sweeps, citations) and a short conclusion summary.
+- `prior-art protocol: status (USPTO MCP)`
+  - Summarizes prior-art and background work completed so far for Themes A–G, based on the protocol and any existing ledger entries in `patents/` and/or `LEDGER.md`.
+  - Highlights which USPTO MCP servers (PTAB, PFW, FPD, Enriched Citations) were used in each run and what changes would warrant a rerun.
 
-- `prior-art protocol: status`
-  - Summarizes prior-art work completed so far for Themes A and B, based on the protocol and any existing ledger entries in `patents/` and/or `LEDGER.md`.
-  - Highlights which portions of the protocol have been run, which tools were available at the time (PPUBS vs PatentSearch), and what changes would warrant a re-run.
-
-- `prior-art protocol: rerun since <reason>`
-  - Treats the request as a new protocol run with an explicit trigger (for example, “claims refactored”, “PatentSearch key added”, “CPSC spec v0.4 released”).
-  - Re-runs the appropriate subsets of the protocol and records a new run entry.
+- `prior-art protocol: rerun since <reason> (USPTO MCP)`
+  - Treats the request as a new protocol run with an explicit trigger (for example, “claims refactored”, “new PTAB decisions identified”, “CPSC spec v0.4 released”).
+  - Re-runs the appropriate subsets of the protocol against the currently configured USPTO MCP servers and records a new run entry.
 
 These commands are intended to:
 
 - keep prior-art work clearly separated from normative specifications,
 - ensure that searches are repeatable and tied to specific versions of the CPSC/CPAC text,
-- make it obvious which data sources (PPUBS vs PatentSearch/PatentsView) were used in any given run.
+- make it obvious which USPTO MCP data sources (PTAB, PFW, FPD, Enriched Citations) were used in any given run.
 
 Agents MUST continue to treat all MCP tool output as **informational only** and MUST NOT treat any search result as changing the semantics of `specification/` documents.
 
@@ -351,17 +418,17 @@ Recognized patterns include (examples, not a closed list):
 When a version-control command is issued (for example `push to git`), agents SHOULD:
 
 1. Perform any repository-appropriate "save session" behavior for the current scope, if
-a convention or ledger file (for example `LEDGER.md` or an embedded ledger section in
-`patents/`) exists.
+   a convention or ledger file (for example `LEDGER.md` or an embedded ledger section in
+   `patents/`) exists.
 2. Run `git status` (or the appropriate VCS status command) to determine which files
-have changed.
+   have changed.
 3. Stage the relevant changes (for example using `git add`), avoiding unintentional
-inclusion of generated artifacts unless explicitly requested.
+   inclusion of generated artifacts unless explicitly requested.
 4. Propose or infer a concise commit message based on the work performed in this
-session, ensuring that each commit message includes a `Co-Authored-By: Warp <agent@warp.dev>`
-line when the agent has made material edits.
+   session, ensuring that each commit message includes a `Co-Authored-By: Warp <agent@warp.dev>`
+   line when the agent has made material edits.
 5. Push the commit to the default remote and branch for this repository (for example,
-`origin/main`) unless the user has specified a different target.
+   `origin/main`) unless the user has specified a different target.
 
 If the scope of staged changes is unexpectedly large or appears to include unrelated
 work, agents SHOULD pause, summarize the pending changes, and ask the user for
@@ -381,3 +448,23 @@ behave as follows (non-normative orchestration hints):
   repository's norms) and summarize relevant changes for the user.
 - `pull and load session` – explicitly pull from the default remote/branch and then
   treat the updated state as the basis for subsequent work in the current chat.
+
+### 14.5 Starting local USPTO MCP servers from PowerShell
+
+For local testing or manual invocation outside of Warp's built-in MCP management,
+contributors MAY start individual USPTO MCP servers directly from a PowerShell prompt
+using `uv` once `scripts/setup-ptab-mcp-for-warp.ps1` (and each upstream
+`deploy/windows_setup.ps1`) has been run. For example:
+
+```powershell
+uv --directory "$env:USERPROFILE\uspto_ptab_mcp" run ptab-mcp
+uv --directory "$env:USERPROFILE\uspto_pfw_mcp" run patent-filewrapper-mcp
+uv --directory "$env:USERPROFILE\uspto_fpd_mcp" run fpd-mcp
+uv --directory "$env:USERPROFILE\uspto_enriched_citation_mcp" run uspto-enriched-citation-mcp
+```
+
+These commands assume the upstream repositories have been cloned into the default
+locations under `$env:USERPROFILE` and that `uv` is installed and on `PATH`. API keys
+are typically stored securely via DPAPI by the upstream installers; if you choose to
+use plain-text environment variables instead, secrets MUST NOT be committed to this
+repository.

@@ -142,25 +142,52 @@ Both documents are authoritative.
 When assisting with patent research, prior-art searches, or landscape analysis, agents MUST:
 
 - Treat all documents under `patents/` as **non-normative legal and planning material**, not specifications.
-- Treat all MCP-backed patent tools (including the `patents` MCP server and any PPUBS or PatentSearch/PatentsView endpoints) as **informational**.
+- Treat all MCP-backed patent tools (including the `patents` MCP server and USPTO PTAB, PFW, FPD, and Enriched Citation MCP servers) as **informational**.
 - Avoid making legal conclusions or altering normative specifications based on tool output.
 
 When a user issues a chat command beginning with `prior-art protocol:` (see `WARP.md` §14.3), agents SHOULD:
 
 1. Re-read the current non-normative prior-art protocol text under `patents/`.
-2. Identify which parts of the protocol are executable given currently configured tools (for example, PPUBS-only if PatentSearch is not yet configured).
-3. Run the relevant portions using the `patents` MCP server, staying within the protocol’s scope.
+2. Identify which parts of the protocol are executable given currently configured tools (for example, PTAB-only or PFW-only if other data sources are not yet configured).
+3. Run the relevant portions using the appropriate USPTO MCP server(s) (for example, `uspto_ptab`, `uspto_pfw`, `uspto_fpd`, or `uspto_enriched_citations`), staying within the protocol’s scope.
 4. Propose a Run ID and capture run metadata (date, trigger, coverage, and conclusion summary) in the chat.
 5. If a ledger file such as `LEDGER.md` or a protocol-embedded ledger section exists, append a concise, machine-searchable run entry there, respecting any existing structure.
 
 Recognized non-normative command patterns include (examples, not a closed list):
 
-- `prior-art protocol: start Themes A+B (PPUBS only)`
-- `prior-art protocol: extend with PatentSearch`
-- `prior-art protocol: status`
-- `prior-art protocol: rerun since <reason>`
+- `prior-art protocol: start Themes A–G (PPUBS only)`
+- `prior-art protocol: start Themes A–G (PTAB+PFW+CitA only)`
+- `prior-art protocol: status (USPTO MCP)`
+- `prior-art protocol: rerun since <reason> (USPTO MCP)`
 
-Agents MUST make clear in their responses which portions of the protocol were executed, which data sources were used (PPUBS vs PatentSearch/PatentsView), and what changes would require a re-run.
+Agents MUST make clear in their responses which portions of the protocol were executed, which data sources were used (PPUBS vs USPTO MCP servers), and what changes would require a rerun.
+
+#### 11.1 PPUBS → PatentsView fallback strategy
+
+When using the `patents` MCP server for prior-art or landscape work, agents SHOULD:
+
+- Prefer PPUBS (`ppubs_search_patents` / `ppubs_search_applications`) for front-door text search *when* the API responds successfully.
+- On receiving an HTTP 500 `INTERNAL_SERVER_ERROR` with an `"Unable to Process"` developer message from a PPUBS search endpoint, treat this as an upstream PPUBS service issue, **not** a misconfiguration.
+- Immediately fall back to `patentsview_search_patents` (or `patentsview_search_by_cpc` when CPC scoping is appropriate) with a comparable query, and continue the protocol using PatentsView + USPTO v3 MCP servers (PTAB, PFW, FPD, Enriched Citations) instead of PPUBS for that run.
+- Note explicitly in the work log / response that PPUBS search failed with 500 and that results are based on PatentsView and other MCP sources instead.
+
+For the avoidance of doubt: temporary or persistent PPUBS 500s MUST NOT block execution of prior-art protocols; agents are expected to pivot to PatentsView automatically.
+
+#### 11.2 MCP server selection for USPTO workflows
+
+Agents SHOULD use:
+
+- `patents` (patent_mcp_server) when they need:
+  - PPUBS front-door full-text search or by-number lookups,
+  - PatentsView/PatentSearch-based landscape queries (once the PatentsView MCP tools are updated),
+  - A single MCP server providing mixed PPUBS/ODP/PTAB/office-action/litigation tools and are tolerant of occasional API drift.
+- John Walkoe USPTO MCP servers when they need:
+  - Structured PTAB trial/appeal research (`uspto_ptab`),
+  - Detailed prosecution/file-wrapper work (`uspto_pfw`), including claim evolution, NOAs, office actions, and examiner/applicant citations,
+  - Final Petition Decisions (`uspto_fpd`),
+  - Enriched citation analysis (`uspto_enriched_citations`).
+
+For Theme-based prior-art protocols (Themes A–G), agents MUST treat the John Walkoe MCPs as the primary sources for PTAB, PFW, FPD, and citation data, and treat the `patents` MCP server as a complementary PPUBS/PatentsView source rather than as a replacement.
 
 ---
 
