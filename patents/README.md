@@ -35,6 +35,8 @@ Constraint-Projected State Computing Systems and Applications
 - Deterministic constraint projection
 - Hardware and software embodiments
 - Security, control, AI governance, and mission-critical systems
+- Constraint-projected execution and governance of post-quantum cryptographic algorithms
+- Quantum resource governance, validation, migration, and hybrid compression embodiments
 - Validation-only recursion-stability
 
 **Planned Filing Artifacts:**
