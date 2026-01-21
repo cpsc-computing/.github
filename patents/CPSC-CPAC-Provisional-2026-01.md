@@ -175,6 +175,10 @@ In some embodiments, the semantic system specification and resulting constraint 
 
 In these embodiments, the semantic system specification and constraint architecture define correctness conditions and acceptable outcomes independently of the particular execution backend. Quantum, neuromorphic, analog, or learned systems are treated as interchangeable or complementary execution mechanisms operating under a common, constraint-defined semantics.
 
+In a neuromorphic embodiment, state variables may correspond to membrane potentials, synaptic weights, spike counts, or other quantities associated with artificial neurons and synapses. Constraints encode desired steady-state patterns, firing relationships, conservation properties, admissible trajectories, or other invariants that characterize valid network behavior. Projection is realized by configuring network parameters and input drives such that the physical or simulated spiking dynamics converge toward a state that satisfies the declared constraints. Commits are taken at sampling boundaries, for example when the network has settled into a stable spike pattern or rate profile within declared tolerances, and that sampled configuration is treated as the canonical valid state.
+
+In an analog or in-memory compute embodiment, state variables may correspond to voltages, currents, charges, or stored conductance values in resistive, capacitive, or memristive elements. Constraints encode admissible transfer relationships, balance conditions, region-of-operation limits, or other circuit-level invariants. Projection is effected by injecting degrees of freedom as controlled stimuli, boundary conditions, or initial states and allowing the analog network to evolve toward a stable configuration consistent with the constraints. Commits are taken when the network settles within declared error bounds, at which point the measured analog quantities are interpreted as the projected valid state. In all such embodiments, the semantic system specification continues to define the intended variables, constraints, and acceptable outcomes independently of the underlying hardware, and non-von-neumann backends are treated as physical realizations of the same constraint architecture rather than as separate sources of semantic intent.
+
 ---
 
 9. HARDWARE EMBODIMENTS
@@ -257,6 +261,16 @@ In further embodiments, analogous techniques are applied to neuromorphic process
 
 In some embodiments, Constraint-Projected Adaptive Compression employs a learned prediction stage operating in the semantic degree-of-freedom space defined by a semantic system specification and corresponding constraint architecture. In these embodiments, raw input is first mapped into a constraint-architected state and projected by a CPSC engine into a minimal DoF representation as described above. The learned prediction stage operates only on sequences of such degrees of freedom, which are by construction consistent with the underlying constraints, and produces predicted degrees of freedom and, in some embodiments, probability distributions or auxiliary features. A residual or distribution-based representation derived from the predictor output is then provided to the entropy coding stage.
 
+11.12.1 Predictor Deployment and Metadata
+
+In further embodiments, trained model parameters are quantized or otherwise adapted for deployment. For example, weights and biases may be quantized to fixed-point representations, such as 8-bit or 16-bit integers, and packed into a compact deployment format. Deployed models may be embedded directly in a compressed bitstream header, stored in a sidecar model file referenced by a model identifier carried in the bitstream, or obtained from a shared library or model registry addressable by such identifiers. In some embodiments, each compressed stream carries identifiers for both the constraint architecture or semantic system specification used to generate the degrees of freedom and the predictor model used to generate predictions, enabling decoders to select or load the correct combination.
+
+In some embodiments, the interaction between the learned prediction stage and the entropy coding stage admits multiple variants. In a residual-based embodiment, the predictor outputs predicted degrees of freedom, residuals are formed between actual and predicted degrees of freedom, and the residual stream, optionally together with side information, is entropy coded. In a distribution-based embodiment, the predictor outputs a probability distribution or other parametric description over possible DoF values, and an entropy coder such as arithmetic or asymmetric numeral systems coding uses these distributions directly as coding models. In hybrid embodiments, outputs of the learned predictor are used to select among multiple entropy coding models, quantization granularities, or block partitioning strategies.
+
+In additional embodiments, multiple predictor families are defined and used selectively. For example, different learned predictors may be trained for different data domains, such as source code, logs, or metrics, each paired with a corresponding semantic system specification or constraint architecture. Different performance profiles may also be provided, such as a low-complexity predictor for real-time or low-power operation and a higher-capacity predictor for maximum compression efficiency. In some embodiments, a mixture-of-experts arrangement is used in which, for each block or region, a selector chooses among a small set of predictor models based on local features or prior performance, and the selected model identity is recorded in a low-rate side stream that is decoded alongside the residual or distribution information.
+
+In these embodiments, learning and prediction occur in the structured DoF space defined by constraints and the semantic system specification, rather than directly over raw bytes or unconstrained token streams. The overall CPAC pipeline therefore composes three separable and updatable elements: a constraint-architected projection stage that defines the semantic DoF space, a learned prediction stage operating within that space, and an entropy coding stage that encodes residual or distributional information. Multiple combinations of constraint architectures and learned predictors may be supported, with each compressed stream identifying the particular constraint model and predictor model used, while the underlying constraint-projected execution semantics remain unchanged.
+
 11.13 Constraint-Projected Execution of Post-Quantum Cryptographic Algorithms
 
 In certain embodiments, Constraint-Projected State Computing is applied to execution of post-quantum cryptographic (PQC) algorithms. In these embodiments, cryptographic operations are expressed as declarative constraints over an explicit cryptographic state, and cryptographic validity is determined by projection of that state into a constraint-satisfying configuration, rather than by executing ordered instruction sequences.
@@ -293,7 +307,53 @@ In some embodiments, constraint models are versioned, hashed, and bound to crypt
 
 These cryptographic embodiments operate in conjunction with the core CPSC model and CPAC embodiments. They do not alter cryptographic primitives, security assumptions, or standardized algorithm definitions, but instead extend the execution architecture to support deterministic enforcement, efficient state handling, and formal governance of post-quantum cryptographic systems.
 
-11.14 Quantum Resource Governance and Scheduling
+11.14 Optional Learned Structure-Induction Embodiment (Neural-Assisted CPSC)
+
+In certain embodiments, the constraint-projected state computing (CPSC) system includes an optional learned structure-induction stage positioned prior to constraint projection. This stage employs one or more trained machine-learning models to propose structured representations, annotations, or candidate state assignments derived from input data. The learned models do not determine correctness or validity and do not replace constraint enforcement. Instead, they generate proposals that are subsequently validated, corrected, or rejected by CPSC projection.
+
+The learned structure-induction stage may operate on arbitrary input data, including files, streams, or blocks of data, and may output proposed state variables, inferred relationships, predicted degrees of freedom, residual estimates, or auxiliary metadata. All outputs of the learned stage are treated as non-authoritative and are subject to deterministic constraint projection. Cryptographic correctness, compression correctness, and state validity are determined solely by convergence of the CPSC projection process.
+
+11.14.1 Unified and Multiple Model Configurations
+
+The learned structure-induction stage may be implemented using a single trained model applicable across heterogeneous data domains or using multiple trained models specialized for different classes of structured state spaces. In some embodiments, a unified model is trained on diverse data types to induce general structural regularities applicable across formats. In other embodiments, separate models are trained for different structural classes, such as record-oriented data, framed streams, block-structured binaries, or text-like representations.
+
+Model selection, composition, or sequencing may be performed dynamically based on input characteristics, configuration, or confidence measures. Incorrect or suboptimal model selection does not compromise correctness, as all proposed structure is validated by constraint projection. In some embodiments, multiple models are applied sequentially or hierarchically, with earlier models providing coarse structure proposals and later models refining those proposals prior to projection.
+
+11.14.2 Determinism and Optionality
+
+The learned structure-induction stage is optional and may be bypassed entirely without affecting correctness. The CPSC system remains fully functional in the absence of learned proposals. When present, learned models are frozen, versioned, and executed deterministically for a given input and configuration. Projection behavior and output validity remain deterministic and reproducible regardless of the presence or absence of learned structure induction.
+
+11.14.3 Relationship to Compression and Cryptography
+
+In compression embodiments, learned structure-induction may be used to propose structured latent representations that reduce the effective degrees of freedom prior to constraint-projected adaptive compression. In cryptographic embodiments, learned structure-induction may be used to propose candidate cryptographic state components or intermediate values, which are then validated by cryptographic constraints during projection. In all cases, learned models serve only as proposal mechanisms and do not alter cryptographic assumptions, security properties, or lossless reconstruction guarantees.
+
+11.14.4 Authority of Constraint Projection
+
+In all embodiments, constraint projection is the sole authority on state validity. Learned models cannot override constraints, introduce new semantics, or cause acceptance of invalid state. Projection convergence defines success; projection failure defines rejection. This separation ensures that learned components may improve efficiency or compression effectiveness without compromising correctness, security, or determinism.
+
+11.14.5 Structural-Class-Based Learned Model Taxonomy
+
+In certain embodiments, one or more learned structure-induction models are organized and trained according to classes of constrained state structure rather than according to file types or explicit data formats. Each structural class is defined by the nature of dependencies, invariants, and reconstruction relationships present in the underlying state space, rather than by syntactic identifiers or external metadata. This classification enables learned models to generalize across heterogeneous data sources that share common structural properties while avoiding brittle reliance on format detection.
+
+Structural classes may include, by way of example and not limitation: fixed-arity block-structured state spaces in which state variables are arranged in uniform blocks; record-oriented or delimited state spaces in which variable-length records are separated by boundaries or framing; header–payload or container-structured state spaces in which metadata constrains payload interpretation; temporally correlated or sequential state spaces in which state at one position constrains state at adjacent positions; algebraically constrained state spaces governed by explicit equations or validity relations; and opaque or high-entropy state spaces in which little exploitable structure is present. A single input may exhibit multiple structural classes simultaneously, and learned models may propose structure for one or more classes within the same input.
+
+Learned structure-induction models may be trained to recognize and propose candidate structure associated with one or more of these structural classes, including boundary proposals, inferred dependencies, candidate derived variables, predicted degrees of freedom, or auxiliary annotations. In some embodiments, a single learned model is trained across multiple structural classes to induce general structural regularities. In other embodiments, multiple learned models are trained for different structural classes and may be applied selectively, sequentially, or hierarchically. Model selection or composition may be based on input characteristics, configuration, confidence estimates, or other heuristics, but incorrect or suboptimal selection does not affect correctness.
+
+All structure proposed by learned models is treated as non-authoritative and is subject to validation by constraint-projected state computing. The constraint projection stage enforces declarative constraints defining valid state and determines whether a proposed structure is accepted, corrected, or rejected. Projection convergence defines successful interpretation of the proposed structure; projection failure defines invalid or unsupported structure. In some embodiments, learned models may explicitly abstain from proposing structure for inputs that appear structurally opaque or high-entropy, allowing the system to bypass learned induction and proceed directly to constraint projection without loss of correctness.
+
+11.14.6 Benchmarking and Evaluation
+
+In certain embodiments, the effectiveness of learned structure-induction models organized by structural class is evaluated using Constraint-Projected Adaptive Compression benchmarking. Benchmarking is performed by comparing compression pipelines that include learned structure-induction stages against pipelines that omit such stages, while holding constant the constraint models, projection parameters, and entropy coding backends. Metrics may include compression ratio, reconstruction fidelity, encode and decode time, determinism, and projection convergence behavior.
+
+Because learned structure-induction operates only as a proposal mechanism, benchmarking isolates its contribution by measuring changes in degree-of-freedom reduction, residual magnitude, or projection efficiency attributable to different structural-class models. This evaluation approach enables quantitative comparison of unified versus multiple learned models and of different structural classes without affecting correctness or lossless reconstruction guarantees.
+
+11.14.7 Negative-Case Handling and Graceful Degradation
+
+In certain embodiments, the system explicitly supports negative cases in which learned structure-induction does not identify meaningful structure or proposes structure that is incompatible with the constraint model. In such cases, constraint projection may reject the proposed structure, correct it, or converge only on a trivial valid state corresponding to a high degree-of-freedom representation. The system may treat such inputs as structurally opaque and bypass learned structure-induction for subsequent processing.
+
+This behavior ensures that performance degrades gracefully on incompressible, encrypted, already-compressed, or adversarial inputs, with compression ratios approaching those of baseline entropy coding and without introducing expansion beyond expected overhead. Correctness, determinism, and reconstruction fidelity are preserved regardless of learned model performance, and no learned component is permitted to cause acceptance of invalid state.
+
+11.15 Quantum Resource Governance and Scheduling
 
 In some embodiments, Constraint-Projected State Computing is applied to governance and scheduling of heterogeneous computing resources including one or more quantum processors. In these embodiments, a resource governance fabric is modeled as a constrained state space in which variables represent realms, resource pools, workloads, policies, and scheduling decisions across classical and quantum backends.
 
@@ -307,7 +367,7 @@ In some embodiments, this quantum resource governance fabric is implemented dire
 
 These governance embodiments treat quantum backends as first-class realms under a unified constraint-defined semantics, enabling deterministic, explainable, and policy-compliant allocation of quantum and classical resources over time. They do not define new quantum algorithms; instead, they govern when and how such algorithms may be executed within a broader, constraint-projected computing and resource-management environment.
 
-11.15 Quantum-Aware Validation and Regression Harness
+11.16 Quantum-Aware Validation and Regression Harness
 
 In some embodiments, Constraint-Projected State Computing is employed as a validation and regression harness for quantum and other probabilistic execution backends. In these embodiments, a semantic system specification and corresponding constraint architecture define acceptable solution sets, invariants, and structural relationships for a target problem domain, while one or more classical and quantum backends are treated as proposal or sampling mechanisms operating under that specification.
 
@@ -317,7 +377,7 @@ In these embodiments, quantum or approximate backends generate candidate solutio
 
 In some embodiments, this validation harness is used to compare multiple quantum providers, hardware generations, or compilation strategies against a common constraint-defined semantics. Divergence between backends is detected not by re-deriving algorithmic correctness proofs but by observing which backends produce candidate outputs that project into valid states under the shared constraint architecture. In further embodiments, the harness is used to detect calibration drift or configuration errors by periodically sampling workloads and projecting results to determine whether they remain within acceptable constraint-defined tolerances.
 
-11.16 Quantum-Safe Migration and Dual-Stack Cryptographic Governance
+11.17 Quantum-Safe Migration and Dual-Stack Cryptographic Governance
 
 In some embodiments, Constraint-Projected State Computing is used to govern migration from pre-quantum cryptographic mechanisms to post-quantum cryptographic mechanisms. In these embodiments, a constraint architecture describes both legacy cryptographic state (for example, RSA or elliptic-curve key material, certificates, and protocol modes) and post-quantum cryptographic state (for example, PQC keys, certificates, and negotiated modes) within a unified constrained state space.
 
@@ -329,7 +389,7 @@ Given a proposed migration or configuration state, projection determines whether
 
 In some embodiments, this quantum-safe migration model is used both at design time, to synthesize compliant rollout plans, and at runtime, to enforce that only constraint-satisfying configurations are applied in production. In further embodiments, the same constraint architecture is bound to audit logs and configuration artefacts, enabling later reconstruction and verification that a system’s cryptographic posture at a given time conformed to declared quantum-safe policies.
 
-11.17 Hybrid Quantum–Classical Constraint-Projected Adaptive Compression
+11.18 Hybrid Quantum–Classical Constraint-Projected Adaptive Compression
 
 In some embodiments, Constraint-Projected Adaptive Compression is implemented using a combination of classical and quantum backends while preserving a single, constraint-defined semantics for compression and decompression. In these embodiments, the semantic system specification and associated constraint architecture define the degree-of-freedom space and valid reconstructed states, while different projection and prediction mechanisms are applied beneath that semantics.
 
@@ -338,23 +398,6 @@ State variables and constraints define how raw input is mapped into a constraint
 Regardless of the predictor backend, predictive outputs are treated as proposals that are injected into the constraint-architected state and projected. Projection enforces that reconstructed states satisfy all structural constraints before any entropy coding is applied or decoded. Compressed bitstreams therefore remain defined entirely in terms of degrees of freedom and constraint architectures, independent of whether classical or quantum mechanisms were used to generate predictions or intermediate proposals.
 
 In some embodiments, metadata in the compressed bitstream identifies the constraint architecture and, optionally, the predictor family used (for example, classical-only, quantum-assisted, or specific hybrid variants), enabling decoders to select appropriate execution paths while still relying on the same constraint-projected reconstruction semantics. This arrangement allows systems to adopt quantum accelerators for parts of the CPAC pipeline without changing the meaning of compressed data or the conditions under which reconstructions are considered valid.
-
----
-
-12. NON-LIMITING STATEMENT
-2. Non-linear models such as multilayer perceptrons, convolutional networks, recurrent networks, or transformer-style sequence models that operate on tokenized or block-structured sequences of DoFs.
-3. Class- or structure-aware models that condition predictions on semantic classes or roles derived from the semantic system specification, such as separate prediction heads for identifiers, numeric values, operators, or other symbol categories.
-4. Models that consume additional structural features derived from the constraint architecture or semantic specification, including but not limited to histograms, n-gram or bigram counts, repetition indicators, or scope or region markers, in combination with raw DoF histories.
-
-In some embodiments, parameters of the learned prediction models are obtained by offline training on corpora of data. Training data may be prepared by using a CPSC engine and associated constraint architecture to project raw source data, such as code, logs, metrics, or telemetry, into sequences of degrees of freedom. Context–target pairs are then constructed, for example by treating a window of prior DoFs as input context and one or more subsequent DoFs as targets. A loss function, such as mean squared error for continuous-valued DoFs or cross-entropy loss for discrete-valued DoFs, is minimized over the training corpus to determine model parameters. Regularization, normalization, or other training techniques may be applied without departing from the scope of these embodiments.
-
-In further embodiments, trained model parameters are quantized or otherwise adapted for deployment. For example, weights and biases may be quantized to fixed-point representations, such as 8-bit or 16-bit integers, and packed into a compact deployment format. Deployed models may be embedded directly in a compressed bitstream header, stored in a sidecar model file referenced by a model identifier carried in the bitstream, or obtained from a shared library or model registry addressable by such identifiers. In some embodiments, each compressed stream carries identifiers for both the constraint architecture or semantic system specification used to generate the degrees of freedom and the predictor model used to generate predictions, enabling decoders to select or load the correct combination.
-
-In some embodiments, the interaction between the learned prediction stage and the entropy coding stage admits multiple variants. In a residual-based embodiment, the predictor outputs predicted degrees of freedom, residuals are formed between actual and predicted degrees of freedom, and the residual stream, optionally together with side information, is entropy coded. In a distribution-based embodiment, the predictor outputs a probability distribution or other parametric description over possible DoF values, and an entropy coder such as arithmetic or asymmetric numeral systems coding uses these distributions directly as coding models. In hybrid embodiments, outputs of the learned predictor are used to select among multiple entropy coding models, quantization granularities, or block partitioning strategies.
-
-In additional embodiments, multiple predictor families are defined and used selectively. For example, different learned predictors may be trained for different data domains, such as source code, logs, or metrics, each paired with a corresponding semantic system specification or constraint architecture. Different performance profiles may also be provided, such as a low-complexity predictor for real-time or low-power operation and a higher-capacity predictor for maximum compression efficiency. In some embodiments, a mixture-of-experts arrangement is used in which, for each block or region, a selector chooses among a small set of predictor models based on local features or prior performance, and the selected model identity is recorded in a low-rate side stream that is decoded alongside the residual or distribution information.
-
-In these embodiments, learning and prediction occur in the structured DoF space defined by constraints and the semantic system specification, rather than directly over raw bytes or unconstrained token streams. The overall CPAC pipeline therefore composes three separable and updatable elements: a constraint-architected projection stage that defines the semantic DoF space, a learned prediction stage operating within that space, and an entropy coding stage that encodes residual or distributional information. Multiple combinations of constraint architectures and learned predictors may be supported, with each compressed stream identifying the particular constraint model and predictor model used, while the underlying constraint-projected execution semantics remain unchanged.
 
 ---
 

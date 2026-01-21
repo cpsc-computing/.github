@@ -135,7 +135,37 @@ This family covers hardware that enforces correctness, security, and resource po
 
 ---
 
-### 2.4 Family D — Control & Mission-Critical Systems
+### 2.4 Family D — Quantum and Non-Von-Neumann Backends
+
+#### Scope
+- Semantic system specification and constraint architectures compiled into quantum circuits or Hamiltonians while preserving declared constraints and acceptable outcomes
+- Hybrid classical–quantum execution targeting the same SSS/constraint architecture
+- Quantum resource governance and scheduling fabrics treating quantum backends as realms under unified constraints
+- Neuromorphic, analog, and in-memory compute fabrics realizing the same constraint architectures via physical dynamics, with commits taken at stable sampled states
+
+#### Target Licensees
+- Quantum computing providers
+- Cloud infrastructure vendors offering quantum services
+- Neuromorphic and analog hardware vendors
+- High-performance computing and hybrid-accelerator providers
+
+#### Licensing Narrative
+This family covers backend-agnostic execution of CPSC constraint architectures on quantum and other non-von-neumann hardware, including hybrid classical–quantum systems and neuromorphic/analog fabrics. Correctness and acceptable outcomes are defined at the semantic specification level; hardware realizations are interchangeable backends under the same constraint-defined semantics.
+
+#### Why Licensees Pay
+- Quantum- and neuromorphic-ready intent layer independent of hardware generations
+- Deterministic, spec-defined validation of probabilistic or analog backends
+- Governance and scheduling of heterogeneous classical/quantum resources
+- Differentiated, backend-agnostic execution semantics
+
+#### Typical License Form
+- Platform or cloud-service license
+- Per-backend or per-region royalty
+- Hardware OEM license
+
+---
+
+### 2.5 Family E — Control & Mission-Critical Systems
 
 #### Scope
 - Constraint-based control without tuning
@@ -165,7 +195,7 @@ This family covers control systems where safety and correctness are enforced dir
 
 ---
 
-### 2.5 Family E — AI / LLM / Neural Governance
+### 2.6 Family E — AI / LLM / Neural Governance
 
 #### Scope
 - Deterministic constraint enforcement around learned systems

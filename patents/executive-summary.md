@@ -76,7 +76,11 @@ CPSC and CPAC support a wide range of high-value domains, including:
   cryptographic systems, as well as quantum resource governance.
 - **Telemetry, Logging, and Replay**  
   Compact, validated state logging with deterministic reconstruction.
-  Compact, validated state logging with deterministic reconstruction.
+- **Quantum-Ready and Neuromorphic/Analog Backends**  
+  Backend-agnostic execution across classical, quantum, neuromorphic, analog,
+  and learned proposal backends under a single semantic specification and
+  constraint architecture, including hybrid quantum–classical compression and
+  quantum-aware validation and governance layers.
 
 ---
 

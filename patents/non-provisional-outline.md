@@ -332,8 +332,9 @@ Each subsection becomes a **dependent claim cluster** later.
 ### 13.9 Quantum and Non-Von-Neumann Execution Backends
 
 * SSS-driven constraint architectures compiled into quantum circuits or Hamiltonians while preserving declared constraints and acceptable outcomes
-* Hybrid classical–quantum execution targeting the same SSS without changing semantic intent
-* Extension to neuromorphic, analog, in-memory, or other non-von-neumann architectures as interchangeable execution backends under common SSS-defined semantics
+* Hybrid classical–quantum execution targeting the same SSS/constraint architecture without changing semantic intent
+* Quantum resource governance and scheduling over classical and quantum realms under unified constraints
+* Neuromorphic, analog, in-memory, or other non-von-neumann architectures realizing the same constraint architectures via physical dynamics with commits taken at stable sampled states
 
 ---
 
