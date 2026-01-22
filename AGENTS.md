@@ -247,7 +247,21 @@ work sessions.
 
 ---
 
-## 14. Summary
+## 14. Generated documentation artifacts
+
+When invoking renderers such as `md2pdf-mermaid` or repository helper scripts, agents MUST
+ensure that all generated PDFs (and similar artifacts) are written only under the `docs-pdf/`
+directory. The `docs-pdf/` tree MUST mirror the hierarchy under `docs/` (for example,
+`docs/specification/CPSC-Specification.md` > `docs-pdf/specification/CPSC-Specification.pdf`).
+
+Agents MUST NOT write or leave generated PDFs under the `docs/` tree. If such files are
+created (for example, by a misconfigured script or manual command), agents are responsible
+for deleting them from `docs/` and re-running the render into `docs-pdf/` instead.
+
+This rule is mandatory for repository hygiene and to keep the Markdown sources clearly
+separated from heavy, generated binary artifacts.
+
+## 15. Summary
 
 Agents are tools to support rigor, not shortcuts around it.
 

@@ -86,8 +86,8 @@ For local draft PDFs of the CPSC/CPAC provisional (including Mermaid figures),
 this repository provides:
 
 - A Python wrapper script: `.github/scripts/render_markdown_to_pdf.py`
-- PowerShell helpers: `.github/scripts/setup-provisional-render-env.ps1` and
-  `.github/scripts/render-provisional-pdf.ps1`
+- PowerShell helpers: `.github/scripts/setup-render-docs-env.ps1` and
+  `.github/scripts/render-docs-pdf.ps1`
 
 These are convenience tools around the `md2pdf` CLI from the `md2pdf-mermaid`
 package and use a headless Chromium engine to render Markdown (with Mermaid

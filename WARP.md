@@ -468,3 +468,4 @@ locations under `$env:USERPROFILE` and that `uv` is installed and on `PATH`. API
 are typically stored securely via DPAPI by the upstream installers; if you choose to
 use plain-text environment variables instead, secrets MUST NOT be committed to this
 repository.
+
