@@ -132,6 +132,7 @@ The following notes record non-normative observations about adjacent art for The
 
 These gaps are candidates for strengthening Theme A independent claims along the axes of (i) explicit constraint structures, (ii) generalized control planes, and (iii) governance/justification artifacts rather than domain-specific risk flags alone.
 
+
 They MUST NOT be treated as authoritative or complete. Any search results should
 be validated against official USPTO search tools or commercial equivalents, and
 legal conclusions MUST be made by a qualified practitioner.

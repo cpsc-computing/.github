@@ -281,30 +281,30 @@ This enables **hardware-focused continuations**.
 
 ## 13. Application Embodiments (Non-Limiting)
 
-Each subsection becomes a **dependent claim cluster** later.
+Each subsection becomes a **dependent claim cluster** later. Theme tags [A–G] indicate which internal Themes a subsection primarily supports for prior-art and claim-mapping purposes.
 
-### 13.1 Constraint Optimization (SAT / MaxSAT)
+### 13.1 Constraint Optimization (SAT / MaxSAT) [Theme A]
 
-### 13.2 Constraint-Projected Adaptive Compression (CPAC)
+### 13.2 Constraint-Projected Adaptive Compression (CPAC) [Theme B]
 
 * Structural elimination by CPSC/CAS projection and DoF extraction applied before any prediction
 * Prediction-optional, with predictors (AI or non-AI) operating only on DoF sequences, not raw bytes
 * Learned predictor embodiments as described in a dedicated specification section (for example, linear and non-linear models, class-aware models, CAS/SSS-derived feature inputs, offline training over CAS-projected DoF sequences, quantized deployment, model identification in the bitstream, and residual- and distribution-based entropy coding variants)
 * Entropy backend independence, with entropy coding applied last over residual and/or DoF streams
 
-### 13.3 Real-Time Control Systems
+### 13.3 Real-Time Control Systems [Theme A, Theme G]
 
 * Safety envelopes
 * Deterministic actuation
 * Explicit failure
 
-### 13.4 Autonomous Driving & Robotics
+### 13.4 Autonomous Driving & Robotics [Theme A, Theme G]
 
 * Safety layer
 * Trajectory validation
 * Actuator gating
 
-### 13.5 AI / LLM / Neural Governance
+### 13.5 AI / LLM / Neural Governance [Theme C, Theme G]
 
 * Pre-processing
 * Post-processing
@@ -312,24 +312,24 @@ Each subsection becomes a **dependent claim cluster** later.
 * No model modification
 * Learned systems propose candidate states or degrees of freedom; deterministic projection enforces SSS-defined constraints
 
-### 13.6 Security & Integrity Enforcement
+### 13.6 Security & Integrity Enforcement [Theme F, Theme G]
 
 * Protocol invariants
 * Access control
 * Tamper detection
 
-### 13.7 Telemetry, Logging, and Replay
+### 13.7 Telemetry, Logging, and Replay [Theme B, Theme G]
 
 * Validated state logging
 * Deterministic replay
 
-### 13.8 Embedded & Low-Power Systems
+### 13.8 Embedded & Low-Power Systems [Theme A, Theme B]
 
 * MCU-class
 * No training
 * Energy bounded
 
-### 13.9 Quantum and Non-Von-Neumann Execution Backends
+### 13.9 Quantum and Non-Von-Neumann Execution Backends [Theme A, Theme E, Theme G]
 
 * SSS-driven constraint architectures compiled into quantum circuits or Hamiltonians while preserving declared constraints and acceptable outcomes
 * Hybrid classical–quantum execution targeting the same SSS/constraint architecture without changing semantic intent

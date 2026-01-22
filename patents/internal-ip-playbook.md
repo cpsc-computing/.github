@@ -335,6 +335,100 @@ Only one should be filed first; the other follows later.
 
 ## 5. INTERNAL GOVERNANCE AND PROCESS
 
+### 5.0 Core Themes for CPSC / CPAC Prior-Art Protocols (Internal)
+
+This subsection defines high-level Themes used for prior-art protocols and internal mapping between technical sections and search strategies.
+
+- **Theme A – Constraint-Projected State Computing (CPSC)**  
+  A paradigm where a constraint architecture defines the legal manifold of system states and one or more executors merely propose updates that are deterministically projected back onto this manifold, with projection—not executor behavior—being the locus of semantic truth.
+
+- **Theme B – Constraint-Projected Adaptive Compression (CPAC)**  
+  A compression framework where bitstreams encode only the minimal degrees of freedom plus a reference to a constraint architecture, and decoding is exactly reconstruction of the unique state on the constraint manifold consistent with those degrees of freedom.
+
+- **Theme C – Constraint-Governed AI and Learned Predictors**  
+  Use of learned models as advisory mechanisms that operate in the degrees-of-freedom space defined by CPSC / CPAC, with all predictions validated and, if necessary, corrected by constraint projection.
+
+- **Theme D – Learned Structure-Induction and Structural-Class Taxonomy**  
+  Optional learned front-ends that infer structural classes (e.g., block-structured, record, header–payload, algebraic, opaque) and candidate schemas before projection, together with benchmarking and negative-case handling that guarantee graceful degradation back to pure CPSC / CPAC behavior.
+
+- **Theme E – Quantum and Non-Von-Neumann Execution Backends**  
+  Integration of quantum, neuromorphic, analog, or other non–von-neumann backends as proposal mechanisms into a backend-agnostic constraint manifold, so that all such backends are governed and reconciled by the same projection semantics.
+
+- **Theme F – Cryptographic and PQC Constraint Governance**  
+  Expression of cryptographic and post-quantum schemes as constraint architectures over cryptographic state (e.g., rings, lattices, seeds, challenges), enabling dual-stack migration, no-downgrade policies, and formal cryptographic correctness to be enforced via projection.
+
+- **Theme G – Constraint-Based Governance, Validation, and Regression Harness**  
+  Use of CPSC / CPAC constraint manifolds and projection metrics as test oracles and regression harnesses for heterogeneous backends (classical, quantum, learned, hardware), defining correctness in terms of distance to the manifold rather than ad-hoc thresholds.
+
+### Adjacent Art Risk Themes and Differentiation
+
+This subsection tracks major adjacent-art clusters that are likely to appear in searches and office actions, together with our differentiation narratives. It is non-normative and for internal strategy only.
+
+1. **Cloud Orchestration and Resource Reclamation**
+
+   - **Risk theme:** Large cloud vendors (Oracle, AWS, Microsoft, etc.) own substantial prior art in workload migration, resource reclamation, and cluster scheduling. Examiners may analogize CPSC / CPAC scheduling and resource-governance embodiments to this body of work.
+   - **Our position:**  
+     - We are **not** claiming specific reclamation or migration policies.  
+     - Our claims should emphasize that CPSC / CPAC introduce a **constraint-projected execution fabric** in which:
+       - constraint architectures define the legal manifold of system states; and
+       - executors (including cloud schedulers) only propose updates that are projected back to this manifold.  
+     - Cloud policies become *content* that runs on this substrate, but the substrate (constraint-projected state computing + DoF-based bitstreams) is the inventive axis.
+
+2. **Monitoring, Telemetry, and Anomaly Detection**
+
+   - **Risk theme:** System monitoring, CPU availability, and security/anomaly detection patents are common and may be cited against our governance and telemetry embodiments.
+   - **Our position:**  
+     - Prior art monitors opaque state and event streams; we monitor **structured state** defined by constraint architectures.  
+     - Differentiation hinges on:
+       - projection metrics (residuals, distance to manifold, violated constraints);
+       - explicit **degrees of freedom** accounting; and
+       - the ability to compare heterogeneous backends using these common metrics.  
+     - Claims in this area should avoid looking like “just another metric” and instead tie monitoring to the **CPSC / CPAC state manifold** and projection semantics.
+
+3. **AI Accelerators, Neural Architectures, and Multi-Modal Retrieval**
+
+   - **Risk theme:** There is heavy prior art on specific NN architectures, accelerators, and retrieval methods. Anything that looks like “a new neural model” or “a better encoder” will run into dense art.
+   - **Our position:**  
+     - We do **not** seek to own particular neural architectures or accelerators.  
+     - Our novelty is the **constraint-projected substrate** that treats all such models as advisory proposal mechanisms:  
+       - Learned predictors operate in the reduced DoF space defined by CPSC / CPAC.  
+       - Projection is the final arbiter of correctness, not the model’s logits.  
+     - For structure-induction, we explicitly distinguish:
+       - model discovery of structure (non-authoritative); from
+       - CPAC-based validation and graceful degradation when structures fail.  
+
+4. **Quantum and Optical Design / Quantum Nondemolition Protocols**
+
+   - **Risk theme:** Quantum and optical patents could be cited against our quantum-ready and hybrid backends embodiments, especially around resource governance or measurement semantics.
+   - **Our position:**  
+     - We are not claiming specific quantum circuits, optical layouts, or NDM schemes.  
+     - Our claims should stress:
+       - a **backend-agnostic constraint manifold** that can host classical, quantum, neuromorphic, or analog executors; and
+       - a **unified projection operator** that governs correctness and resource usage across all of them.  
+     - Quantum and optical designs are treated as one class of executor under the same CPSC / CPAC semantics.
+
+5. **Hardware Interconnects, Power Optimization, and Domain-Specific Controllers**
+
+   - **Risk theme:** Patents on multi-tile interconnects, active-state power savings, and domain-specific controllers (e.g., drilling, robotics) may be used to argue that “constraint-based control” is already known.
+   - **Our position:**  
+     - These works are domain-specific and typically describe concrete hardware and control algorithms.  
+     - CPSC / CPAC provide a **domain-neutral formalism** in which:
+       - constraint architectures define admissible global states; and
+       - diverse controllers (hardware or software) are merely proposal mechanisms into this manifold.  
+     - We should keep hardware details in embodiments illustrative and focus claim language on the **general constraint-projected state computing and DoF-based compression model**.
+
+6. **Generative Interfaces and Intelligent Assistants**
+
+   - **Risk theme:** Generative UI overlays and intelligent assistant patents could be used against our AI-governance and human-in-the-loop embodiments.
+   - **Our position:**  
+     - Prior art emphasizes interaction patterns and UI flows.  
+     - Our differentiation comes from:
+       - expressing system state and model outputs within a **constraint manifold**;
+       - exposing projection metrics and DoFs to governance UIs; and
+       - treating assistants and generative UIs as **clients of CPSC / CPAC**, not as free-form frontends over opaque models.  
+
+Across all themes, the core message is consistent: CPSC / CPAC are not “just another scheduler,” “just another metric,” or “just another neural net.” They introduce a **constraint-projected execution paradigm and DoF-based compression framework** that is orthogonal to, and can govern, many existing systems in these clusters.
+
 ### 5.1 Repository Structure
 
 ```
@@ -365,7 +459,44 @@ internal-ip-playbook.md   <-- this document
 
 ---
 
-## 6. STRATEGIC SUMMARY
+## 6. FILING ROADMAP BY THEME
+
+This section captures the current plan for sequencing non-provisional and continuation filings across the CPSC / CPAC Themes A–G. It is non-binding and should be revisited as technical and market conditions evolve.
+
+1. **Anchor Non-Provisional – Theme A (CPSC paradigm)**
+
+   - File the primary non-provisional covering the core Constraint-Projected State Computing (CPSC) paradigm as soon as the provisional record for CPSC/CPAC is mature enough to support broad claims.
+   - Focus on method, system, and computer-readable medium claims that define computation as deterministic projection into constraint-defined state spaces, with explicit degrees-of-freedom, canonical states, and validation-time recursion-stability.
+   - Treat this filing as the foundational platform patent; all subsequent continuations should be drafted to depend on, but not narrow, these core paradigm claims.
+
+2. **Early Continuation 1 – Theme B (CPAC: structural compression & replay)**
+
+   - Target filing window: approximately 12–18 months after the anchor filing, or aligned with clear commercial interest from storage, networking, telemetry, or analytics partners.
+   - Emphasize constraint-projected degrees-of-freedom, structural redundancy elimination, prediction-optional compression, and deterministic reconstruction and replay.
+   - Align dependent claims with non-provisional §13.2 (CPAC) and related provisional sections (including learned predictor embodiments and distributional residual coding).
+
+3. **Early Continuation 2 – Themes A / E / G (Hardware constraint fabrics & governance)**
+
+   - Target filing window: approximately 18–24 months after the anchor filing.
+   - Cover FPGA/ASIC/SoC embodiments of constraint fabrics, including state registers, constraint evaluation units, projection networks, and commit logic, with optional realm-based resource and security enforcement.
+   - Map claims to the hardware-focused sections of the specification and non-provisional (for example, §§11, 13.3, 13.4, and 13.9), ensuring that non-von-neumann execution (no general instruction streams) and built-in governance properties (deterministic latency, safety envelopes, isolation) are explicit.
+   - Position this continuation as a high-value licensing vehicle for silicon vendors, cloud infrastructure providers, and high-assurance system integrators.
+
+4. **Second-Wave Continuations – Themes C (AI governance) and F (Crypto / PQC governance)**
+
+   - File once there is clear market or regulatory pull (for example, AI safety regimes, PQC migration mandates, or concrete partner interest).
+   - For Theme C, emphasize learned predictors operating in degrees-of-freedom space, hard constraint-based post-processing around models, and governance interfaces that expose projection metrics and residuals as first-class signals.
+   - For Theme F, emphasize constraint-modeled cryptographic and post-quantum schemes, including dual-stack migration, no-downgrade policies, and constraint-enforced protocol correctness and compliance.
+
+5. **Later / Optional Continuations – Themes D (Structure-Induction) and E (Quantum / Non-Von-Neumann)**
+
+   - Treat structural-class-based learned induction (Theme D) and quantum/non-von-neumann backends (Theme E) as follow-on opportunities once anchor, CPAC, and hardware families are secure.
+   - Potential triggers include demonstrable commercial traction (for example, an OEM partner building a learned CPAC ingest pipeline) or clear signs of competitive activity in these areas.
+   - Draft claims to interlock with the anchor CPSC and CPAC families so that structure-induction and quantum/neuromorphic embodiments are recognized as specific, high-value instantiations of the same underlying constraint-projection framework.
+
+---
+
+## 7. STRATEGIC SUMMARY
 
 CPSC and CPAC together form **platform-level IP**, not feature-level IP.
 
