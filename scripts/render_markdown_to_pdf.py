@@ -34,8 +34,6 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INPUT = REPO_ROOT / "patents" / "CPSC-CPAC-Provisional-2026-01.md"
-DEFAULT_OUTPUT = REPO_ROOT / "patents" / "CPSC-CPAC-Provisional-2026-01.pdf"
 
 
 def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -> int:
@@ -90,28 +88,29 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Render the CPSC/CPAC provisional Markdown to PDF using md2pdf-mermaid "
-            "(headless Chromium with Mermaid support)."
+            "Render Markdown to PDF using md2pdf-mermaid (headless Chromium with "
+            "Mermaid support). If no input/output is provided and no test flag "
+            "is set, this script defaults to rendering all Markdown files under "
+            "docs/ into a mirrored docs-pdf/ tree."
         )
     )
 
     parser.add_argument(
         "--input",
         type=Path,
-        default=DEFAULT_INPUT,
         help=(
-            "Input Markdown file (default: patents/CPSC-CPAC-Provisional-2026-01.md "
-            "relative to repo root)."
+            "Input Markdown file (relative to repo root). If omitted and "
+            "--all-docs is not set, no single-file render is performed."
         ),
     )
 
     parser.add_argument(
         "--output",
         type=Path,
-        default=DEFAULT_OUTPUT,
         help=(
-            "Output PDF file (default: patents/CPSC-CPAC-Provisional-2026-01.pdf "
-            "relative to repo root)."
+            "Output PDF file (relative to repo root). If omitted in single-file "
+            "mode, the output path will mirror the docs/ hierarchy under "
+            "docs-pdf/."
         ),
     )
 
@@ -130,8 +129,17 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help=(
             "If set, render only a small, inline-mermaid test document to HTML/PDF "
-            "to validate that Merlin/Chromium are working, without touching the "
-            "provisional itself."
+            "to validate that Mermaid/Chromium are working, without touching other "
+            "documents."
+        ),
+    )
+
+    parser.add_argument(
+        "--all-docs",
+        action="store_true",
+        help=(
+            "If set (or if no other flags are provided), render all Markdown files "
+            "under docs/ into a mirrored docs-pdf/ tree."
         ),
     )
 
@@ -195,17 +203,73 @@ def run_test_mode(html_out: Path | None, pdf_out: Path | None) -> int:
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
 
+    # Default behavior: if no explicit input/output and no test flag was provided,
+    # treat this as an "all docs" render under docs/.
+    if not argv and not args.test_diagrams:
+        args.all_docs = True
+
     if args.test_diagrams:
         return run_test_mode(args.html_out, args.output)
 
+    # All-docs mode: mirror docs/ into docs-pdf/.
+    if args.all_docs:
+        docs_root = REPO_ROOT / "docs"
+        docs_pdf_root = REPO_ROOT / "docs-pdf"
+
+        if not docs_root.exists():
+            print(f"error: docs directory not found at {docs_root}", file=sys.stderr)
+            return 1
+
+        docs_pdf_root.mkdir(parents=True, exist_ok=True)
+
+        md_files = list(docs_root.rglob("*.md"))
+        if not md_files:
+            print(f"[render] No Markdown files found under {docs_root}")
+            return 0
+
+        for md in md_files:
+            # Compute relative path under docs/.
+            rel = md.relative_to(docs_root)
+            out_dir = docs_pdf_root / rel.parent
+            out_pdf = out_dir / (md.stem + ".pdf")
+
+            out_dir.mkdir(parents=True, exist_ok=True)
+            print(f"[render] Rendering {md} -> {out_pdf}")
+            rc = run_md2pdf(md, out_pdf, html_out=None)
+            if rc != 0:
+                print(f"[render] WARNING: md2pdf exited with {rc} for {md}", file=sys.stderr)
+
+        return 0
+
+    # Single-file mode.
     input_md = args.input
     output_pdf = args.output
+
+    if input_md is None:
+        print("error: --input is required for single-file mode (when --all-docs is not used)", file=sys.stderr)
+        return 1
 
     # Normalize to absolute paths based on repo root when a relative path is given.
     if not input_md.is_absolute():
         input_md = (REPO_ROOT / input_md).resolve()
+
+    if output_pdf is None:
+        # Mirror docs/ hierarchy under docs-pdf/ by default.
+        docs_root = REPO_ROOT / "docs"
+        docs_pdf_root = REPO_ROOT / "docs-pdf"
+        try:
+            rel = input_md.relative_to(docs_root)
+        except ValueError:
+            # If the input is not under docs/, fall back to placing the PDF next to it.
+            output_pdf = input_md.with_suffix(".pdf")
+        else:
+            out_dir = docs_pdf_root / rel.parent
+            out_dir.mkdir(parents=True, exist_ok=True)
+            output_pdf = out_dir / (input_md.stem + ".pdf")
+
     if not output_pdf.is_absolute():
         output_pdf = (REPO_ROOT / output_pdf).resolve()
+
     html_out = args.html_out
     if html_out is not None and not html_out.is_absolute():
         html_out = (REPO_ROOT / html_out).resolve()
