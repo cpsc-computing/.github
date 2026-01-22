@@ -49,7 +49,7 @@ The repository distinguishes content types:
 
 ### Normative (Authoritative)
 Located under:
-- `specification/`
+- `docs/specification/`
 
 Includes:
 - CPSC-Specification.md
@@ -204,18 +204,18 @@ The specification is law.
 
 ## 13. Patent and IP Documents
 
-Patent-related materials for CPSC / CPAC live under `patents/` and are **legal disclosure and planning documents**, not specifications.
+Patent-related materials for CPSC / CPAC live under `docs/patents/` and are **legal disclosure and planning documents**, not specifications.
 
 Key files:
-- `patents/README.md` – overview of patent materials, status, and immutability policy
-- `patents/CPSC-CPAC-Provisional-2026-01.md` – draft provisional utility patent application text (pre-filing); once filed, the Markdown and corresponding PDF become immutable
-- `patents/executive-summary.md` – high-level business and technical summary of the CPSC / CPAC IP
-- `patents/internal-ip-playbook.md` – internal patent strategy, licensing narratives, claim structure, and continuation planning
-- `patents/non-provisional-outline.md` – structured outline for the anchor non-provisional patent filing
+- `docs/patents/README.md` – overview of patent materials, status, and immutability policy
+- `docs/patents/CPSC-CPAC-Provisional-2026-01.md` – draft provisional utility patent application text (pre-filing); once filed, the Markdown and corresponding PDF become immutable
+- `docs/patents/executive-summary.md` – high-level business and technical summary of the CPSC / CPAC IP
+- `docs/patents/internal-ip-playbook.md` – internal patent strategy, licensing narratives, claim structure, and continuation planning
+- `docs/patents/non-provisional-outline.md` – structured outline for the anchor non-provisional patent filing
 
 These documents:
 - are **non-normative** and MUST NOT be treated as specifications or implementation requirements
-- do **not** override or redefine semantics in `specification/`
+- do **not** override or redefine semantics in `docs/specification/`
 - exist to record inventions, support filings, and guide licensing and continuation strategy
 - do **not** grant patent rights beyond what is established in actual filed applications and issued patents
 
@@ -242,7 +242,7 @@ To install and update these servers on a development machine, use:
 Workflow rules for these tools:
 - Results from MCP servers and external patent tools are **informational only** and MUST NOT be treated as normative specifications.
 - Any conclusions or text derived from such tools MUST be reviewed and, where appropriate, restated in human-authored, spec-aligned language.
-- Specifications under `specification/` remain the sole source of normative technical behavior, regardless of external legal or search tools.
+- Specifications under `docs/specification/` remain the sole source of normative technical behavior, regardless of external legal or search tools.
 
 ### 14.1 Warp MCP JSON configuration examples (Warp / Claude Code)
 
@@ -380,13 +380,13 @@ To keep patent research reproducible and auditable, contributors and agents SHOU
 Recognized patterns include:
 
 - `prior-art protocol: start Themes A–G (PTAB+PFW+CitA only)`
-  - Re-reads the non-normative prior-art search protocol under `patents/`.
+  - Re-reads the non-normative prior-art search protocol under `docs/patents/`.
   - Runs the PTAB/File-Wrapper/Enriched-Citation portions of the protocol for CPSC/CPAC Themes A–G using `uspto_ptab`, `uspto_pfw`, and `uspto_enriched_citations` MCP servers (trial decisions, prosecution history, and citation data).
   - Proposes a Run ID and captures run metadata (date, spec/non-provisional version if available, coverage, and conclusion summary) in the chat transcript and, if a ledger file such as `LEDGER.md` exists, in that file.
   - Clearly marks the run as **USPTO-PTAB/PFW/CitA-only** and notes any tools that are not yet configured (for example, commercial full-text search APIs).
 
 - `prior-art protocol: status (USPTO MCP)`
-  - Summarizes prior-art and background work completed so far for Themes A–G, based on the protocol and any existing ledger entries in `patents/` and/or `LEDGER.md`.
+  - Summarizes prior-art and background work completed so far for Themes A–G, based on the protocol and any existing ledger entries in `docs/patents/` and/or `LEDGER.md`.
   - Highlights which USPTO MCP servers (PTAB, PFW, FPD, Enriched Citations) were used in each run and what changes would warrant a rerun.
 
 - `prior-art protocol: rerun since <reason> (USPTO MCP)`
@@ -399,7 +399,7 @@ These commands are intended to:
 - ensure that searches are repeatable and tied to specific versions of the CPSC/CPAC text,
 - make it obvious which USPTO MCP data sources (PTAB, PFW, FPD, Enriched Citations) were used in any given run.
 
-Agents MUST continue to treat all MCP tool output as **informational only** and MUST NOT treat any search result as changing the semantics of `specification/` documents.
+Agents MUST continue to treat all MCP tool output as **informational only** and MUST NOT treat any search result as changing the semantics of `docs/specification/` documents.
 
 ### 14.4 Version-control and session chat commands
 
@@ -419,7 +419,7 @@ When a version-control command is issued (for example `push to git`), agents SHO
 
 1. Perform any repository-appropriate "save session" behavior for the current scope, if
    a convention or ledger file (for example `LEDGER.md` or an embedded ledger section in
-   `patents/`) exists.
+   `docs/patents/`) exists.
 2. Run `git status` (or the appropriate VCS status command) to determine which files
    have changed.
 3. Stage the relevant changes (for example using `git add`), avoiding unintentional

@@ -73,9 +73,9 @@ Reference implementations will follow.
 
 ## Patent and prior-art research
 
-This organization maintains a separate `patents/` directory for non-normative patent and IP materials related to Constraint-Projected State Computing (CPSC) and Constraint-Projected Adaptive Compression (CPAC).
+This organization maintains a separate `docs/patents/` directory for non-normative patent and IP materials related to Constraint-Projected State Computing (CPSC) and Constraint-Projected Adaptive Compression (CPAC).
 
-- Documents under `patents/` are **legal disclosure and planning artifacts**, not specifications.
+- Documents under `docs/patents/` are **legal disclosure and planning artifacts**, not specifications.
 - A non-normative **prior-art search protocol** for CPSC/CPAC Themes A and B (paradigm-level computing model and DoF-based compression) is maintained there, together with a simple ledger structure for recording what has been searched and when.
 - Contributors using Warp and the local `patent_mcp_server` MCP backend MAY follow this protocol to run reproducible prior-art and landscape searches using USPTO-backed APIs (PPUBS, PatentSearch/PatentsView), but results remain informational only.
 - Standard chat commands beginning with `prior-art protocol:` (documented in `WARP.md` and `AGENTS.md`) provide a repeatable way to ask agents to execute or summarize these searches; they do **not** change the meaning of any specification.
@@ -131,9 +131,9 @@ For a plain-language explanation, see `LEGAL-FAQ.md`.
 
 ## Getting Started
 
-1. Read `CPSC-Specification.md`
-2. Review CAS-YAML examples
-3. Consult `LEGAL-FAQ.md` for licensing guidance
+1. Read `docs/specification/CPSC-Specification.md`
+2. Review CAS-YAML examples under `docs/specification/`
+3. Consult `docs/LEGAL-FAQ.md` for licensing guidance
 
 ---
 

@@ -141,13 +141,13 @@ Both documents are authoritative.
 
 When assisting with patent research, prior-art searches, or landscape analysis, agents MUST:
 
-- Treat all documents under `patents/` as **non-normative legal and planning material**, not specifications.
+- Treat all documents under `docs/patents/` as **non-normative legal and planning material**, not specifications.
 - Treat all MCP-backed patent tools (including the `patents` MCP server and USPTO PTAB, PFW, FPD, and Enriched Citation MCP servers) as **informational**.
 - Avoid making legal conclusions or altering normative specifications based on tool output.
 
 When a user issues a chat command beginning with `prior-art protocol:` (see `WARP.md` §14.3), agents SHOULD:
 
-1. Re-read the current non-normative prior-art protocol text under `patents/`.
+1. Re-read the current non-normative prior-art protocol text under `docs/patents/`.
 2. Identify which parts of the protocol are executable given currently configured tools (for example, PTAB-only or PFW-only if other data sources are not yet configured).
 3. Run the relevant portions using the appropriate USPTO MCP server(s) (for example, `uspto_ptab`, `uspto_pfw`, `uspto_fpd`, or `uspto_enriched_citations`), staying within the protocol’s scope.
 4. Propose a Run ID and capture run metadata (date, trigger, coverage, and conclusion summary) in the chat.
