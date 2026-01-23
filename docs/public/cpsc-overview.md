@@ -43,7 +43,7 @@ Instead:
 - Components propose changes,
 - A **projection engine** snaps proposals back into the legal space (or rejects them).
 
-![Constraint-Projected Truth Table](images/cpsc-constraint-projected-truth-table.svg)
+<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-constraint-projected-truth-table.png" alt="Constraint-Projected Truth Table" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
 
 Figure: CPSC as a constraint-projected truth table. All possible states form a conceptual grid; constraints carve out a legal manifold, and proposals are snapped onto that manifold at epoch commit boundaries.
 
@@ -149,7 +149,7 @@ Instead, you compile constraints into hardware structures that deterministically
 
 ## 6. Software mental model (state resolver)
 
-![CPSC State Resolver](images/cpsc-state-resolver.svg)
+<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-state-resolver.png" alt="CPSC State Resolver" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
 
 Figure: Inside a CPSC state resolver. Proposed degrees of freedom flow into a deterministic, bounded loop of constraint evaluation and update/relaxation until a valid state is found or failure is reported.
 

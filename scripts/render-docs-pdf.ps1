@@ -120,7 +120,6 @@ if (-not $Output) {
     $relativePath = $relativePath -replace "^\.\\", ""
 
     $targetDir  = Join-Path $docsPdfRoot ([System.IO.Path]::GetDirectoryName($relativePath))
-    $targetDir  = Join-Path $docsPdfRoot ([System.IO.Path]::GetDirectoryName($relativePath))
     $targetFile = [System.IO.Path]::GetFileNameWithoutExtension($relativePath) + ".pdf"
     $Output     = Join-Path $targetDir $targetFile
 }

@@ -74,6 +74,9 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
         # relative image paths like `images/*.png` are resolved correctly.
         workdir = str(input_md.parent)
         print(f"[render] Working directory: {workdir}")
+        print(f"[render] Debug: full input_md path : {input_md}")
+        print(f"[render] Debug: expected image dir : {input_md.parent / 'images'}")
+        print(f"[render] Debug: output PDF path    : {output_pdf}")
         result = subprocess.run(cmd, check=False, cwd=workdir)
     except FileNotFoundError as exc:
         print("error: failed to invoke md2pdf via Python module 'md2pdf'.", file=sys.stderr)
@@ -81,6 +84,7 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
         print(f"       Details: {exc}", file=sys.stderr)
         return 1
 
+    print(f"[render] md2pdf return code: {result.returncode}")
     if result.returncode != 0:
         print(f"error: md2pdf exited with status {result.returncode}", file=sys.stderr)
     return result.returncode
