@@ -39,6 +39,13 @@ How to use this ledger when resuming work:
 - When you resume work on a Theme, read that Theme's "Next action" block, perform the action, then MOVE those bullets into the "Completed so far" list for that Theme and replace the "Next action" block with the *new* concrete next step (or remove it if that Theme is complete).
 - Keep this file in sync with non-normative notes in `patents/README.md` and related Theme documentation, but do NOT move Theme content here; this file is for sequencing and coordination, not for substantive patent text.
 
+Session note – USPTO PFW MCP proxy port conflict
+------------------------------------------------
+- Date: 2026-01-23
+- Context: Local testing of `uspto_pfw_mcp` after merging async lifecycle fixes into `master`.
+- Observation: MCP server initialized correctly, but HTTP proxy failed to bind on ports 8080 and 8081 with `WinError 10048` ("only one usage of each socket address...") indicating other processes were already holding those ports.
+- Status: Treated as an environmental/temporary port conflict; no changes made to server code or default proxy port (kept at 8080). Future sessions should assume the implementation is good and resolve port usage at the OS level if the error recurs.
+
 ---
 
 Theme B – CPAC representations / compression
