@@ -53,10 +53,11 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
     # Call the installed console script; rely on PATH resolution.
     cmd: list[str] = ["md2pdf"]
 
-    # Input markdown (can be absolute); working directory will be
-    # the markdown's parent folder so that relative image references
-    # are resolved as expected.
-    cmd.append(str(input_md))
+    # Input markdown (can be absolute); we will run md2pdf from the markdown's
+    # parent directory and pass only the local filename so relative resources
+    # (like `images/foo.png`) resolve against the markdown directory.
+    local_name = input_md.name
+    cmd.append(local_name)
 
     # Optional output PDF
     if output_pdf is not None:
@@ -70,7 +71,7 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
     print(f"[render] Running: {' '.join(cmd)}")
     try:
         # Run md2pdf with CWD set to the markdown's parent directory so that
-        # relative image paths like `figures/*.svg` are resolved correctly.
+        # relative image paths like `images/*.png` are resolved correctly.
         workdir = str(input_md.parent)
         print(f"[render] Working directory: {workdir}")
         result = subprocess.run(cmd, check=False, cwd=workdir)
