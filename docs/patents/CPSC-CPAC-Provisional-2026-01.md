@@ -185,6 +185,58 @@ In an analog or in-memory compute embodiment, state variables may correspond to 
 
 In hardware embodiments, CPSC may be implemented as a deterministic constraint fabric comprising state registers, parallel constraint evaluation units, projection or update networks, commit logic, and convergence detection. Such systems do not execute instructions, do not require program counters, and do not interpret data as code at runtime. Implementations may be realized in FPGA or ASIC.
 
+#### 9.1 Proto-cell fabric and epoch controller embodiment (non-limiting)
+
+In certain embodiments, the constraint fabric is realized as a **proto-cell fabric** governed by a global **epoch controller**. This realization is one preferred, multi-purpose embodiment of a CPSC hardware fabric and is not limiting.
+
+In such embodiments, the global CPSC state is represented as the aggregate of local state associated with a plurality of proto-cells. Each proto-cell maintains:
+
+- local configuration parameters (for example, constraint coefficients, neighborhood weights, and enable flags);
+- one or more local state registers subject to constraint projection; and
+- explicit neighbor interfaces defining which adjacent proto-cells or routing nodes it exchanges signals with.
+
+Proto-cells are atomic compute and structure units. They do not execute instructions, do not interpret code, and do not branch on control flow; instead, their behavior is defined entirely by static hardware logic and local configuration and state.
+
+A shared epoch controller orchestrates deterministic, globally synchronized epochs. Each epoch is divided into phases such as:
+
+1. **Sense**, in which proto-cells sample their own state and the exposed state or signals of their neighbors without changing any committed state;
+2. **Compute**, in which proto-cells evaluate fixed local update functions that apply projected constraints to the sampled values;
+3. **Evaluate**, in which local quality or fitness signals are computed and, in some embodiments, aggregated; and
+4. **Commit**, in which the epoch controller authorizes simultaneous or deterministically ordered updates to proto-cell state registers for the next epoch.
+
+No committed state changes occur outside the commit phase. Given a fixed initial state and configuration, and a fixed epoch schedule, the sequence of states produced by the proto-cell fabric is therefore deterministic and replayable. This satisfies CPSC determinism requirements while providing a concrete, instruction-free realization of epoch-based projection.
+
+The fabric topology (for example, one-dimensional chains, two-dimensional meshes, tori, trees, or more general graphs) and the number of proto-cells are design choices. These topologies are preferably selected to efficiently embed classes of constraint problems, such as satisfiability, graph, or scheduling benchmarks, but no particular topology is required by the CPSC model.
+
+In preferred FPGA or ASIC realizations, the proto-cell fabric and epoch controller are defined by a **single static bitstream or fixed hardware image**. All problem-specific variation is expressed as data written into proto-cell configuration memories and state registers, not as changes to the bitstream or hardware image. A single hardware configuration can therefore be reused across many constraint problems by changing only the configuration and initial state data.
+
+#### 9.2 CAS-style constraint input, CPSC Binary, and hardware configuration path
+
+In further embodiments, the proto-cell fabric and epoch controller are configured using a deterministic binary representation referred to as a **CPSC Binary** format. CPSC Binary compactly encodes, in a streamable form:
+
+- a declarative constraint specification (for example, a CAS- or CAS-YAML-style model describing variables, constraints, degrees of freedom, and execution parameters);
+- a mapping from abstract variables and constraints in that model onto specific proto-cells, neighbor links, and configuration fields in the fabric; and
+- optional initial state assignments and control parameters for the epoch controller.
+
+A compilation toolchain executing on a programmable processor or host system parses the declarative constraint model, allocates proto-cell resources, computes routing and neighbor relationships, and emits a canonical CPSC Binary blob. The CPSC Binary blob is then consumed by a deterministic hardware or microcoded decoder coupled to the proto-cell fabric. In one embodiment, the decoder receives CPSC Binary as a byte stream via a direct memory access (DMA) engine or equivalent transport and:
+
+1. parses header and model metadata fields that bind the blob to a specific CPSC constraint model;
+2. decodes configuration records that assign per-proto-cell parameters, neighbor tables, and initial state values; and
+3. issues a deterministic sequence of writes to configuration memories and state registers in the proto-cell fabric and to control registers in the epoch controller.
+
+The decoder’s behavior is defined such that any conforming implementation, given the same CPSC Binary input, will configure the proto-cell fabric into the same initial CPSC state, regardless of physical routing or implementation details. Together, the declarative constraint model, the deterministic compilation to CPSC Binary, and the deterministic decode and application of CPSC Binary to the proto-cell fabric form a complete, deterministic path from abstract constraints to executable CPSC hardware state.
+
+Alternative embodiments may employ different declarative syntaxes, binary layouts, transports, or decoders while remaining within the scope of the invention, provided that they:
+
+- represent constraints, degrees of freedom, mappings, and initial state in a deterministic binary form; and
+- apply that binary form deterministically to a hardware fabric that satisfies the CPSC constraint-projected state semantics.
+
+#### 9.3 Realm-based execution environments (optional)
+
+In some embodiments, the proto-cell fabric and epoch controller are integrated into a **realm-based execution environment** that partitions access to the fabric, host processors, and other accelerators into deterministic realms. Each realm is associated with an auditable allocation of time, bandwidth, and, optionally, an energy or power envelope. A realm scheduler assigns exclusive temporal slices of epoch execution to each realm and records per-realm metrics such as epoch counts, configuration identifiers, and summaries of projected states or objective values.
+
+These realm features provide additional guarantees about isolation, replay, and governance for fabric usage. They are optional and may be claimed in dependent claims or separate embodiments; the core CPSC model and proto-cell fabric with epoch controller do not require realms to function.
+
 ---
 
 ### 10. SOFTWARE AND HYBRID EMBODIMENTS

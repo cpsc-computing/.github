@@ -145,6 +145,14 @@ There is no requirement for:
 
 Instead, you compile constraints into hardware structures that deterministically enforce them.
 
+One concrete, non-limiting hardware example is a **proto-cell fabric** under a global **epoch controller**, as used in the Deterministic Developmental Fabric (DDF) / ConvergeCore line of work. In that embodiment:
+
+- Each proto-cell is an atomic hardware unit that holds local configuration and state and communicates with neighboring proto-cells;
+- A global epoch controller divides time into Sense / Compute / Commit-style epochs and ensures that state changes occur only at commit boundaries; and
+- Given a fixed initial state, configuration, and epoch schedule, the fabric evolves deterministically, realizing CPSC’s constraint-projected state semantics without instruction execution.
+
+Other constraint fabrics that satisfy the same determinism and projection properties—whether or not they use proto-cells and epoch controllers—are also valid CPSC hardware realizations.
+
 ---
 
 ## 6. Software mental model (state resolver)
