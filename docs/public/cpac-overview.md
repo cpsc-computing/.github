@@ -29,7 +29,7 @@ In many real systems, data has a lot of **built-in structure**, for example:
 - Fields that are fully determined by others,
 - Ranges and invariants that are always enforced by higher-level logic.
 
-CPACs key idea:
+CPAC's key idea:
 
 - Do not waste bits encoding things that are *guaranteed* by structure.
 - Instead, encode a minimal, structure-respecting representation and reconstruct the rest on decode.
@@ -82,7 +82,7 @@ At a high level, CPAC can be thought of as three conceptual stages:
 
 On decode:
 
-- Entropy decode > reconstruct DoFs (and any predictor outputs you need),
+- Entropy decode -> reconstruct DoFs (and any predictor outputs you need),
 - Feed DoFs into the same constraint-based model,
 - Project back to a full structured state that satisfies the constraints.
 
@@ -104,7 +104,7 @@ Instead:
 - It offers a principled way to:
   - Respect structure,
   - Eliminate redundant or implied fields,
-  - Make predictors lives easier by giving them a cleaner, constraint-consistent signal.
+- Make predictors' lives easier by giving them a cleaner, constraint-consistent signal.
 
 ---
 
