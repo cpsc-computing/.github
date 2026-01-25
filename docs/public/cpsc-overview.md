@@ -145,7 +145,7 @@ There is no requirement for:
 
 Instead, you compile constraints into hardware structures that deterministically enforce them.
 
-One concrete, non-limiting hardware example is a **proto-cell fabric** under a global **epoch controller**, as used in the Deterministic Developmental Fabric (DDF) / ConvergeCore line of work. In that embodiment:
+One concrete, non-limiting hardware example is a **proto-cell fabric** under a global **epoch controller**, as used in the Deterministic Developmental Fabric (DDF).
 
 - Each proto-cell is an atomic hardware unit that holds local configuration and state and communicates with neighboring proto-cells;
 - A global epoch controller divides time into Sense / Compute / Commit-style epochs and ensures that state changes occur only at commit boundaries; and

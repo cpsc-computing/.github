@@ -23,6 +23,7 @@ Completed so far:
   - overlaps with Theme A (ML-informed risk scoring, closed-loop actuation),
   - gaps relative to Theme A (no generalized constraint plane, no first-class constraint structure, no justification artifacts, no separable constraint program).
 - Integrated a concrete proto-cell / epoch-controller hardware fabric embodiment and the CAS-YAML → CPSC Binary → hardware configuration path into the CPSC specification under `docs/specification/`, and updated `docs/public/cpsc-overview.md` to use the proto-cell/epoch fabric as a canonical CPSC hardware example while fixing several stray encoding artifacts in that document.
+- Later refined the public CPSC overview text to remove an obsolete reference to "ConvergeCore" while preserving the proto-cell / epoch-controller embodiment as an example linked to the Deterministic Developmental Fabric (DDF), and regenerated the corresponding `docs-pdf/public/cpsc-overview.pdf` artifact.
 
 Next action for Theme A (resume point):
 - Identify and analyze a second comparator patent in the safety-controller family, preferably in the automated driving / vehicle or industrial control domain (e.g., a patent titled "Safety controller for automated driving" or similar, found via Google Patents or PFW search).
