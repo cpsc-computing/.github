@@ -138,6 +138,10 @@ In hardware, CPSC looks less like a CPU and more like a **constraint fabric**:
 - **Convergence detection** decides when all constraints are satisfied (or when to give up).
 - **Commit logic** updates the state registers at the clock edge.
 
+<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-protocell-epoch-fabric.png"
+     alt="CPSC proto-cell constraint fabric with global epoch controller"
+     style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
+
 There is no requirement for:
 
 - Instruction memory, or
