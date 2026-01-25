@@ -76,7 +76,7 @@ Now:
 3. **Components only propose**
 
    - A neural network, a planning algorithm, or a user proposes:
-     - "Heres where I want the system to be next."
+     - "Here's where I want the system to be next."
    - That proposal might be partial, inconsistent, or outright illegal with respect to the constraints.
 
 4. **Projection = snapping onto the legal region**
@@ -90,18 +90,18 @@ Now:
 
 5. **Degrees of freedom (DoFs)**
 
-   - Many columns are not truly independent (theyre fixed or derived).
+   - Many columns are not truly independent (they're fixed or derived).
    - CPSC explicitly identifies:
-     - **Free / DoF variables**  independent choices,
-     - **Derived variables**  always computed from constraints,
-     - **Fixed variables**  invariant.
+     - **Free / DoF variables** – independent choices,
+     - **Derived variables** – always computed from constraints,
+     - **Fixed variables** – invariant.
    - You can often store/transmit just the DoFs and reconstruct the rest via projection.
 
 6. **Epochs and commits**
 
    - Time is broken into **epochs**:
      - Within an epoch, proposals and internal iterations happen.
-     - But the **committed state** doesnt change until a commit boundary.
+     - But the **committed state** doesn't change until a commit boundary.
    - At commit:
      - The system atomically switches to a new legal state, or
      - Stays where it is (if projection fails).
@@ -119,11 +119,11 @@ CPSC gives you:
   - What is allowed (constraints), and
   - Who is proposing (code, models, users, other backends).
 - A **deterministic** and testable core:
-  - Same initial state + same DoFs + same constraints > same projected state.
+  - Same initial state + same DoFs + same constraints -> same projected state.
 - A natural way to:
   - Enforce **safety envelopes**,
   - Define **policy** and **governance** in a backend-agnostic way,
-  - Integrate or swap different execution backends (classical, AI, quantum) without changing the semantics of "whats allowed."
+  - Integrate or swap different execution backends (classical, AI, quantum) without changing the semantics of "what's allowed."
 
 ---
 
@@ -200,7 +200,7 @@ Constraint-Projected Adaptive Compression (CPAC) is a compression scheme built d
 
 On decode:
 
-- Entropy decode > reconstruct DoFs,
+- Entropy decode -> reconstruct DoFs,
 - Inject DoFs into the same constraint-based model,
 - Project back to full state.
 

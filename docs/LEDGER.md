@@ -22,6 +22,7 @@ Completed so far:
   - representative claim pattern,
   - overlaps with Theme A (ML-informed risk scoring, closed-loop actuation),
   - gaps relative to Theme A (no generalized constraint plane, no first-class constraint structure, no justification artifacts, no separable constraint program).
+- Integrated a concrete proto-cell / epoch-controller hardware fabric embodiment and the CAS-YAML → CPSC Binary → hardware configuration path into the CPSC specification under `docs/specification/`, and updated `docs/public/cpsc-overview.md` to use the proto-cell/epoch fabric as a canonical CPSC hardware example while fixing several stray encoding artifacts in that document.
 
 Next action for Theme A (resume point):
 - Identify and analyze a second comparator patent in the safety-controller family, preferably in the automated driving / vehicle or industrial control domain (e.g., a patent titled "Safety controller for automated driving" or similar, found via Google Patents or PFW search).
