@@ -29,15 +29,15 @@ Patent documents exist solely to:
 Constraint-Projected State Computing Systems and Applications
 
 **Scope (High-Level):**
-- CPSC as a new computing paradigm
-- CPAC as a structural compression and enforcement layer
-- Semantic system specification and deterministic lowering into constraint architectures
-- Deterministic constraint projection
-- Hardware and software embodiments
-- Security, control, AI governance, and mission-critical systems
-- Constraint-projected execution and governance of post-quantum cryptographic algorithms
-- Quantum resource governance, validation, migration, and hybrid compression embodiments
-- Validation-only recursion-stability
+|- CPSC as a new computing paradigm
+|- CPAC as a structural compression and enforcement layer
+|- Semantic system specification and deterministic lowering into constraint architectures
+|- Deterministic constraint projection
+|- Hardware and software embodiments
+|- Security, control, AI governance, and mission-critical systems
+|- Constraint-projected execution, verification, and governance of post-quantum cryptographic algorithms, including NIST-selected ML-DSA, SLH-DSA, and ML-KEM, using minimal degree-of-freedom representations of cryptographic state
+|- Quantum resource governance, validation, migration, and hybrid compression embodiments
+|- Validation-only recursion-stability
 
 **Planned Filing Artifacts:**
 - Markdown source: `CPSC-CPAC-Provisional-2026-01.md`
@@ -130,8 +130,37 @@ The following notes record non-normative observations about adjacent art for The
     - No constraint-centric state model (active/satisfied/violated constraints) or constraint-based justification artifacts.
     - No separation between a configurable constraint program/policy layer and the underlying ML model/infrastructure.
 
-These gaps are candidates for strengthening Theme A independent claims along the axes of (i) explicit constraint structures, (ii) generalized control planes, and (iii) governance/justification artifacts rather than domain-specific risk flags alone.
+- **Safety controllers for automated vehicles (example: US 10,234,871 B2 – distributed safety monitors for automated vehicles)**
+  - Representative independent claim pattern (informal):
+    - Provide a vehicle controller that generates vehicle control commands for at least partially automated driving (e.g., platooning), based on sensor information.
+    - Provide one or more safety monitoring algorithms (implemented on separate safety hardware) that, during automated driving, verify selected vehicle control commands against safety criteria using sensor data from the host and/or a second vehicle.
+    - Gate or override the application of those vehicle control commands to vehicle actuators (braking, torque, etc.) based on the safety-monitor outcomes.
+    - Implement an ASIL-oriented controller architecture that partitions the main controller, safety monitors, and vehicle interface hardware.
+  - Overlaps with Theme A:
+    - Explicit separation between a "primary" control stack and a safety-monitoring layer that can block or override unsafe commands.
+    - Use of multiple heterogeneous signals (sensors, vehicle state, possibly partner-vehicle state) to enforce safety properties over an automated control loop.
+    - Architecture intended for high-integrity, mission-critical vehicle control rather than a narrow consumer app.
+  - Gaps relative to Theme A / CPSC:
+    - Safety monitors are engineered controllers and algorithms, not first-class **constraint structures** (graphs/lattices/hierarchies) that define a generalized constraint plane over heterogeneous systems.
+    - No single, semantic constraint program governing multiple components; the design is specific to platooning / vehicle longitudinal control rather than a generalized CPSC-style control plane.
+    - No constraint-centric state model (e.g., active/satisfied/violated constraints) or canonical justification artifacts that explain why a command is accepted or rejected in a constraint language.
+    - No separation between an abstract constraint program and the underlying control implementation (vehicle controllers, ECUs, ASIL hardware) in the way CPSC treats constraint programs as independent from model weights and infrastructure.
 
+These gaps are candidates for strengthening Theme A independent claims along the axes of (i) explicit constraint structures and constraint-structured control planes that can subsume safety-monitor architectures, (ii) a generalized, heterogeneous control plane rather than a single-domain controller, and (iii) constraint-centric justification artifacts and state models that go beyond "monitor and block unsafe commands" patterns.
+
+### Theme H – recorded prior-art notes (non-normative)
+
+The following notes are reserved for Theme H (Constraint-Projected Cryptographic State and Post-Quantum Verification). They are intended to capture non-normative observations about adjacent art where:
+
+- post-quantum cryptographic artifacts (for example, signatures or ciphertexts) are compressed or reduced in size;
+- only randomness or entropy associated with such artifacts is stored or transmitted, with full artifacts reconstructed later; or
+- cryptographic verification is expressed as constraint satisfaction or satisfiability over an explicit cryptographic state, rather than as purely procedural verifier code.
+
+Theme H notes SHOULD emphasize whether prior art does or does not:
+
+- define an explicit cryptographic state manifold with independent vs. derived variables;
+- define deterministic projection onto that manifold as the locus of cryptographic correctness; or
+- couple cryptographic state with compression or transport via degree-of-freedom representations.
 
 They MUST NOT be treated as authoritative or complete. Any search results should
 be validated against official USPTO search tools or commercial equivalents, and

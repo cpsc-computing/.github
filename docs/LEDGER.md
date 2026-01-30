@@ -22,17 +22,13 @@ Completed so far:
   - representative claim pattern,
   - overlaps with Theme A (ML-informed risk scoring, closed-loop actuation),
   - gaps relative to Theme A (no generalized constraint plane, no first-class constraint structure, no justification artifacts, no separable constraint program).
+- Analyzed a second comparator in the automated-vehicle safety-controller family (US 10,234,871 B2 – distributed safety monitors for automated vehicles) and added a non-normative Theme A prior-art note in `patents/README.md` capturing its representative claim pattern, overlaps (safety monitors gating an automated control loop, ASIL-oriented architecture), and gaps relative to CPSC (no explicit constraint-structured control plane, no generalized constraint program, no constraint-centric state/justification artifacts).
 - Integrated a concrete proto-cell / epoch-controller hardware fabric embodiment and the CAS-YAML → CPSC Binary → hardware configuration path into the CPSC specification under `docs/specification/`, and updated `docs/public/cpsc-overview.md` to use the proto-cell/epoch fabric as a canonical CPSC hardware example while fixing several stray encoding artifacts in that document.
 - Later refined the public CPSC overview text to remove an obsolete reference to "ConvergeCore" while preserving the proto-cell / epoch-controller embodiment as an example linked to the Deterministic Developmental Fabric (DDF), and regenerated the corresponding `docs-pdf/public/cpsc-overview.pdf` artifact.
 
 Next action for Theme A (resume point):
-- Identify and analyze a second comparator patent in the safety-controller family, preferably in the automated driving / vehicle or industrial control domain (e.g., a patent titled "Safety controller for automated driving" or similar, found via Google Patents or PFW search).
-- Extract its independent claims and compare them against the Theme A checklist (constraint structure, control plane, heterogeneous components, justification artifacts, separable constraint program).
-- Add a new short prior-art entry for Theme A in `patents/README.md` summarizing:
-  - representative claim pattern for that safety controller,
-  - overlaps with Theme A,
-  - gaps relative to the CPSC architecture.
-- Only adjust the Theme A proto-claims if this second comparator reveals a genuinely new architectural pattern not already captured by the refined Theme A system claim and the clinician hazardous-behavior example.
+- Consolidate the Theme A differentiation story across the clinician hazardous-behavior controller and the distributed safety-monitor architecture into a short, internal claim-structuring note (non-normative) that identifies the key architectural axes where CPSC departs from traditional safety controllers (generalized constraint plane, explicit constraint structures, constraint-centric state/justification artifacts, separable constraint program).
+- Defer any further Theme A claim edits until that note exists and has been reviewed alongside the current CPSC-CPAC provisional draft.
 
 ---
 
@@ -57,7 +53,7 @@ Completed so far:
 - (placeholder) Theme B work not yet started in this ledger.
 
 Next action for Theme B (resume point):
-- (to be defined once Theme A is complete and initial CPAC prior-art analysis begins).
+- Run an initial comparator search for CPAC-style structural / degree-of-freedom compression of signals or models (e.g., patents combining compression with explicit structure or constraints), pick one representative comparator, and record a short non-normative Theme B prior-art note in `patents/README.md`.
 
 ---
 
@@ -68,7 +64,7 @@ Completed so far:
 - (placeholder) Theme C work not yet started in this ledger.
 
 Next action for Theme C (resume point):
-- (to be defined when we start Theme C prior-art analysis).
+- Identify one representative "AI safety governor" or "policy engine" patent (e.g., safety envelopes, runtime monitors for ML controllers), summarize its independent-claim pattern, and add a short non-normative Theme C prior-art note in `patents/README.md` focusing on how it does or does not treat constraints as first-class structures.
 
 ---
 
@@ -79,7 +75,7 @@ Completed so far:
 - (placeholder) Theme D work not yet started in this ledger.
 
 Next action for Theme D (resume point):
-- (to be defined when we start Theme D prior-art analysis).
+- Select one comparator in the "learned relational/graph structure" or "program synthesis / structure induction" family, and record a non-normative Theme D prior-art note in `patents/README.md` emphasizing how learned structure relates (or not) to explicit CPSC structural classes.
 
 ---
 
@@ -90,7 +86,7 @@ Completed so far:
 - (placeholder) Theme E work not yet started in this ledger.
 
 Next action for Theme E (resume point):
-- (to be defined when we start Theme E prior-art analysis).
+- Identify a representative quantum or non-von-Neumann accelerator/control architecture patent and record a short non-normative Theme E prior-art note in `patents/README.md` focusing on whether it exposes an explicit constraint or state-manifold model vs. hardware-centric pipelines.
 
 ---
 
@@ -101,7 +97,7 @@ Completed so far:
 - (placeholder) Theme F work not yet started in this ledger.
 
 Next action for Theme F (resume point):
-- (to be defined when we start Theme F prior-art analysis).
+- Use the existing `pqc-prior-art-notes.md` themes to pick one comparator for constraint-governed PQC posture/migration, and summarize it in a non-normative Theme F prior-art note in `patents/README.md` (separate from Theme H structural/compression work).
 
 ---
 
@@ -112,4 +108,4 @@ Completed so far:
 - (placeholder) Theme G work not yet started in this ledger.
 
 Next action for Theme G (resume point):
-- (to be defined when we start Theme G prior-art analysis).
+- Define one comparator in the "validation harness / monitoring framework" space (e.g., safety-case or assurance-harness patents) and write a non-normative Theme G prior-art note in `patents/README.md` highlighting differences between ad hoc harnesses and a CPSC-style constraint-projected validation fabric.
