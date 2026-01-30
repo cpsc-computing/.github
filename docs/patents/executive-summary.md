@@ -71,9 +71,9 @@ CPSC and CPAC support a wide range of high-value domains, including:
   Pre- and post-processing enforcement of explicit policy and structural constraints around learned systems, without retraining or model inspection.
 
 - **Security, Integrity, and Compliance**  
-  Hard enforcement of protocol invariants, access control, tamper detection, and
-  constraint-projected execution, governance, and migration for post-quantum
-  cryptographic systems, as well as quantum resource governance.
+-  Hard enforcement of protocol invariants, access control, tamper detection, and
+-  constraint-projected execution, verification, governance, and migration for post-quantum
+-  cryptographic systems (including NIST-selected ML-DSA, SLH-DSA, and ML-KEM) using degree-of-freedom representations that reduce recomputation and transmitted artifact size, as well as quantum resource governance.
 - **Telemetry, Logging, and Replay**  
   Compact, validated state logging with deterministic reconstruction.
 - **Quantum-Ready and Neuromorphic/Analog Backends**  

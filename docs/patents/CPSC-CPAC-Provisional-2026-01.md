@@ -42,7 +42,11 @@ In addition, existing system design practices frequently separate requirements d
 
 Certain emerging computing paradigms, including quantum computing, further illustrate this gap. Existing quantum programming approaches typically describe low-level gate sequences, algorithm families, or Hamiltonian energy functions, and do not provide a stable, declarative layer for specifying what must be true of acceptable solutions, what constraints define correctness, or what invariants must hold across different hardware generations and algorithmic realizations. As a result, semantic intent is often entangled with execution methods and hardware details, complicating audit, governance, and long-term reuse.
 
-None of these paradigms provide a unified model in which system behavior is specified declaratively in terms of semantic intent and invariants, and in which computation itself is defined as deterministic projection of system state into an explicitly constrained state space.
+In parallel, modern cryptographic systems rely heavily on public-key cryptography for authentication, integrity, and confidentiality. Anticipated advances in quantum computing have motivated the development and standardization of post-quantum cryptographic (PQC) algorithms, including module-lattice-based digital signatures (ML-DSA, formerly CRYSTALS-Dilithium), stateless hash-based signatures (SLH-DSA, formerly SPHINCS+), and module-lattice-based key-encapsulation mechanisms (ML-KEM, formerly CRYSTALS-Kyber). These algorithms are designed to resist quantum adversaries but impose significantly higher computational, memory, and bandwidth costs than many classical public-key schemes.
+
+Conventional PQC implementations perform signing, verification, and key-establishment procedurally, executing ordered sequences of arithmetic, hashing, and structural reconstruction steps. Verification logic may repeatedly reconstruct large lattice objects, Merkle trees, or other intermediate cryptographic structures that are fully determined by public parameters, public keys, and received artifacts. This leads to excessive recomputation of derived structure, large signatures and verification artifacts, high verification latency and energy consumption, and poor suitability for constrained or embedded devices. Complex control-flow logic also complicates formal analysis and consistent hardware acceleration.
+
+None of these paradigms provide a unified model in which system behavior—including cryptographic correctness—is specified declaratively in terms of semantic intent and invariants, and in which computation itself is defined as deterministic projection of system state into an explicitly constrained state space.
 
 ---
 
@@ -64,6 +68,8 @@ The semantic system specification does not define instruction order, algorithms,
 In certain embodiments, CPSC identifies a minimal set of degrees of freedom representing independent variables sufficient to reconstruct a valid state. Fixed and derived variables need not be explicitly encoded or transmitted, enabling structural redundancy elimination, deterministic reconstruction, and efficient hardware mapping.
 
 CPSC admits both software and hardware embodiments. In hardware embodiments, CPSC may be realized as a deterministic constraint fabric operating without instruction execution, program counters, or runtime interpretation. State updates occur only at declared commit boundaries, enabling deterministic replay, bounded execution, and suitability for safety-critical systems.
+
+In one class of embodiments, CPSC is applied to cryptographic systems, including post-quantum cryptographic (PQC) signing, verification, and key-establishment. Cryptographic correctness conditions—such as lattice relations, norm bounds, hash-based consistency checks, and key-encapsulation validity conditions—are expressed as explicit constraints over a cryptographic state. Cryptographic artifacts are represented as degree-of-freedom vectors comprising only entropy-bearing variables, while expanded lattices, hash trees, intermediate algebraic values, and other derived structures are reconstructed deterministically through projection. This arrangement preserves the security properties of standardized PQC algorithms while reducing recomputation, transmitted artifact size, latency, and energy consumption and simplifying verification logic for both software and hardware implementations.
 
 The disclosure further describes Constraint-Projected Adaptive Compression (CPAC), an application of CPSC in which structural redundancy is eliminated via constraint projection and degree-of-freedom extraction prior to optional prediction and conventional entropy coding. In such embodiments, projection and degree-of-freedom extraction occur first; any predictive components (including machine-learned or non-learned predictors) operate only over sequences of degrees of freedom, and entropy coding operates last over residual and/or degree-of-freedom streams.
 
@@ -94,6 +100,12 @@ FIG. 7 — AI or learned-system governance using CPSC
 FIG. 8 — Hardware-based resource and security governance
 
 FIG. 9 — Semantic system specification and lowering pipeline
+
+FIG. 10 — Constraint-projected post-quantum verification pipeline (artifact as degree-of-freedom vector over cryptographic state, projection to a valid state or failure)
+
+FIG. 11 — Cryptographic state manifold with independent (degree-of-freedom) and derived variables for a representative post-quantum digital signature
+
+FIG. 12 — Hardware constraint fabric specialized for post-quantum verification, showing state registers, constraint evaluation units, and commit logic executing verification without an instruction stream
 
 ---
 
@@ -183,7 +195,7 @@ In an analog or in-memory compute embodiment, state variables may correspond to 
 
 ### 9. HARDWARE EMBODIMENTS
 
-In hardware embodiments, CPSC may be implemented as a deterministic constraint fabric comprising state registers, parallel constraint evaluation units, projection or update networks, commit logic, and convergence detection. Such systems do not execute instructions, do not require program counters, and do not interpret data as code at runtime. Implementations may be realized in FPGA or ASIC.
+In hardware embodiments, CPSC may be implemented as a deterministic constraint fabric comprising state registers, parallel constraint evaluation units, projection or update networks, commit logic, and convergence detection. Such systems do not execute instructions, do not require program counters, and do not interpret data as code at runtime. Implementations may be realized in FPGA or ASIC. In some embodiments, the constraint fabric is specialized for cryptographic workloads, including deterministic verification of post-quantum digital signatures and key-encapsulation mechanisms under a constraint-architected cryptographic state model.
 
 #### 9.1 Proto-cell fabric and epoch controller embodiment (non-limiting)
 
@@ -241,7 +253,7 @@ These realm features provide additional guarantees about isolation, replay, and 
 
 ### 10. SOFTWARE AND HYBRID EMBODIMENTS
 
-Software embodiments implement equivalent semantics using deterministic projection engines. Hybrid embodiments combine software-managed semantic specifications with hardware constraint fabrics that perform projection and enforcement.
+Software embodiments implement equivalent semantics using deterministic projection engines. Hybrid embodiments combine software-managed semantic specifications with hardware constraint fabrics that perform projection and enforcement. In some embodiments, software projection engines implement constraint-projected verification of post-quantum cryptographic artifacts, including lattice-based and hash-based signatures and key-encapsulation mechanisms, on general-purpose processors.
 
 ---
 
@@ -327,29 +339,79 @@ In these embodiments, learning and prediction occur in the structured DoF space 
 
 In certain embodiments, Constraint-Projected State Computing is applied to execution of post-quantum cryptographic (PQC) algorithms. In these embodiments, cryptographic operations are expressed as declarative constraints over an explicit cryptographic state, and cryptographic validity is determined by projection of that state into a constraint-satisfying configuration, rather than by executing ordered instruction sequences.
 
-Post-quantum cryptographic algorithms, including lattice-based key encapsulation mechanisms, lattice-based digital signature schemes, and hash-based constructions, are typically defined by precise algebraic relations, domain bounds, and validity conditions. Conventional implementations enforce these properties procedurally through instruction-driven control flow, branching logic, and conditional rejection steps. Such implementations may be difficult to formally verify, susceptible to side-channel leakage, and challenging to map consistently across software and hardware environments.
+Post-quantum cryptographic algorithms, including lattice-based key-encapsulation mechanisms, lattice-based digital signature schemes, and hash-based constructions, are typically defined by precise algebraic relations, domain bounds, and validity conditions. Conventional implementations enforce these properties procedurally through instruction-driven control flow, branching logic, and conditional rejection steps. Such implementations may be difficult to formally verify, susceptible to side-channel leakage, and challenging to map consistently across software and hardware environments.
 
-In the disclosed embodiments, a cryptographic algorithm is represented as a constrained state space. State variables correspond to cryptographic objects such as polynomial coefficients, vectors, matrices, seeds, challenges, and intermediate values. Cryptographic rules—including ring arithmetic relations, modular reduction, norm bounds, matrix–vector products, and hash-based consistency checks—are expressed as declarative constraints over those variables. A cryptographic operation is performed by projecting a proposed state into a valid state that satisfies all declared constraints.
+##### 11.13.1 Cryptographic State and Constraint Model
 
-In some embodiments, the system defines a cryptographic state comprising a finite set of variables representing both input material and derived cryptographic values. Each variable has an explicit type, domain, and derivation status. Certain variables are designated as degrees of freedom, representing independent cryptographic inputs such as secret vectors, randomness, or signature components. Other variables are designated as derived and are fully determined by constraints.
+In the disclosed embodiments, a cryptographic algorithm is represented as a constrained state space. State variables correspond to cryptographic objects such as polynomial coefficients, vectors, matrices, seeds, challenges, message digests, Merkle tree nodes, ciphertext components, and intermediate values. Each variable has a defined type, domain, and derivation status.
 
-Constraints encode cryptographic validity conditions. Examples include modular arithmetic constraints enforcing polynomial ring relations, linear algebra constraints representing matrix–vector multiplication in lattice schemes, norm constraints bounding coefficient magnitudes, and hash constraints enforcing challenge or commitment consistency. Constraint evaluation order is not semantically significant, and intermediate computational states are not externally observable.
+Variables are classified as:
 
-In these embodiments, cryptographic execution is performed by a deterministic projection process. Given a proposed assignment of values to the degrees of freedom, the projection engine iteratively enforces constraints to reconstruct derived variables and converge on a valid cryptographic state. If a valid state exists that satisfies all constraints within declared bounds, projection converges and the cryptographic operation is deemed valid. If no such state exists, projection fails and the cryptographic operation is rejected.
+* independent variables (degrees of freedom), which carry entropy and must be provided or transmitted;
+* derived variables, which are fully determined by constraints; and
+* fixed variables, which are invariant or defined by the cryptographic model or deployment configuration.
 
-Cryptographic verification therefore corresponds to convergence of the projection process, while cryptographic failure corresponds to non-convergence or violation of constraints. There is no explicit procedural verification logic, branching on secret data, or instruction-level control flow determining validity.
+Cryptographic rules—including ring arithmetic relations, modular reduction, norm bounds, matrix–vector products, hash-based consistency checks, Merkle path conditions, and encapsulation/decapsulation relations—are expressed as declarative constraints over these variables. Constraint evaluation order is not semantically significant, and intermediate computational states are not externally observable.
+
+Verification proceeds by injecting values for the degrees of freedom into a partial cryptographic state and deterministically projecting the state until all constraints are satisfied or a failure condition is detected. Cryptographic verification therefore corresponds to convergence of the projection process, while cryptographic failure corresponds to non-convergence or violation of constraints. There is no explicit procedural verification logic, branching on secret data, or instruction-level control flow determining validity.
 
 In some embodiments, determinism and side-channel resistance are improved by enforcing that, for a given cryptographic input and configuration, projection converges to the same valid state or fails in the same manner across executions. Numeric precision, arithmetic modes, and convergence criteria are explicitly declared. Randomized control flow and data-dependent branching are eliminated. Because cryptographic validity is determined through constraint satisfaction rather than conditional execution paths, the system may reduce side-channel leakage arising from timing, branching, or microarchitectural effects.
 
 In some embodiments, only the minimal independent cryptographic information required to define a valid state is injected into the system. Derived values, such as public key components, intermediate products, or verification artifacts, are reconstructed through projection and need not be stored or transmitted. This minimizes exposure of sensitive material and reduces persistent storage of derived cryptographic state. Cryptographic state may be serialized or reconstructed using a deterministic binary interchange format that encodes degrees of freedom and model identity, allowing secure reconstruction of full cryptographic state only when required.
 
-The constraint-projected cryptographic execution architecture may be implemented in software, hardware, or hybrid systems. In software embodiments, constraint projection may be implemented using deterministic numeric solvers operating over fixed or bounded precision arithmetic. In hardware embodiments, the system maps naturally to a constraint evaluation fabric comprising parallel constraint units, state registers, and convergence detection logic, without instruction decoding or program counters. This uniform model enables consistent cryptographic behavior across CPUs, embedded systems, FPGAs, and ASICs, reducing discrepancies between reference software implementations and deployed hardware accelerators.
+The constraint-projected cryptographic execution architecture may be implemented in software, hardware, or hybrid systems. In software embodiments, constraint projection may be implemented using deterministic numeric solvers operating over fixed or bounded-precision arithmetic. In hardware embodiments, the system maps naturally to a constraint evaluation fabric comprising parallel constraint units, state registers, and convergence detection logic, without instruction decoding or program counters. This uniform model enables consistent cryptographic behavior across CPUs, embedded systems, FPGAs, and ASICs, reducing discrepancies between reference software implementations and deployed hardware accelerators.
 
-In these embodiments, the disclosed methods apply to a wide range of post-quantum cryptographic algorithms, including but not limited to lattice-based key encapsulation mechanisms, lattice-based digital signatures, and other schemes defined by algebraic invariants and validity constraints. The system does not alter the underlying cryptographic assumptions or security proofs of such algorithms. Instead, it provides a deterministic, constraint-driven execution substrate that enforces cryptographic correctness, improves auditability, and simplifies secure implementation. The disclosed system does not introduce new cryptographic primitives, does not weaken or strengthen cryptographic hardness assumptions, and does not replace standardized post-quantum cryptographic algorithms. Security derives from the underlying cryptographic constructions; the disclosed embodiments relate to execution, validation, and implementation architecture.
+These cryptographic embodiments operate in conjunction with the core CPSC model and CPAC embodiments. They do not alter cryptographic primitives, security assumptions, or standardized algorithm definitions, but instead extend the execution architecture to support deterministic enforcement, efficient state handling, and formal governance of post-quantum cryptographic systems.
+
+##### 11.13.2 NIST-Selected Algorithm Embodiments
+
+In some embodiments, the disclosed systems are applied to standardized post-quantum cryptographic algorithms selected by NIST, including but not limited to ML-DSA (formerly CRYSTALS-Dilithium), SLH-DSA (formerly SPHINCS+), and ML-KEM (formerly CRYSTALS-Kyber). In all such embodiments, the underlying cryptographic algorithms and security assumptions are preserved; CPSC is used only as an execution and verification architecture.
+
+###### 11.13.2.1 ML-DSA (Dilithium) Verification
+
+For ML-DSA verification, the cryptographic state may include variables representing, without limitation:
+
+* public-key entropy components;
+* signature entropy components;
+* message hash values;
+* derived polynomial vectors and matrices;
+* derived challenge values; and
+* validity indicators.
+
+Algebraic relations specified by ML-DSA, including lattice relations, norm bounds, and challenge consistency conditions, are encoded as explicit constraints. Expanded matrices, polynomial products, and related intermediate values are treated as derived variables and reconstructed through constraint projection rather than procedural recomputation. Only entropy-bearing components, such as secret-dependent vectors and randomness, are transmitted or injected into the system state.
+
+###### 11.13.2.2 SLH-DSA (SPHINCS+) Verification
+
+For SLH-DSA verification, the cryptographic state may include variables representing, without limitation:
+
+* message hash values;
+* one-time signature entropy;
+* Merkle tree path entropy;
+* derived hash tree nodes and roots; and
+* validity indicators.
+
+Hash-based relations defined by SLH-DSA, including Merkle path correctness and root reconstruction, are encoded as constraints. Hash tree nodes and root values are treated as derived variables and reconstructed through constraint projection rather than procedural traversal. Only the entropy-bearing components of the signature and authentication path are transmitted or injected as degrees of freedom.
+
+###### 11.13.2.3 ML-KEM (Kyber) Operations
+
+For ML-KEM operations, the cryptographic state may include variables representing, without limitation:
+
+* public-key entropy components;
+* encapsulated key material;
+* ciphertext entropy components;
+* derived shared secrets;
+* intermediate lattice products and reductions; and
+* validity indicators.
+
+Encapsulation and decapsulation relations defined by ML-KEM are enforced as constraints over the cryptographic state, with derived values reconstructed through projection. Degrees of freedom are limited to entropy-bearing inputs such as randomness and ciphertext components; deterministic relationships among public parameters, public keys, and derived shared secrets are handled as constraints.
+
+##### 11.13.3 Compression-Coupled Cryptographic State Handling
 
 In further embodiments, the constraint-projected cryptographic execution architecture is combined with Constraint-Projected Adaptive Compression to reduce the size, exposure, and transmission cost of cryptographic state while preserving exact reconstructability and cryptographic correctness. In such embodiments, cryptographic state is represented as a constrained state space in which a subset of variables constitute independent degrees of freedom and remaining variables are fully derived by cryptographic constraints. Prior to storage or transmission, only the degree-of-freedom values are serialized. Derived cryptographic values, including intermediate products, public parameters, or verification artifacts, are omitted and reconstructed deterministically by constraint projection during decompression or use.
 
 Compression is performed by applying constraint-projected state computing to eliminate implied cryptographic structure, followed by optional prediction over the degree-of-freedom stream and entropy coding. This process does not compress encrypted payloads or secret material beyond what is structurally implied by the cryptographic model itself. Instead, it removes redundancy arising from deterministic relationships defined by the cryptographic algorithm. During decompression, the compressed degree-of-freedom representation is decoded, injected into the cryptographic constraint model, and projected to reconstruct a valid cryptographic state. If reconstruction fails to converge, the compressed representation is rejected as invalid or corrupted. Compression and decompression are exact inverses and preserve cryptographic correctness.
+
+##### 11.13.4 Cryptographic Governance and Formal Verification
 
 In additional embodiments, the constraint-projected cryptographic execution architecture is employed as a governance and formal-verification substrate for cryptographic systems. In these embodiments, cryptographic algorithms are specified declaratively as constraint models that explicitly enumerate state variables, algebraic relations, domain bounds, and validity conditions. These constraint models serve as authoritative, machine-readable specifications of cryptographic behavior, distinct from any particular software implementation.
 
@@ -357,7 +419,17 @@ Cryptographic implementations are validated by demonstrating that their executio
 
 In some embodiments, constraint models are versioned, hashed, and bound to cryptographic artifacts, enabling verifiable traceability between deployed systems and their governing specifications. Changes to cryptographic parameters, arithmetic precision, or algorithm variants are expressed as explicit modifications to the constraint model, rather than implicit code changes. Third parties may independently reconstruct and validate cryptographic state using the same constraint model and degree-of-freedom inputs, without access to proprietary implementation details.
 
-These cryptographic embodiments operate in conjunction with the core CPSC model and CPAC embodiments. They do not alter cryptographic primitives, security assumptions, or standardized algorithm definitions, but instead extend the execution architecture to support deterministic enforcement, efficient state handling, and formal governance of post-quantum cryptographic systems.
+##### 11.13.5 Post-Quantum Communication and Key-Management Embodiments
+
+In certain embodiments, the constraint-projected cryptographic execution architecture is applied to post-quantum communication channels, storage systems, and identity infrastructures. In these embodiments, the cryptographic state model is extended to cover:
+
+* channel-level handshake and session state for data in transit, including hybrid classical-plus-PQC handshakes in which both classical and post-quantum artifacts are modeled as degrees of freedom over a shared constraint space;
+* key hierarchies and wrapping relationships for data at rest, including master keys, data-encryption keys, and per-object keys anchored in PQC-rooted degrees of freedom; and
+* identity, certificate, and policy state for users, services, and devices, including hybrid certificate chains carrying both classical and PQC material.
+
+In such embodiments, FIG. 10 illustrates a non-limiting verification pipeline in which a post-quantum artifact, such as a signature or ciphertext produced by a standardized lattice- or hash-based scheme, is interpreted as a vector of degrees of freedom injected into a cryptographic state model and projected into a valid state or rejected. FIG. 11 illustrates a corresponding state manifold in which entropy-bearing variables and derived variables are explicitly separated. FIG. 12 illustrates a constraint fabric specialized for post-quantum verification, in which these same models are executed by hardware without an instruction stream.
+
+These communication and key-management embodiments realize, in the post-quantum setting, the three conceptual layers described in the public-facing PQC overview: (1) data in transit, in which PQC or hybrid handshakes are modeled as constraint-projected transitions between endpoint states; (2) data at rest, in which stored artifacts and key hierarchies are represented by degrees of freedom over a constrained cryptographic state; and (3) identity and lifecycle, in which certificate authorities, code-signing keys, and attestation records are represented and governed within the same constraint-projected framework. Hybrid deployments in which both pre-quantum and post-quantum mechanisms coexist are captured by extending the cryptographic state model to include legacy and PQC variables together with constraints expressing migration and downgrade policies (see also Section 11.17).
 
 #### 11.14 Optional Learned Structure-Induction Embodiment (Neural-Assisted CPSC)
 
@@ -557,6 +629,46 @@ flowchart LR
 
     A --> B
     B --> C
+```
+
+### FIG. 10 — Constraint-Projected Post-Quantum Verification Pipeline
+
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+flowchart LR
+    A[Artifact] --> D[DoF extraction]
+    D --> V[DoF vector]
+    V --> P[Projection]
+    P --> Q{Check}
+    Q -->|Yes| VS[Accept]
+    Q -->|No| FR[Reject]
+```
+
+### FIG. 11 — Cryptographic State Manifold for Post-Quantum Signature
+
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+flowchart LR
+    DV[DoF vector] --> PR[Projection]
+    PR --> IV[Independent vars]
+    PR --> DV2[Derived vars]
+```
+
+### FIG. 12 — Hardware Constraint Fabric for Post-Quantum Verification
+
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+flowchart LR
+    IN[DoF vector] --> SR[State regs]
+    SR --> CE1[Lattice unit]
+    SR --> CE2[Hash unit]
+    SR --> CE3[Norm unit]
+    CE1 --> PN[Projection net]
+    CE2 --> PN
+    CE3 --> PN
+    PN --> CL[Commit]
+    CL --> SR
+    PN --> OUT[Accept / reject]
 ```
 
 END OF PROVISIONAL PATENT APPLICATION

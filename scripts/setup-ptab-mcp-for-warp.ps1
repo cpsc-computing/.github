@@ -153,8 +153,18 @@ foreach ($server in $servers) {
 Write-Host "[USPTO MCP] Completed processing all USPTO MCP servers." -ForegroundColor Green
 
 # Optionally set up riemannzeta/patent_mcp_server for PPUBS/PatentsView/ODP tooling
-if ($ConfigurePatentMcp) {
-    $patentRepo = Join-Path $RootDir "patent_mcp_server"
+#
+# Behavior:
+# - If -ConfigurePatentMcp is specified, always process patent_mcp_server under RootDir.
+# - If -ConfigurePatentMcp is NOT specified but a patent_mcp_server directory already exists
+#   under RootDir, process it as well (clone/update + uv sync). This ensures that once the
+#   repository has been created (for example at C:\Users\<USER>\patent_mcp_server), rerunning
+#   this script keeps it up to date alongside the other USPTO MCPs.
+
+$patentRepo = Join-Path $RootDir "patent_mcp_server"
+$shouldHandlePatentMcp = $ConfigurePatentMcp -or (Test-Path -LiteralPath $patentRepo)
+
+if ($shouldHandlePatentMcp) {
     Write-Host "[Patent MCP] ==================================================" -ForegroundColor DarkCyan
     Write-Host "[Patent MCP] Processing patent_mcp_server in $patentRepo" -ForegroundColor Cyan
 

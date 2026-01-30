@@ -97,6 +97,7 @@ This paragraph is **critical**.
 *  Validation-time recursion-stability
 *  Semantic System Specification (SSS) layer for declaring variables, roles, invariants, and acceptable outcomes independently of execution mechanics
 *  Constraint architectures and execution backends spanning classical processors, quantum systems, AI/ML models, and other non-von-neumann hardware
+*  Application of the paradigm to cryptographic state, including constraint-projected post-quantum signing, verification, and key establishment using minimal degree-of-freedom representations of cryptographic artifacts
 
 ### 3.3 Applications (Non-Limiting)
 
@@ -115,7 +116,11 @@ This paragraph is **critical**.
 Enumerate figures (FIG. 1–FIG. N)
 Each with **one-sentence purpose**
 
-This is largely identical to your provisional, but formalized.
+This is largely identical to your provisional, but formalized, with additional figures reserved for Theme H cryptographic embodiments, for example:
+
+- FIG. 10 — Constraint-projected post-quantum verification pipeline (artifact as degree-of-freedom vector over cryptographic state, projection to a valid state or failure).
+- FIG. 11 — Cryptographic state manifold with independent (DoF) and derived variables for a representative post-quantum digital signature.
+- FIG. 12 — Hardware constraint fabric specialized for post-quantum verification, showing state registers, constraint units, and commit logic executing verification without an instruction stream.
 
 ---
 
@@ -281,7 +286,7 @@ This enables **hardware-focused continuations**.
 
 ## 13. Application Embodiments (Non-Limiting)
 
-Each subsection becomes a **dependent claim cluster** later. Theme tags [A–G] indicate which internal Themes a subsection primarily supports for prior-art and claim-mapping purposes.
+Each subsection becomes a **dependent claim cluster** later. Theme tags [A–H] indicate which internal Themes a subsection primarily supports for prior-art and claim-mapping purposes.
 
 ### 13.1 Constraint Optimization (SAT / MaxSAT) [Theme A]
 
@@ -317,6 +322,7 @@ Each subsection becomes a **dependent claim cluster** later. Theme tags [A–G] 
 * Protocol invariants
 * Access control
 * Tamper detection
+* Constraint-projected execution, verification, and state handling for post-quantum cryptographic algorithms, including embodiments in which NIST-selected ML-DSA, SLH-DSA, and ML-KEM artifacts are represented as degree-of-freedom vectors over a constrained cryptographic state and derived structures are reconstructed deterministically by projection
 
 ### 13.7 Telemetry, Logging, and Replay [Theme B, Theme G]
 
@@ -360,6 +366,10 @@ This section helps during **prosecution**.
 
 * “A method of computation comprising projecting system state into a constraint-defined space…”
 
+### Independent PQC Claim (Theme H – Cryptographic State / PQC Verification)
+
+* “A method of verifying a cryptographic artifact for a post-quantum cryptographic algorithm, the method comprising: representing the artifact as a degree-of-freedom vector over a constrained cryptographic state; projecting the cryptographic state under a set of declarative cryptographic constraints until convergence or failure within declared bounds; and determining validity of the artifact based on whether projection converges to a constraint-satisfying cryptographic state.”
+
 ### Dependent Claims
 
 * DoF extraction
@@ -369,6 +379,7 @@ This section helps during **prosecution**.
 * Control systems
 * AI policy enforcement
 * Recursion-stability validation
+* Constraint-modeled cryptographic state and PQC verification (Theme H)
 
 ---
 

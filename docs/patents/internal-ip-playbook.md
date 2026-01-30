@@ -360,6 +360,34 @@ This subsection defines high-level Themes used for prior-art protocols and inter
 - **Theme G – Constraint-Based Governance, Validation, and Regression Harness**  
   Use of CPSC / CPAC constraint manifolds and projection metrics as test oracles and regression harnesses for heterogeneous backends (classical, quantum, learned, hardware), defining correctness in terms of distance to the manifold rather than ad-hoc thresholds.
 
+- **Theme H – Constraint-Projected Cryptographic State and Post-Quantum Verification**  
+  Modeling cryptographic systems, including NIST-selected post-quantum algorithms, as constrained cryptographic state spaces in which artifacts such as signatures and ciphertexts are represented as minimal degree-of-freedom vectors and all derived structure is reconstructed deterministically by projection, enabling efficient verification, compression-coupled state handling, and formal cryptographic governance without altering underlying cryptographic primitives or security assumptions.
+
+### Theme H – Prior-Art Protocol (Internal)
+
+For Theme H (Constraint-Projected Cryptographic State and Post-Quantum Verification), prior-art protocols SHOULD focus on:
+
+- systems that compress or otherwise reduce post-quantum cryptographic artifacts by omitting deterministically reconstructible structure;
+- systems that store only randomness or entropy for signatures or ciphertexts and reconstruct full artifacts later; and
+- systems that express cryptographic verification as constraint satisfaction or satisfiability over explicit cryptographic state, rather than as purely procedural verifier code.
+
+Theme H prior-art runs SHOULD:
+
+1. Use USPTO-backed MCP servers (PTAB, Patent File Wrapper, Enriched Citations) and, when practical, PPUBS/PatentsView search for:
+   - "post-quantum" / "lattice-based" / "hash-based" signatures or key-encapsulation mechanisms;
+   - combined with terms such as "compressed signature", "state compression", "constraint", "SAT", "SMT", "projection", or "degree of freedom".
+2. Classify hits by whether they:
+   - (a) compress or reduce PQC artifacts;
+   - (b) reconstruct verifier state from reduced information; or
+   - (c) define cryptographic correctness as satisfaction of constraints over an explicit cryptographic state manifold.
+3. Record non-normative notes highlighting gaps relative to Theme H, in particular whether the art:
+   - lacks an explicit cryptographic state manifold with independent vs. derived variables;
+   - lacks deterministic projection as the locus of correctness; or
+   - lacks a unified software/hardware execution model and/or compression-coupled cryptographic state handling.
+4. Log each run with a Run ID, date, specification/provisional version, MCP tools used, and a short conclusion (for example, "no direct art on constraint-projected PQC DoF state" or "adjacent cluster around compressed PQC signatures without constraint manifolds").
+
+These notes are non-normative and exist solely to inform Theme H continuation drafting and prosecution strategy.
+
 ### Adjacent Art Risk Themes and Differentiation
 
 This subsection tracks major adjacent-art clusters that are likely to appear in searches and office actions, together with our differentiation narratives. It is non-normative and for internal strategy only.
@@ -482,11 +510,12 @@ This section captures the current plan for sequencing non-provisional and contin
    - Map claims to the hardware-focused sections of the specification and non-provisional (for example, §§11, 13.3, 13.4, and 13.9), ensuring that non-von-neumann execution (no general instruction streams) and built-in governance properties (deterministic latency, safety envelopes, isolation) are explicit.
    - Position this continuation as a high-value licensing vehicle for silicon vendors, cloud infrastructure providers, and high-assurance system integrators.
 
-4. **Second-Wave Continuations – Themes C (AI governance) and F (Crypto / PQC governance)**
+4. **Second-Wave Continuations – Themes C (AI governance), F (Crypto / PQC governance), and H (Cryptographic DoF and PQC verification)**
 
    - File once there is clear market or regulatory pull (for example, AI safety regimes, PQC migration mandates, or concrete partner interest).
    - For Theme C, emphasize learned predictors operating in degrees-of-freedom space, hard constraint-based post-processing around models, and governance interfaces that expose projection metrics and residuals as first-class signals.
    - For Theme F, emphasize constraint-modeled cryptographic and post-quantum schemes, including dual-stack migration, no-downgrade policies, and constraint-enforced protocol correctness and compliance.
+   - For Theme H, emphasize cryptographic state modeled as constrained state spaces, minimal degree-of-freedom representations of signatures, ciphertexts, and keys (including NIST-selected ML-DSA, SLH-DSA, and ML-KEM), constraint-projected verification in software and hardware, and compression-coupled cryptographic state handling.
 
 5. **Later / Optional Continuations – Themes D (Structure-Induction) and E (Quantum / Non-Von-Neumann)**
 

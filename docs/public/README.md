@@ -27,6 +27,15 @@ None of the documents here should be treated as specifications or legal filings.
   - Degrees of freedom (DoFs) as the compressed representation,
   - How prediction and entropy coding fit around that structure.
 
+### 3. Post-Quantum Cryptography (PQC)
+
+- File: `pqc-overview.md`
+- Purpose: Provides a high-level explanation of our PQC embodiments and how they protect data in transit, data at rest, and identity/lifecycle.
+- Focuses on:
+  - The PQC core and three main embodiments,
+  - Hybrid classical + PQC handshakes and key hierarchies,
+  - Practical deployment and migration toward a PQC-native ecosystem.
+
 ---
 
 ## Usage Notes

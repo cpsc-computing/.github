@@ -31,6 +31,7 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
+import shutil
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -50,8 +51,26 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
     directory set to the *directory containing the input markdown*.
     """
 
-    # Call the installed console script; rely on PATH resolution.
-    cmd: list[str] = ["md2pdf"]
+    # Call the installed console script. Prefer PATH resolution but fall back to the
+    # Scripts/ directory next to the current Python executable on Windows when
+    # md2pdf is not on PATH.
+    md2pdf_cmd = shutil.which("md2pdf")
+    if md2pdf_cmd is None:
+        # On Windows, pip typically installs console scripts into the Scripts/
+        # directory next to the python executable. Derive that path and use it
+        # directly if present.
+        exe_path = Path(sys.executable)
+        candidate = exe_path.with_name("Scripts") / "md2pdf.exe"
+        if candidate.exists():
+            md2pdf_cmd = str(candidate)
+        else:
+            raise FileNotFoundError(
+                "md2pdf executable not found on PATH or in the Python Scripts/ directory. "
+                "Ensure 'md2pdf-mermaid' is installed and that its console script is "
+                "available."
+            )
+
+    cmd: list[str] = [md2pdf_cmd]
 
     # Input markdown (can be absolute); we will run md2pdf from the markdown's
     # parent directory and pass only the local filename so relative resources
