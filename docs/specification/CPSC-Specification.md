@@ -255,6 +255,7 @@ CPSC is applicable to, but not limited to:
 - edge and embedded systems
 - FPGA and ASIC acceleration
 - secure state reconstruction
+- constraint-governed agentic development (CGAD), in which agent proposals are treated as candidate states and correctness is defined solely by projection into a shared constraint model
 
 ---
 

@@ -1,0 +1,13 @@
+{
+  "repo.id": "ddf-core",
+  "repo.branch": "main",
+  "repo.head_commit": "examplehash",
+  "ddf.phase": "phase2",
+  "ddf.regression_status": "green",
+  "ddf.bd_touched": false,
+  "ddf.vivado_last_mode": "bitstream",
+  "ddf.hw_deploy_requested": false,
+  "ddf.target_sync_requested": false,
+  "command.requested": "ddf status",
+  "command.kind": "read"
+}

@@ -80,7 +80,7 @@ Recommended practices:
 - **Transparency**  
   All agent output MUST be reviewable by humans; there is no "magic".
 
-Repository-local governance files (for example, `WARP.md` and `AGENTS.md`) may define more detailed rules tailored to specific projects.
+Repository-local governance files (for example, `WARP.md` and `AGENTS.md`) may define more detailed rules tailored to specific projects. In some embodiments, teams may also define explicit constraint models for agentic development workflows using CAS-YAML or equivalent formats (for example, CPSC-governed agentic development, or CGAD, profiles for software and hardware projects), provided that such models remain informational and consistent with the normative CPSC and CAS-YAML specifications.
 
 ---
 

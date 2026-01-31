@@ -285,7 +285,7 @@ Outputs from neural networks or language models are projected into constraint-de
 
 In some embodiments, the same semantic system specification that defines policy, safety, or structural rules is also used to define observation, action, and state spaces for learned systems such as neural networks, reinforcement learning agents, or large language models. The semantic system specification and constraint architecture define which variables are externally supplied, which variables are freely chosen or proposed by a learned model, and which invariants must hold regardless of model parameters or training.
 
-In these embodiments, learned systems act as proposal mechanisms for degrees of freedom or candidate states, and a CPSC engine or equivalent constraint-architected executor performs deterministic projection into the constraint-defined space. This arrangement decouples semantic correctness and policy enforcement from any particular neural architecture, training procedure, or deployment platform, and allows multiple learned models, classical solvers, or specialized hardware accelerators to share the same constraint-defined semantics.
+In these embodiments, learned systems act as proposal mechanisms for degrees of freedom or candidate states, and a CPSC engine or equivalent constraint-architected executor performs deterministic projection into the constraint-defined space. This arrangement decouples semantic correctness and policy enforcement from any particular neural architecture, training procedure, or deployment platform, and allows multiple learned models, classical solvers, or specialized hardware accelerators to share the same constraint-defined semantics. In some embodiments, these governance arrangements are further specialized for agentic development environments as described in Section 13 (CPSC-Governed Agentic Development).
 
 #### 11.7 Hardware-Based Resource and Security Governance
 
@@ -453,7 +453,7 @@ In compression embodiments, learned structure-induction may be used to propose s
 
 ##### 11.14.4 Authority of Constraint Projection
 
-In all embodiments, constraint projection is the sole authority on state validity. Learned models cannot override constraints, introduce new semantics, or cause acceptance of invalid state. Projection convergence defines success; projection failure defines rejection. This separation ensures that learned components may improve efficiency or compression effectiveness without compromising correctness, security, or determinism.
+In all embodiments, constraint projection is the sole authority on state validity. Learned models cannot override constraints, introduce new semantics, or cause acceptance of invalid state. Projection convergence defines success; projection failure defines rejection. This separation ensures that learned components may improve efficiency or compression effectiveness without compromising correctness, security, or determinism. In some embodiments targeting agentic development workflows, these guarantees are applied to conversations, prompts, and agent proposals as further detailed in Section 13 (CPSC-Governed Agentic Development).
 
 ##### 11.14.5 Structural-Class-Based Learned Model Taxonomy
 
@@ -670,5 +670,311 @@ flowchart LR
     CL --> SR
     PN --> OUT[Accept / reject]
 ```
+
+### 13. CPSC-Governed Agentic Development (CGAD)
+
+## Provisional Patent – Background & Embodiment Specification (Draft)
+
+---
+
+## 1. FIELD OF THE INVENTION
+
+The present disclosure relates to systems and methods for governing agentic artificial intelligence, software development, hardware development, and cyber-physical system workflows. More particularly, it relates to deterministic governance of agent-generated actions using constraint-projected state computing integrated with version control systems and external execution environments.
+
+---
+
+## 2. BACKGROUND AND PROBLEMS ADDRESSED
+
+### 2.1 Agentic AI Limitations
+
+Current agentic AI systems suffer from fundamental structural limitations, including but not limited to:
+
+- Long-session slowdown due to unbounded context accumulation.
+- Context drift between conversational intent, code artifacts, and real-world system state.
+- Implicit authority assigned to agents through procedural workflows, approval logic, or orchestration frameworks.
+- Inability to safely govern actions that affect hardware, remote systems, or cyber-physical infrastructure.
+- Lack of deterministic reproducibility for agent-driven development sessions.
+
+These limitations become acute in environments involving:
+- Hardware/software co-design.
+- Remote execution over secure channels (e.g., SSH).
+- FPGA and SoC development flows.
+- Continuous integration across heterogeneous tools.
+
+---
+
+### 2.2 Shortcomings of Existing Governance Approaches
+
+Existing governance approaches rely on:
+- Procedural approval pipelines.
+- Human-in-the-loop reviews.
+- Policy engines and rule-based orchestration.
+- Tool-specific plugins or agent runtimes.
+
+Such approaches:
+- Encode authority procedurally rather than declaratively.
+- Are brittle under scale and multi-agent interaction.
+- Fail to provide mathematically enforceable invariants.
+- Do not eliminate drift; they merely attempt to detect it post hoc.
+
+---
+
+## 3. SUMMARY OF THE INVENTION
+
+The disclosed invention introduces a general-purpose framework for governing agentic systems using **Constraint-Projected State Computing (CPSC)** as a deterministic control plane.
+
+In this framework:
+
+- Agents are treated as untrusted proposal generators.
+- All agent actions are modeled as proposed state transitions.
+- Correctness, safety, and coherence are enforced exclusively through constraint-based projection of system state.
+- Version control systems (e.g., Git) act as immutable ledgers of proposals and accepted state transitions.
+- External execution environments (software, hardware, or hybrid) are incorporated as observable and reconstructible state.
+
+Unlike prior art, authority is not granted to agents, workflows, or humans-in-the-loop, but is instead derived from explicit constraints over a declarative system state model.
+
+---
+
+## 4. CORE ARCHITECTURAL PRINCIPLES
+
+### 4.1 Separation of Authority and Intelligence
+
+- Agents generate proposals but do not decide correctness.
+- Projection engines determine validity, not heuristics or policies.
+- Conversations and prompts are non-authoritative and disposable.
+
+---
+
+### 4.2 State-Centric Governance
+
+All system behavior is expressed in terms of:
+
+- Explicit state variables.
+- Declarative constraints.
+- Deterministic projection into valid state space.
+
+Intermediate execution steps have no semantic meaning unless they converge to a valid projected state.
+
+---
+
+### 4.3 Deterministic Drift Elimination
+
+Context drift and long-session degradation are addressed by:
+
+- Externalizing agent session summaries into explicit state.
+- Forcing periodic projection and reconciliation.
+- Rejecting invalid or incoherent accumulated assumptions.
+
+---
+
+## 5. GENERAL-PURPOSE GOVERNANCE FRAMEWORK
+
+### 5.1 System Components
+
+The framework consists of:
+
+1. **Agents**
+   - Human or AI-driven tools capable of proposing changes.
+   - No embedded authority or persistence beyond proposals.
+
+2. **Constraint Architecture Specification (CAS)**
+   - Declarative description of system state and constraints.
+   - Expressed in a machine-readable format (e.g., CAS-YAML).
+
+3. **Projection Engine**
+   - Resolves proposed state into validity or rejection.
+   - Deterministic, bounded, and reproducible.
+
+4. **Version Control Ledger**
+   - Records accepted proposals and provenance.
+   - Enables replay and auditability.
+
+5. **Execution Observers**
+   - Extract state from software, hardware, and external systems.
+   - Feed observed facts into projection.
+
+---
+
+### 5.2 Canonical Governance Pipeline
+
+```
+
+Agent Action
+→ Proposal Capture
+→ State Injection
+→ Constraint Projection
+→ Accept or Reject
+→ Ledger Recording
+
+```
+
+No step may be bypassed.
+
+---
+
+## 6. EMBODIMENT: AGENT-GOVERNED DEVELOPMENT WORKFLOW
+
+### 6.1 Embodiment Overview
+
+One embodiment applies the framework to a heterogeneous development environment comprising:
+
+- A system-on-chip (SoC) with:
+  - Processing System (PS) running an operating system.
+  - Programmable Logic (PL) implemented via FPGA fabric.
+- Remote access via secure shell (SSH).
+- Hardware debugging tools (e.g., integrated logic analyzers).
+- Agent-driven automation using terminal and code-generation tools.
+
+---
+
+### 6.2 Example State Model (Non-Exhaustive)
+
+Representative state variables include:
+
+- Hardware configuration identifiers.
+- Bitstream identity and load status.
+- Executable binary identity and runtime status.
+- Debug instrumentation configuration.
+- Test and benchmark results.
+- Provenance metadata (commit identifiers, agent identity).
+
+---
+
+### 6.3 Example Constraints
+
+Representative constraints include:
+
+- Debug instrumentation may only be enabled when a compatible hardware configuration is active.
+- Executable code may only run when associated provenance is recorded.
+- Benchmarks may only execute after regression tests pass.
+- Remote access credentials must be declared and validated.
+
+---
+
+### 6.4 Agent Interaction Model
+
+Agents interact with the system by:
+
+- Editing files.
+- Executing commands.
+- Proposing configuration changes.
+
+All such interactions are captured as proposals and subjected to projection.
+
+Agents receive only factual feedback describing constraint violations and observed state, without procedural guidance.
+
+---
+
+## 7. SESSION GOVERNANCE AND ANTI-DRIFT MECHANISMS
+
+### 7.1 Session State as Governed State
+
+Agent session characteristics (intent summaries, assumptions, active goals) are externalized into governed state variables.
+
+---
+
+### 7.2 Session Constraints
+
+Constraints enforce:
+
+- Bounded active goals.
+- Mandatory refresh of assumptions after defined thresholds.
+- Rejection of incoherent or contradictory session state.
+
+This prevents long-session slowdown and cognitive drift.
+
+---
+
+## 8. PROMPT–CODE INSTRUMENTATION EMBODIMENT
+
+### 8.1 Conversational State Modeling
+
+Prompts, intent summaries, and unresolved questions are modeled as explicit state variables.
+
+---
+
+### 8.2 Constraint Binding Between Intent and Implementation
+
+Constraints enforce relationships such as:
+
+- Code changes must correspond to declared intent changes.
+- Unresolved conversational ambiguities block acceptance.
+- Implementation artifacts must cover declared intent scope.
+
+---
+
+### 8.3 Resulting Benefits
+
+- Programming by dialogue becomes reconstructible and auditable.
+- Code artifacts are explainable by construction.
+- Hallucinated or implicit requirements are structurally excluded.
+
+---
+
+## 9. GENERALIZATION AND EXTENSIONS
+
+The framework generalizes to:
+
+- Multi-agent collaboration.
+- Distributed systems governance.
+- Safety-critical development.
+- Certification and compliance workflows.
+- Long-running autonomous system operation.
+
+The same constraint-projected governance applies regardless of domain.
+
+In some embodiments, the CGAD framework is instantiated concretely in:
+
+1. **A hardware-centric DDF embodiment** in which Constraint-Projected State
+   Computing is realized as a deterministic constraint fabric (for example, a
+   proto-cell fabric with an epoch controller) and CGAD governs agentic
+   workflows that modify or deploy that fabric. In such embodiments, a CGAD
+   state may include, without limitation, fields describing the current
+   phase (for example, Phase 1 or Phase 2 of a hardware development lifecycle),
+   regression status, bitstream build mode, and sync/deploy requests. CGAD
+   constraints enforce that hardware deployment or on-board benchmarking occurs
+   only when regression is green, the bitstream has been rebuilt in an
+   appropriate mode, and phase boundaries are respected. Agent proposals such as
+   "rebuild bitstream", "sync to target", or "run regression" are treated as
+   candidate state transitions and are accepted only when they project into a
+   valid constrained state.
+
+2. **A software-centric cpsc-python / CPAC embodiment** in which CPSC-based
+   compression and benchmarking tools are governed by a CGAD profile. In such
+   embodiments, a CGAD state may include, without limitation, fields describing
+   the current set of referenced requirements, presence of a plan, regression
+   status, whether repository Python entrypoints are invoked through a
+   designated wrapper script, whether ledgers have been updated, and whether
+   required benchmark profiles (for example, standard corpus runs) have been
+   executed. Agent proposals such as "run benchmark", "update compression
+   pipeline", or "push to git" are expressed as candidate state transitions and
+   are accepted only if they satisfy declared constraints (for example, that
+   non-trivial changes reference at least one requirement, that `save session`
+   updates a ledger, and that benchmark-dependent work records fresh benchmark
+   runs).
+
+These embodiments illustrate, without limitation, how CGAD can be bound to
+concrete hardware and software development environments while remaining governed
+by a common constraint-projected state semantics.
+
+---
+
+## 10. ADVANTAGES OVER PRIOR ART
+
+The disclosed system provides:
+
+- Deterministic enforcement of correctness.
+- Structural elimination of drift and session entropy.
+- Tool-agnostic agent integration.
+- Hardware–software unified governance.
+- Reproducible and auditable development processes.
+
+---
+
+## 11. CONCLUSION
+
+This disclosure describes a novel architecture for governing agentic systems by elevating constraints and state projection above agents, tools, and workflows. By treating intelligence as a proposal source and correctness as a mathematical property of state, the invention enables scalable, safe, and deterministic collaboration between humans, AI agents, software systems, and hardware platforms.
+
+---
 
 END OF PROVISIONAL PATENT APPLICATION
