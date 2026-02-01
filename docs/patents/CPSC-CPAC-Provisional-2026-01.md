@@ -259,6 +259,13 @@ Software embodiments implement equivalent semantics using deterministic projecti
 
 ### 11. APPLICATION EMBODIMENTS (NON-EXHAUSTIVE)
 
+This section provides a non-exhaustive catalog of application embodiments for
+CPSC, CPAC, and CGAD. For a continuously updated, public-facing index of
+embodiments (including identifiers and one-sentence summaries), see also
+`docs/public/cpsc-embodiments-overview.md` in the `.github` repository. That
+overview document is informational and does not alter the scope of this
+specification or any associated claims.
+
 #### 11.1 Constraint Optimization and Satisfiability
 
 Constraints encode satisfiability or optimization problems. Projection evolves assignments toward satisfaction or reduced cost deterministically. Weighted constraints may express preferences or objectives.
