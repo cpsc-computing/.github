@@ -56,6 +56,24 @@ Session note – VLBI performance update and PDF rendering fixes
   - Regenerated all documentation PDFs (19 files) with properly embedded images, confirmed by increased file sizes (e.g., cpsc-overview.pdf: 101 KB → 1191.7 KB).
 - Artifacts: Commit `71cd6ee` pushed to `main`.
 
+Session note – Provisional patent filing preparation (February 11, 2026)
+-----------------------------------------------------------------------
+- Date: 2026-02-11
+- Context: Final preparation and consistency check for CPSC-CPAC provisional patent filing.
+- Changes completed:
+  - Updated all provisional patent references across documentation to use consistent format: full title "Constraint-Projected State Computing Systems, Semantic System Specification, and Applications", Application No. 63/XXX,XXX, filing date February 2026.
+  - Updated `docs/patents/non-provisional-outline.md` cross-reference with complete title and 2026-02-XX filing date placeholder.
+  - Updated `docs/patents/executive-summary.md` to include explicit provisional reference with full metadata.
+  - Updated `docs/patents/internal-ip-playbook.md` filename reference from YYYY-MM to 2026-01.
+  - Updated `docs/patents/README.md` provisional title to include "Semantic System Specification, and" and changed filing date to February 2026.
+  - Updated `docs/public/cpsc-embodiments-overview.md` to include full provisional citation.
+  - Updated `docs/public/pqc-tech-overview-for-grants.md` with complete provisional reference.
+  - Updated `docs/patents/CPSC-CPAC-Provisional-2026-01.md` filing date from "TBD" to "February 11, 2026".
+  - Verified alignment between provisional Section 11.13.5 PQC embodiments and `docs/public/pqc-overview.md` (provisional explicitly references the three-layer architecture described in public overview).
+  - Regenerated provisional PDF (897.0 KB) with embedded Mermaid diagrams and updated filing date.
+- Status: Provisional patent documentation ready for USPTO filing via EFS-Web.
+- Next action: File provisional patent application, then update README.md status from "DRAFT (pre-filing)" to "FILED" and populate post-filing metadata (application number, exact date, entity status, PDF hash, git commit SHA).
+
 ---
 
 Theme B – CPAC representations / compression

@@ -6,7 +6,7 @@ Inventor: Tristen Kyle Pierson
 
 Applicant/Assignee: Tristen Kyle Pierson
 
-Filing Date: TBD
+Filing Date: February 11, 2026
 
 ---
 

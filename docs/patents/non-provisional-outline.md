@@ -14,8 +14,8 @@
   * Claims priority to:
 
     * U.S. Provisional Patent Application
-      *Constraint-Projected State Computing Systems and Applications*
-      filed [DATE], Application No. [63/XXX,XXX]
+      *Constraint-Projected State Computing Systems, Semantic System Specification, and Applications*
+      filed 2026-02-XX, Application No. 63/XXX,XXX
 
 * Government Rights (if any)
 

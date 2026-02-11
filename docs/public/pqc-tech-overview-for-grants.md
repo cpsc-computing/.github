@@ -71,7 +71,7 @@ Our PQC embodiments apply CPSC/CPAC to cryptographic state so that signatures, c
 ## 4. Planned IP Strategy (High-Level)
 
 - **Near term (this proposal):**  
-  - File a US provisional patent application covering:  
+  - File U.S. Provisional Patent Application No. 63/XXX,XXX (*Constraint-Projected State Computing Systems, Semantic System Specification, and Applications*, CPSC-CPAC-Provisional-2026-01, filing date February 2026) covering:  
     - The core CPSC/CPAC paradigm,  
     - Cryptographic and PQC-specific embodiments (verification pipeline, DoF/derived decomposition, hardware fabrics, compression, and governance).  
   - Maintain internal prior-art notes and search logs to inform later claim drafting.

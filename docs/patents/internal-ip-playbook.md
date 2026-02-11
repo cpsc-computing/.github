@@ -464,7 +464,7 @@ Across all themes, the core message is consistent: CPSC / CPAC are not “just a
 docs/
 patents/
 README.md
-CPSC-CPAC-Provisional-YYYY-MM.md
+CPSC-CPAC-Provisional-2026-01.md
 licensing-narratives.md
 claim-set-draft.md
 continuation-plan.md

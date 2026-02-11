@@ -127,7 +127,8 @@ CPAC is one compelling proof point—but not the limit—of what this paradigm e
 
 ### Status
 
-- Provisional patent drafted and ready for filing
+- U.S. Provisional Patent Application *Constraint-Projected State Computing Systems, Semantic System Specification, and Applications* (CPSC-CPAC-Provisional-2026-01) drafted and ready for filing
+- Expected filing: Application No. 63/XXX,XXX, filing date February 2026
 - Internal IP playbook established
 - Non-provisional and continuation strategy defined
 

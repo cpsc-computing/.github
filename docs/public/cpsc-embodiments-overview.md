@@ -2,7 +2,7 @@
 
 This document is the **live index of embodiments** for Constraint-Projected State Computing (CPSC),
 Constraint-Projected Adaptive Compression (CPAC), and CPSC-Governed Agentic Development (CGAD).
-It is public and will be updated as new embodiments are added to the provisional and related docs.
+It is public and will be updated as new embodiments are added to U.S. Provisional Patent Application No. 63/XXX,XXX (*Constraint-Projected State Computing Systems, Semantic System Specification, and Applications*, CPSC-CPAC-Provisional-2026-01, filed February 2026) and related docs.
 
 ---
 

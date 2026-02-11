@@ -26,7 +26,7 @@ Patent documents exist solely to:
 **Type:** Provisional Utility Patent Application  
 
 **Title:**  
-Constraint-Projected State Computing Systems and Applications
+Constraint-Projected State Computing Systems, Semantic System Specification, and Applications
 
 **Scope (High-Level):**
 |- CPSC as a new computing paradigm
@@ -46,7 +46,7 @@ Constraint-Projected State Computing Systems and Applications
 
 **Post-Filing Metadata (TO BE FILLED):**
 - USPTO Application No.: `63/XXX,XXX`
-- Filing Date: `2026-01-XX`
+- Filing Date: February 2026
 - Entity Status: `[Micro | Small]`
 - PDF SHA-256 Hash: `<hash>`
 - Git Commit SHA: `<commit>`
