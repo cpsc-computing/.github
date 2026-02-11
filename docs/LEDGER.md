@@ -81,8 +81,15 @@ Session note – Provisional patent filing preparation (February 11, 2026)
   - Fixed PDF generator to enforce US Letter (8.5" x 11") page size via `--page-size letter` flag (commit b83e6a9).
   - Regenerated all 20 documentation PDFs with correct US Letter dimensions for USPTO EFS-Web compliance.
   - Final provisional PDF: 903.3 KB at US Letter format.
-- Status: Provisional patent fully hardened and ready for USPTO EFS-Web filing.
-- Next action: Complete USPTO EFS-Web submission, then update README.md status from "DRAFT (pre-filing)" to "FILED" and populate post-filing metadata (application number, exact date, entity status, PDF hash, git commit SHA).
+- Status: **FILED** - Provisional patent application submitted to USPTO via EFS-Web.
+- Official Filing Metadata:
+  - USPTO Application No.: **63/980,251**
+  - Filing Date: **February 11, 2026**
+  - Entity Status: **Small**
+  - Filed PDF: `docs/patents/filing-records/CPSC-CPAC-Provisional-63-980251-FILED-2026-02-11.pdf`
+  - PDF SHA-256 Hash: `A6D0754B370430DEADF2BC63D33E80E7D4BB3D15B86AFDE2E904C5B4E0FEA75D`
+  - Git Commit SHA: `bec7622` (hardening completion)
+- Next action: Monitor USPTO correspondence for official filing receipt and maintain 12-month non-provisional conversion deadline (February 11, 2027).
 
 ---
 

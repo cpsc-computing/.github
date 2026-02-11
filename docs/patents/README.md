@@ -21,7 +21,7 @@ Patent documents exist solely to:
 
 ### CPSC-CPAC-Provisional-2026-01
 
-**Status:** DRAFT (pre-filing)  
+**Status:** FILED  
 **Jurisdiction:** United States  
 **Type:** Provisional Utility Patent Application  
 
@@ -29,30 +29,30 @@ Patent documents exist solely to:
 Constraint-Projected State Computing Systems, Semantic System Specification, and Applications
 
 **Scope (High-Level):**
-|- CPSC as a new computing paradigm
-|- CPAC as a structural compression and enforcement layer
-|- Semantic system specification and deterministic lowering into constraint architectures
-|- Deterministic constraint projection
-|- Hardware and software embodiments
-|- Security, control, AI governance, and mission-critical systems
-|- Constraint-projected execution, verification, and governance of post-quantum cryptographic algorithms, including NIST-selected ML-DSA, SLH-DSA, and ML-KEM, using minimal degree-of-freedom representations of cryptographic state
-|- Quantum resource governance, validation, migration, and hybrid compression embodiments
-|- Validation-only recursion-stability
+- CPSC as a new computing paradigm
+- CPAC as a structural compression and enforcement layer
+- Semantic system specification and deterministic lowering into constraint architectures
+- Deterministic constraint projection
+- Hardware and software embodiments
+- Security, control, AI governance, and mission-critical systems
+- Constraint-projected execution, verification, and governance of post-quantum cryptographic algorithms, including NIST-selected ML-DSA, SLH-DSA, and ML-KEM, using minimal degree-of-freedom representations of cryptographic state
+- Quantum resource governance, validation, migration, and hybrid compression embodiments
+- Validation-only recursion-stability
 
-**Planned Filing Artifacts:**
+**Filing Artifacts:**
 - Markdown source: `CPSC-CPAC-Provisional-2026-01.md`
-- Filed PDF: `CPSC-CPAC-Provisional-2026-01.pdf` (authoritative, once filed; local drafts are rendered under `docs-pdf/`)
-- Filing receipt (USPTO): to be added post-filing
+- Filed PDF: `filing-records/CPSC-CPAC-Provisional-63-980251-FILED-2026-02-11.pdf` (authoritative)
+- Draft PDF: `docs-pdf/patents/CPSC-CPAC-Provisional-2026-01.pdf` (working copy)
 
-**Post-Filing Metadata (TO BE FILLED):**
-- USPTO Application No.: `63/XXX,XXX`
-- Filing Date: February 2026
-- Entity Status: `[Micro | Small]`
-- PDF SHA-256 Hash: `<hash>`
-- Git Commit SHA: `<commit>`
+**Official Filing Metadata:**
+- **USPTO Application No.:** `63/980,251`
+- **Filing Date:** February 11, 2026
+- **Entity Status:** Small
+- **PDF SHA-256 Hash:** `A6D0754B370430DEADF2BC63D33E80E7D4BB3D15B86AFDE2E904C5B4E0FEA75D`
+- **Git Commit SHA:** `bec7622`
 
-Once filed, the Markdown and PDF corresponding to this provisional
-MUST be treated as **immutable**.
+The Markdown and filed PDF corresponding to this provisional are now **immutable**.
+Any corrections or extensions require a new provisional or non-provisional filing.
 
 ---
 
