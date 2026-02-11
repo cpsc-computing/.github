@@ -107,10 +107,13 @@ FIG. 11 — Cryptographic state manifold with independent (degree-of-freedom) an
 
 FIG. 12 — Hardware constraint fabric specialized for post-quantum verification, showing state registers, constraint evaluation units, and commit logic executing verification without an instruction stream
 
+FIG. 13 — CGAD canonical governance pipeline showing agent actions flowing through proposal capture, state injection, constraint projection, accept/reject decision, and ledger recording, with constraint architecture and execution observers feeding into projection
+
 ---
 
 ### 6. DEFINITIONS (NON-LIMITING)
 
+Constraint-Projected State Computing (CPSC): A computing paradigm in which computation is defined as deterministic projection of system state into a constraint-defined valid state space, rather than as execution of ordered instructions; CPSC engines accept proposed states and either converge to a valid state that satisfies all declared constraints or report failure under explicit bounds.
 State: A collection of variables representing a system configuration.
 Constraint: A declarative, side-effect-free rule defining a required relationship among variables.
 Valid State: A state satisfying all applicable constraints.
@@ -292,11 +295,83 @@ Outputs from neural networks or language models are projected into constraint-de
 
 In some embodiments, the same semantic system specification that defines policy, safety, or structural rules is also used to define observation, action, and state spaces for learned systems such as neural networks, reinforcement learning agents, or large language models. The semantic system specification and constraint architecture define which variables are externally supplied, which variables are freely chosen or proposed by a learned model, and which invariants must hold regardless of model parameters or training.
 
-In these embodiments, learned systems act as proposal mechanisms for degrees of freedom or candidate states, and a CPSC engine or equivalent constraint-architected executor performs deterministic projection into the constraint-defined space. This arrangement decouples semantic correctness and policy enforcement from any particular neural architecture, training procedure, or deployment platform, and allows multiple learned models, classical solvers, or specialized hardware accelerators to share the same constraint-defined semantics. In some embodiments, these governance arrangements are further specialized for agentic development environments as described in Section 13 (CPSC-Governed Agentic Development).
+In these embodiments, learned systems act as proposal mechanisms for degrees of freedom or candidate states, and a CPSC engine or equivalent constraint-architected executor performs deterministic projection into the constraint-defined space. This arrangement decouples semantic correctness and policy enforcement from any particular neural architecture, training procedure, or deployment platform, and allows multiple learned models, classical solvers, or specialized hardware accelerators to share the same constraint-defined semantics. In some embodiments, these governance arrangements are further specialized for agentic development environments as described in embodiments 11.15 through 11.19 (CPSC-Governed Agentic Development).
 
-#### 11.7 Hardware-Based Resource and Security Governance
+#### 11.7 Constraint-Governed Smart Control Plane for Realms and Resources
 
-Constraints encode scheduling, power, memory, and access rules enforced directly in hardware.
+In Constraint-Governed Smart Control Plane embodiments, datacenter resources, heterogeneous compute fabrics, and distributed execution environments are modeled as constrained state spaces comprising realms, workloads, resources, policies, and service-level objectives. A constraint-projected control plane treats all scheduling, allocation, migration, and governance decisions as proposed state transitions that must project into constraint-satisfying configurations before acceptance. This architecture replaces procedural orchestration logic, hand-tuned schedulers, and policy engines with a unified, deterministic, auditable governance framework in which isolation, error budgets, resource limits, and policy rules are enforced mathematically rather than heuristically.
+
+##### 11.7.1 Realm Model and State Representation
+
+The system represents compute and execution environments as a constrained state space comprising the following primary state variables:
+
+**Realms** are isolated execution partitions, each associated with a unique identifier, a set of allocated resources, and governance policies. A realm may correspond to a tenant, workload class, security domain, or organizational unit. Each realm maintains state variables including active workload set, resource allocation vector (CPU cores, memory capacity, bandwidth, accelerator time, power budget), policy bindings (isolation rules, priority class, error budget, audit requirements), and operational metrics (utilization history, SLA compliance, objective values).
+
+**Resources** represent physical or virtualized compute, storage, network, and accelerator capacity. Resources are classified as physical compute units (CPU cores, FPGA fabric regions, GPU devices, custom accelerators), memory and storage (DRAM capacity, persistent storage volumes, cache allocations), network and interconnect (bandwidth allocations, network paths, switch ports, fabric links), and power and thermal (power budgets in watts, thermal envelopes, cooling capacity). Each resource maintains state including current allocation status, capability vector (compute type, memory size, bandwidth, precision), physical location (rack, node, device identifier), and health and availability metrics.
+
+**Workloads** are execution requests or running tasks assigned to realms. Each workload is represented by a unique identifier, resource demand vector specifying required resources, constraint set encoding requirements and restrictions (affinity rules, anti-affinity, placement constraints, dependencies), and execution state (queued, running, migrating, completed, failed).
+
+**Policies** are declarative rules governing allocation, isolation, and governance. Representative policy types include isolation constraints ensuring realms do not interfere or observe each other's state; resource bounds specifying per-realm minimum guarantees and maximum limits; priority and preemption rules defining relative importance and preemption eligibility; SLA and error-budget constraints specifying availability, latency, throughput targets and accumulated error budget; security and compliance rules encoding data residency, encryption requirements, and audit obligations; and temporal constraints specifying deadline requirements, time-of-day restrictions, and maintenance windows.
+
+**Service-Level Objectives (SLOs)** quantify acceptable performance and availability targets for each realm or workload class, represented as constraint ranges over latency, throughput, availability, error rate, and other metrics.
+
+All state variables are explicitly typed, and relationships among variables—such as "workload W requires resource R with capacity C" or "realm A may not share physical nodes with realm B"—are expressed as declarative constraints rather than procedural allocation logic.
+
+##### 11.7.2 Constraint-Governed Scheduling and Allocation
+
+The control plane operates by treating scheduling and allocation proposals as candidate state transitions that must satisfy all declared constraints. The allocation process proceeds as follows:
+
+**Proposal Generation**. External agents, schedulers, or heuristic optimizers generate candidate resource allocations, workload placements, or migration plans. These proposals specify which workloads should be assigned to which resources within which realms, and may be generated by classical bin-packing algorithms, learned schedulers, human operators, or hybrid systems. Proposals are treated as untrusted inputs and carry no inherent authority.
+
+**State Injection and Projection**. Each proposal is injected into the constraint-governed state model as a partial assignment to degrees of freedom (for example, workload-to-resource mappings, realm allocation adjustments). The CPSC engine then projects this partial state, deterministically deriving all implied variable values (such as aggregate resource utilization per realm, SLA compliance status, isolation verification results) and checking whether the projection converges to a state satisfying all constraints.
+
+**Constraint Evaluation**. The projection process evaluates all applicable constraints including: resource capacity constraints ensuring that allocated resources do not exceed available capacity for any resource type; isolation constraints verifying that realms assigned to the same physical resources satisfy declared non-interference policies; SLA and error-budget constraints checking that the proposed allocation maintains or improves SLA compliance and does not exhaust error budgets; policy rule satisfaction confirming that all security, compliance, affinity, and priority rules are satisfied; and temporal constraints ensuring deadlines and maintenance windows are respected.
+
+**Accept or Reject**. If projection converges to a valid state, the proposal is accepted and the control plane commits the new resource allocation by updating realm assignments, workload placements, and resource bindings. If projection fails or any constraint is violated, the proposal is deterministically rejected, and the control plane provides structured feedback identifying which constraints failed and which variables contributed to the violation. No allocation occurs unless projection succeeds.
+
+**Governance and Audit Logging**. All accepted allocations, rejected proposals, and constraint violations are recorded in an immutable ledger with timestamps, proposal identifiers, constraint model versions, and provenance metadata. This enables deterministic replay, forensic analysis, and compliance auditing.
+
+The control plane does not execute heuristic scheduling algorithms internally; instead, it acts as a deterministic validity oracle for proposals generated externally. This separation allows multiple scheduling heuristics, optimization solvers, or learned schedulers to coexist, each proposing allocations that the control plane validates against a shared constraint model.
+
+##### 11.7.3 Dynamic Workload Migration and Rebalancing
+
+In some embodiments, the control plane supports dynamic workload migration and resource rebalancing in response to changing conditions such as workload arrival or completion, resource failures or additions, SLA violations or error budget exhaustion, policy updates or security incidents, and optimization opportunities identified by external analysis.
+
+Migration proposals specify source and destination realms or resources, workload identifiers, and migration parameters (such as live migration, checkpoint-restart, or cold migration). The control plane treats each migration as a proposed state transition and applies constraint projection to verify that the post-migration state satisfies all constraints, including continuity constraints ensuring that in-flight workloads are not disrupted beyond acceptable bounds, resource availability confirming that destination resources have sufficient capacity, and isolation preservation verifying that migration does not introduce new isolation violations.
+
+Migration decisions are deterministic: given the same system state, constraint model, and migration proposal, projection produces the same accept or reject decision. This eliminates emergent, hard-to-explain migration behavior common in multi-heuristic orchestration systems.
+
+##### 11.7.4 Hardware and Hybrid Realization
+
+The constraint-governed control plane may be realized in software, hardware, or hybrid architectures.
+
+**Software Embodiments** implement constraint projection using deterministic solvers, SAT/SMT engines, or custom projection algorithms executing on general-purpose processors or dedicated control nodes. Software embodiments are suitable for datacenter-scale orchestration, cloud resource management, and hybrid cloud environments.
+
+**Hardware Embodiments** implement constraint evaluation and projection directly in FPGA or ASIC fabrics, enabling line-rate governance for high-frequency allocation decisions, fine-grained temporal resource slicing, and real-time workload admission control. In hardware realizations, constraint rules are encoded in parallel constraint evaluation units coupled to state registers representing realms, resources, and workloads. Allocation proposals are injected via memory-mapped interfaces or streaming protocols, projection occurs in deterministic hardware cycles, and accept/reject decisions are produced with bounded, microsecond-scale latency. Hardware embodiments are suitable for edge computing environments, network function virtualization (NFV) orchestration, high-performance computing (HPC) fabrics, and systems requiring provable real-time governance guarantees.
+
+**Hybrid Embodiments** partition control plane logic between software-based policy management, constraint model compilation, and strategic planning, and hardware-based real-time constraint evaluation and admission control. In hybrid systems, software layers manage slow-changing policy updates and long-term optimization, while hardware layers enforce fast-path allocation decisions and guarantee isolation and resource bounds at line rate.
+
+##### 11.7.5 Technical Advantages and Applications
+
+The constraint-governed smart control plane provides several technical advantages over conventional orchestration and scheduling systems:
+
+**Distinction from Conventional Orchestration Systems**. Conventional procedural orchestration systems such as Kubernetes, OpenStack, Apache Mesos, and cloud provider schedulers (AWS ECS, Azure Service Fabric, Google Kubernetes Engine) employ heuristic scheduling algorithms, imperative placement logic, and procedural policy enforcement. These systems make allocation decisions through code execution paths that branch on resource availability, policy checks, and optimization heuristics. In contrast, the disclosed constraint-governed control plane treats scheduling as deterministic constraint projection: all allocation logic is expressed declaratively as constraints over explicit state variables, proposals are validated through mathematical projection rather than procedural evaluation, and policy violations are structurally impossible rather than caught by runtime checks. This fundamental architectural difference enables deterministic reproducibility, unified multi-scheduler coexistence, and mathematically enforceable isolation that conventional orchestration systems cannot provide.
+
+**Deterministic Governance**. All allocation decisions are deterministic functions of system state and constraint models, enabling reproducible scheduling behavior, simplified testing and validation, and elimination of emergent multi-scheduler conflicts.
+
+**Mathematically Enforceable Policies**. Isolation, resource bounds, SLAs, and security policies are expressed as constraints and enforced through projection rather than through procedural checks that may be bypassed or incorrectly implemented. Policy violations are structurally impossible if projection succeeds.
+
+**Unified Multi-Scheduler Support**. Multiple external schedulers, optimizers, or learned allocation agents can coexist, each generating proposals that the control plane validates. This enables experimentation with novel scheduling algorithms without risking policy violations or resource conflicts.
+
+**Auditability and Compliance**. The immutable ledger of accepted allocations, rejected proposals, and constraint violations provides complete provenance and enables compliance auditing, forensic investigation, and deterministic replay for incident analysis.
+
+**Separation of Authority and Intelligence**. Scheduling intelligence is separated from governance authority: external agents propose allocations, but the control plane determines validity. This decouples optimization heuristics from correctness enforcement.
+
+**Hardware-Enforced Isolation**. In hardware embodiments, isolation and resource governance are enforced in silicon, providing stronger guarantees than software-based enforcement that may be vulnerable to exploits, misconfigurations, or software bugs.
+
+Representative applications include: datacenter and cloud resource orchestration for multi-tenant environments with strict isolation and SLA requirements; edge computing and IoT gateways with heterogeneous accelerators (GPUs, FPGAs, TPUs, custom ASICs) requiring real-time admission control; high-performance computing (HPC) and scientific computing clusters with complex job dependencies, affinity rules, and power budgets; network function virtualization (NFV) with real-time packet processing, guaranteed bandwidth, and latency bounds; autonomous vehicle compute platforms with safety-critical real-time tasks, mixed-criticality scheduling, and power/thermal constraints; and hybrid quantum-classical systems requiring coordinated scheduling of classical preprocessing, quantum execution, and classical postprocessing under error-budget and calibration constraints.
+
+In some embodiments, the constraint-governed control plane is integrated with realm-based execution environments as described in Section 9.3, wherein the proto-cell fabric and epoch controller are partitioned into deterministic realms with auditable time, bandwidth, and energy allocations, and the control plane governs realm scheduling and fabric access using the same constraint-projected governance framework.
 
 #### 11.8 Telemetry, Logging, and Replay
 
@@ -308,13 +383,41 @@ CPSC enables deterministic, explainable computation without reliance on neural i
 
 #### 11.10 Constraint-Projected Adaptive Compression
 
-In Constraint-Projected Adaptive Compression (CPAC), compression proceeds in three conceptual stages. First, CPSC or an equivalent constraint-architected system ingests raw input (for example, bytes, logs, telemetry frames, or token streams), maps this input into a constraint-architected state, and applies deterministic projection to obtain a minimal degree-of-freedom (DoF) representation. Structural constraints are enforced at this stage, and implied or derivable fields are removed.
+In Constraint-Projected Adaptive Compression (CPAC), lossless data compression is achieved through a four-stage adaptive architecture that automatically detects data domains, extracts semantic structure, applies constraint projection to reduce degrees of freedom, and adaptively selects entropy coding methods. The system achieves compression improvements of 1.5x to 3.4x over domain-agnostic compressors on structured data while maintaining bit-exact reconstruction and supporting streaming operation.
 
-Second, an optional predictor operates only over the degree-of-freedom representation (for example, per block or across blocks), producing predicted degrees of freedom. The encoder then forms residuals between actual and predicted degrees of freedom.
+##### 11.10.1 Four-Stage Compression Pipeline
 
-Third, an entropy encoder processes the residual stream and, in some embodiments, portions of the degree-of-freedom stream, to produce a compressed bitstream.
+The CPAC system comprises four integrated stages:
 
-On decode, the pipeline is applied in reverse order. An entropy decoder reconstructs predicted degrees of freedom and residuals, which are combined to reconstruct the actual degree-of-freedom representation. This reconstructed degree-of-freedom representation is then injected into a CPSC projection engine to reconstruct a full valid state. Predictive components do not operate directly on raw input bytes; they operate only on the structured degree-of-freedom sequences produced by the projection stage.
+**Stage 0: Domain Detection**. The system automatically identifies data type and structure using a multi-tiered detection strategy comprising: magic byte signature matching (for example, PNG: `89 50 4E 47`, JPEG: `FF D8 FF`); file extension analysis mapping extensions to domains (for example, `.log` → log domain, `.py` → Python domain); content pattern matching via regex-based structure detection on initial data blocks; statistical analysis including entropy measurement, ASCII fraction computation, and alignment pattern detection; and fallback generic binary or text classification. Each detection produces a confidence score from 0.0 to 1.0, with thresholds determining whether domain-specific or generic compression is applied. Supported domains include, without limitation: logs (VLBI observatory logs, Syslog RFC 5424 and BSD, Apache and Nginx access logs, PostgreSQL logs, HDFS logs, JSON logs); source code (Python, C, C++, JavaScript, TypeScript, Rust, Go, Java, Kotlin, Swift); structured data (JSON, XML, HTML, YAML, TOML, CSV, TSV, INI); genomics data (FASTA, PDB protein database); audio (WAV, FLAC); images (PNG, JPEG, GIF, BMP); binary executables (ELF, PE, Mach-O); and database formats (SQLite, Parquet, Avro, Protobuf, MessagePack).
+
+**Stage 1: Semantic Normalization**. Upon domain identification, the system applies domain-specific parsers referred to as Semantic Normalization (SN) parsers that extract semantic structure from domain-specific content. This approach draws upon prior art in categorical and semantic organization of structured content, including systems for organizing text and data into semantic categories and extracting structured fields based on content patterns (see, for example, US 2024/0248922 A1 to Merkur, which discloses methods for organizing written works into categorical structures and extracting semantic organization from text). In CPAC embodiments, semantic normalization produces three output components: structured fields comprising semantic attributes such as timestamps, log levels, facilities, commands, and identifiers; residual data comprising remaining unstructured content after field extraction; and metadata comprising parser statistics, field counts, and domain parameters. As a representative example, a VLBI observatory log parser extracts from input `2003.328.14:56:39.32#antcn#Initialization: system ready` the structured fields `t_seconds: 53799.32` (timestamp converted to seconds within day), `line_type: "#"` (comment or control marker), `facility: "antcn"` (antenna control subsystem), and `verb: "Initialization"` (command or operation), with residual "system ready". Similarly, a Syslog RFC 5424 parser extracts from input `<34>1 2024-02-10T14:56:39Z host app 1234 - - User login successful` the structured fields `priority: 34` (facility × 8 + severity), `timestamp: 1707575799` (Unix epoch seconds), `hostname: "host"`, `app_name: "app"`, and `proc_id: 1234`, with residual "User login successful". A Python AST-based parser extracts from input `def calculate_total(items):` the structured fields `node_type: "FunctionDef"`, `name: "calculate_total"`, `args: ["items"]`, and `decorators: []`, with body content and string literals as residuals. Semantic normalization typically extracts 8-15% of information as structured fields, leaving 85-92% as residuals, enabling high compression of structured fields (for example, 99x via range coding over categorical distributions) while preserving residual patterns for LZ77-based entropy coders, yielding combined compression improvements of 1.5x to 3.4x over domain-agnostic compression.
+
+**Stage 2: Constraint Projection**. Structured fields extracted by semantic normalization undergo constraint-projected state compression (CPSC) modeling fields as probabilistic distributions. Categorical distributions are learned for discrete fields such as log levels, facilities, and commands, with frequency distributions learned from data and range coding applied for near-optimal compression achieving overhead within 0.01% of theoretical entropy. Delta encoding is applied to temporal fields, encoding timestamp differences rather than absolute values, typically requiring 2-3 bits per timestamp delta versus 32-64 bits absolute. Conditional models represent dependent fields by modeling P(field₂ | field₁) for correlated attributes, for example where log level influences message template distribution. The range coding implementation employs arithmetic coding variants with O(1) symbol encoding via direct probability lookup, O(log n) symbol decoding via binary search on cumulative probability distributions, and periodic normalization to maintain numeric precision, achieving compression within 3 bytes of theoretical entropy on 1 MB files. Representative performance for VLBI structure compression achieves 10,564 bytes (99.6x from 1.05 MB of original structure) with range coder overhead of 0.0% (actual: 10,567 bytes versus ideal: 10,564.14 bytes).
+
+**Stage 3: Adaptive Entropy Coding**. Residual data undergoes adaptive entropy coding selection based on domain-based heuristics (default compressor per domain, for example logs use gzip-9 for long-range LZ77 patterns, source code uses zstd-19 for identifier repetition, structured text uses brotli-11 for markup optimization), content-based statistical analysis (high entropy >7.5 bits/byte uses lightweight compression such as gzip-1, low entropy <4.0 bits/byte uses aggressive compression such as zstd-22, moderate entropy uses balanced compression such as gzip-9 or zstd-3), and adaptive fallback wherein if compression expands data (ratio <1.0) the system stores uncompressed with marker, common for pre-compressed or encrypted residuals. Supported entropy coders include gzip (DEFLATE) levels 1-9, Zstandard levels 1-22, Brotli quality 1-11, LZ4 fast mode, and uncompressed storage.
+
+##### 11.10.2 Streaming Operation and Container Format
+
+The system supports streaming mode for real-time and large-file compression via block-based processing wherein data is processed in configurable blocks (default 64 KB), incremental semantic normalization wherein parsers maintain minimal state between blocks, streaming range coding wherein encoder flushes periodically without losing compression, and self-synchronizing block format enabling independent decompression. The streaming format comprises: stream header containing magic bytes, version, domain, and configuration; one or more blocks each containing block header (offset and size), incremental semantic normalization metadata, CPSC-encoded structure, entropy-coded residual, and block CRC32; and stream footer containing block index (offsets for seeking) and stream CRC32. Streaming advantages include constant memory usage regardless of input size, compression of infinite streams such as log tails and network capture, random access decompression via block index, and fault tolerance wherein corrupted blocks do not prevent subsequent block decompression. Use cases include real-time log compression, network traffic capture with inline compression, database replication stream compression, and continuous scientific data acquisition.
+
+##### 11.10.3 Performance Characteristics and Two-Track Operation
+
+The system achieves representative compression ratios versus gzip-9 baseline of: VLBI observatory logs 3.0x-4.0x improvement (based on real-world VLBI observatory logs); Syslog large files 3.38x improvement (23.79x total versus 7.04x gzip); Apache access logs 1.43x improvement (7.12x total versus 4.98x gzip); XML documents 1.36-1.57x improvement scaling to gigabyte files; WAV audio 1.45-18.9x improvement via domain-specific projection; and Python source 1.20-1.40x estimated via AST-based structure.
+
+The system maintains two operational modes: Track 1 domain-aware compression (semantic normalization + CPSC + entropy) activated when domain is detected with confidence exceeding 0.7 and a parser is available, achieving 1.5x to 3.4x improvement over gzip for logs, source code, and structured data; and Track 2 generic compression (fallback) activated when domain is unknown or confidence detection is low, applying generic CPSC (32-byte blocks) or direct entropy coding, achieving baseline performance that may underperform gzip, used for Calgary and Canterbury benchmarks, encrypted data, and pre-compressed archives. Adaptive decision logic routes input through domain detection, then if confidence exceeds 0.7 and parser exists applies Track 1 (semantic normalization + CPSC) yielding 1.5-3.4x improvement, otherwise applies Track 2 (generic) yielding baseline compression.
+
+##### 11.10.4 Container Format and Technical Advantages
+
+The compressed file structure for batch mode comprises: header containing magic bytes "CPAC" (4 bytes), version identifier (uint8), domain string (length-prefixed), original size (uint64), and compressed size (uint64); semantic normalization metadata (pickled or binary) containing field names and types, parser configuration, and record count; CPSC structure data (range-coded) containing categorical models, encoded field values, and delta-encoded timestamps; residual data (entropy-coded) specifying method (gzip, zstd, brotli, lz4, or none) and compressed residual stream; and CRC32 (uint32) integrity check. The streaming variant comprises multiple independent blocks each with block header, metadata, structure, residual, and CRC.
+
+Technical advantages versus domain-agnostic compressors (gzip, zstd, brotli) include exploitation of semantic structure unavailable to LZ77 and Huffman algorithms, achievement of 1.5x to 3.4x better compression on structured data, and maintenance of comparable speed (2.6 MB/s encode, 65.7 MB/s decode). Versus domain-specific compressors (specialized formats), a single system handles 60+ domains without format-specific tools, provides automatic detection and configuration without manual parameter tuning, and offers extensibility via YAML configuration files enabling addition of new domains without code changes. Versus generic CPSC (fixed-block approaches), semantic normalization extracts meaningful fields versus arbitrary byte blocks, adapts to domain characteristics (logs require temporal deltas, code requires AST), and achieves 3x-10x better compression than generic 32-byte block CPSC.
+
+##### 11.10.5 Prior Art and Distinction
+
+Prior art in semantic and categorical organization of content includes systems for organizing text into categorical structures and extracting structured information from written works. For example, US 2024/0248922 A1 to Merkur discloses a system for searching text by organizing written works (such as religious texts) into categorical structures including stories, slices, clusters, and concepts, and using color-coding and categorical organization to facilitate navigation and search. The Merkur system organizes content semantically based on themes, subjects, and categorical relationships.
+
+The present CPAC embodiment distinguishes from such prior art in several material respects. First, whereas prior semantic organization systems such as Merkur focus on organizing and searching human-readable text for navigation and retrieval purposes, CPAC applies semantic normalization as a preprocessing stage for lossless data compression, wherein extracted semantic fields are modeled as probabilistic distributions and compressed via range coding, and residuals are separately entropy-coded. Second, whereas prior systems organize content into categorical clusters for user interaction and display, CPAC performs domain-specific parsing to extract typed fields (timestamps, log levels, facilities, commands, numeric values) that are modeled as constrained state variables and projected into minimal degree-of-freedom representations. Third, CPAC operates in a four-stage adaptive compression pipeline integrating automatic domain detection, semantic field extraction, constraint-projected state compression with range coding, and adaptive entropy coding, achieving measurable compression improvements (1.5x to 3.4x) over domain-agnostic compressors while maintaining lossless bit-exact reconstruction and supporting streaming operation with constant memory usage. Fourth, CPAC employs domain-specific parsers for machine-generated structured data (logs, source code, database formats, scientific data) rather than human-authored narrative text, and applies probabilistic modeling and information-theoretic compression rather than categorical organization for search and navigation. The combination of automatic domain detection, semantic field extraction adapted from categorical organization principles, constraint-projected state compression, and adaptive entropy coding in a unified lossless compression system with streaming support represents a novel application distinct from prior semantic organization and text search systems.
 
 #### 11.11 Quantum and Non-Von-Neumann Execution Backends
 
@@ -341,6 +444,14 @@ In some embodiments, the interaction between the learned prediction stage and th
 In additional embodiments, multiple predictor families are defined and used selectively. For example, different learned predictors may be trained for different data domains, such as source code, logs, or metrics, each paired with a corresponding semantic system specification or constraint architecture. Different performance profiles may also be provided, such as a low-complexity predictor for real-time or low-power operation and a higher-capacity predictor for maximum compression efficiency. In some embodiments, a mixture-of-experts arrangement is used in which, for each block or region, a selector chooses among a small set of predictor models based on local features or prior performance, and the selected model identity is recorded in a low-rate side stream that is decoded alongside the residual or distribution information.
 
 In these embodiments, learning and prediction occur in the structured DoF space defined by constraints and the semantic system specification, rather than directly over raw bytes or unconstrained token streams. The overall CPAC pipeline therefore composes three separable and updatable elements: a constraint-architected projection stage that defines the semantic DoF space, a learned prediction stage operating within that space, and an entropy coding stage that encodes residual or distributional information. Multiple combinations of constraint architectures and learned predictors may be supported, with each compressed stream identifying the particular constraint model and predictor model used, while the underlying constraint-projected execution semantics remain unchanged.
+
+##### 11.12.2 General Applicability and Structural-Class Taxonomy
+
+In further embodiments, learned structure-induction and prediction techniques are applied beyond compression to other CPSC applications including cryptographic state proposal, configuration generation, and scheduling. In all such embodiments, learned models operate as proposal mechanisms that suggest candidate degrees of freedom, structural boundaries, or state assignments, which are then validated or rejected by constraint projection. Constraint projection remains the sole authority on validity; learned models cannot override constraints or cause acceptance of invalid state.
+
+In some embodiments, learned models are organized according to structural classes of constrained state spaces rather than domain-specific formats. Structural classes may include fixed-arity block-structured spaces, record-oriented or delimited spaces, header-payload container structures, temporally correlated sequential spaces, algebraically constrained spaces, and opaque or high-entropy spaces. This classification enables learned models to generalize across heterogeneous data sources sharing common structural properties.
+
+Learned structure-induction is optional in all embodiments. Systems remain fully functional when learned stages are bypassed, with correctness, determinism, and reconstruction guarantees preserved. When present, learned models are frozen, versioned, and executed deterministically. Incorrect or suboptimal model selection does not compromise correctness, and negative cases (encrypted, compressed, or adversarial inputs) degrade gracefully without expansion beyond expected overhead.
 
 #### 11.13 Constraint-Projected Execution of Post-Quantum Cryptographic Algorithms
 
@@ -436,99 +547,171 @@ In certain embodiments, the constraint-projected cryptographic execution archite
 
 In such embodiments, FIG. 10 illustrates a non-limiting verification pipeline in which a post-quantum artifact, such as a signature or ciphertext produced by a standardized lattice- or hash-based scheme, is interpreted as a vector of degrees of freedom injected into a cryptographic state model and projected into a valid state or rejected. FIG. 11 illustrates a corresponding state manifold in which entropy-bearing variables and derived variables are explicitly separated. FIG. 12 illustrates a constraint fabric specialized for post-quantum verification, in which these same models are executed by hardware without an instruction stream.
 
-These communication and key-management embodiments realize, in the post-quantum setting, the three conceptual layers described in the public-facing PQC overview: (1) data in transit, in which PQC or hybrid handshakes are modeled as constraint-projected transitions between endpoint states; (2) data at rest, in which stored artifacts and key hierarchies are represented by degrees of freedom over a constrained cryptographic state; and (3) identity and lifecycle, in which certificate authorities, code-signing keys, and attestation records are represented and governed within the same constraint-projected framework. Hybrid deployments in which both pre-quantum and post-quantum mechanisms coexist are captured by extending the cryptographic state model to include legacy and PQC variables together with constraints expressing migration and downgrade policies (see also Section 11.17).
+These communication and key-management embodiments realize, in the post-quantum setting, the three conceptual layers described in the public-facing PQC overview: (1) data in transit, in which PQC or hybrid handshakes are modeled as constraint-projected transitions between endpoint states; (2) data at rest, in which stored artifacts and key hierarchies are represented by degrees of freedom over a constrained cryptographic state; and (3) identity and lifecycle, in which certificate authorities, code-signing keys, and attestation records are represented and governed within the same constraint-projected framework. Hybrid deployments in which both pre-quantum and post-quantum mechanisms coexist are captured by extending the cryptographic state model to include legacy and PQC variables together with constraints expressing migration and downgrade policies.
 
-#### 11.14 Optional Learned Structure-Induction Embodiment (Neural-Assisted CPSC)
+#### 11.14 Constraint-Projected Structural Malware Discovery with Streaming Enforcement
 
-In certain embodiments, the constraint-projected state computing (CPSC) system includes an optional learned structure-induction stage positioned prior to constraint projection. This stage employs one or more trained machine-learning models to propose structured representations, annotations, or candidate state assignments derived from input data. The learned models do not determine correctness or validity and do not replace constraint enforcement. Instead, they generate proposals that are subsequently validated, corrected, or rejected by CPSC projection.
+In one embodiment, the present disclosure provides a deterministic system and method for discovering malicious executable payloads and data streams by projecting observed data into a constrained state space representing structural and semantic validity of a target execution or data format. Rather than classifying content as malicious based on signatures, heuristics, or statistical inference, the system determines whether the content can exist as a valid state under a declared constraint model. Payloads that cannot be projected into a valid state are identified as structurally invalid and may be rejected, quarantined, or subjected to further analysis.
 
-The learned structure-induction stage may operate on arbitrary input data, including files, streams, or blocks of data, and may output proposed state variables, inferred relationships, predicted degrees of freedom, residual estimates, or auxiliary metadata. All outputs of the learned stage are treated as non-authoritative and are subject to deterministic constraint projection. Cryptographic correctness, compression correctness, and state validity are determined solely by convergence of the CPSC projection process.
+This embodiment is particularly suited for streaming operation, where the payload is evaluated incrementally as data is received, and structural invalidity may be detected prior to receipt of the complete payload.
 
-##### 11.14.1 Unified and Multiple Model Configurations
+##### 11.19.1 System Architecture
 
-The learned structure-induction stage may be implemented using a single trained model applicable across heterogeneous data domains or using multiple trained models specialized for different classes of structured state spaces. In some embodiments, a unified model is trained on diverse data types to induce general structural regularities applicable across formats. In other embodiments, separate models are trained for different structural classes, such as record-oriented data, framed streams, block-structured binaries, or text-like representations.
+In this embodiment, a computing system comprises:
 
-Model selection, composition, or sequencing may be performed dynamically based on input characteristics, configuration, or confidence measures. Incorrect or suboptimal model selection does not compromise correctness, as all proposed structure is validated by constraint projection. In some embodiments, multiple models are applied sequentially or hierarchically, with earlier models providing coarse structure proposals and later models refining those proposals prior to projection.
+1. A state construction module, configured to map incoming bytes or symbols of a payload into a structured state representation comprising format-relevant variables;
+2. A constraint model, expressed declaratively and defining structural invariants of a valid payload or executable format;
+3. A constraint-projected state computing (CPSC) engine, configured to project proposed states into validity under the constraint model;
+4. A convergence and validity evaluator, configured to determine whether projection converges to a valid state or fails; and
+5. A response module, configured to take one or more actions when projection fails or succeeds.
 
-##### 11.14.2 Determinism and Optionality
+The constraint model and projection engine operate without instruction sequencing, probabilistic thresholds, or learned decision boundaries. Only the existence or non-existence of a valid projected state is semantically meaningful.
 
-The learned structure-induction stage is optional and may be bypassed entirely without affecting correctness. The CPSC system remains fully functional in the absence of learned proposals. When present, learned models are frozen, versioned, and executed deterministically for a given input and configuration. Projection behavior and output validity remain deterministic and reproducible regardless of the presence or absence of learned structure induction.
+##### 11.19.2 Structural State Representation
 
-##### 11.14.3 Relationship to Compression and Cryptography
+In this embodiment, the payload is represented as a finite state comprising variables that encode structural properties of the payload. Such variables may include, without limitation:
 
-In compression embodiments, learned structure-induction may be used to propose structured latent representations that reduce the effective degrees of freedom prior to constraint-projected adaptive compression. In cryptographic embodiments, learned structure-induction may be used to propose candidate cryptographic state components or intermediate values, which are then validated by cryptographic constraints during projection. In all cases, learned models serve only as proposal mechanisms and do not alter cryptographic assumptions, security properties, or lossless reconstruction guarantees.
+- header identifiers and magic values;
+- declared header sizes and version fields;
+- section counts, offsets, and sizes;
+- executable region declarations;
+- entry point addresses;
+- integrity fields such as checksums or hashes; and
+- derived variables representing computed properties, including total payload length, checksum values, or region containment relationships.
 
-##### 11.14.4 Authority of Constraint Projection
+Each variable is associated with an explicit domain, and certain variables are designated as derived variables whose values are fully determined by the constraints.
 
-In all embodiments, constraint projection is the sole authority on state validity. Learned models cannot override constraints, introduce new semantics, or cause acceptance of invalid state. Projection convergence defines success; projection failure defines rejection. This separation ensures that learned components may improve efficiency or compression effectiveness without compromising correctness, security, or determinism. In some embodiments targeting agentic development workflows, these guarantees are applied to conversations, prompts, and agent proposals as further detailed in Section 13 (CPSC-Governed Agentic Development).
+##### 11.19.3 Constraint Model for Validity Enforcement
 
-##### 11.14.5 Structural-Class-Based Learned Model Taxonomy
+The constraint model encodes format-level invariants that must hold for a payload to be structurally valid. In one embodiment, the constraints include:
 
-In certain embodiments, one or more learned structure-induction models are organized and trained according to classes of constrained state structure rather than according to file types or explicit data formats. Each structural class is defined by the nature of dependencies, invariants, and reconstruction relationships present in the underlying state space, rather than by syntactic identifiers or external metadata. This classification enables learned models to generalize across heterogeneous data sources that share common structural properties while avoiding brittle reliance on format detection.
+- that a declared magic value corresponds to a recognized format;
+- that header sizes and section descriptors lie within the bounds of the payload;
+- that declared sections do not overlap in memory or file space;
+- that executable regions are fully contained within declared sections;
+- that entry points lie within executable regions;
+- that integrity fields, when present, match computed values; and
+- that no executable region exists without explicit structural declaration.
 
-Structural classes may include, by way of example and not limitation: fixed-arity block-structured state spaces in which state variables are arranged in uniform blocks; record-oriented or delimited state spaces in which variable-length records are separated by boundaries or framing; header–payload or container-structured state spaces in which metadata constrains payload interpretation; temporally correlated or sequential state spaces in which state at one position constrains state at adjacent positions; algebraically constrained state spaces governed by explicit equations or validity relations; and opaque or high-entropy state spaces in which little exploitable structure is present. A single input may exhibit multiple structural classes simultaneously, and learned models may propose structure for one or more classes within the same input.
+Constraints are side-effect free, order-independent, and jointly enforced. The model does not encode malicious behavior patterns, signatures, or threat intelligence.
 
-Learned structure-induction models may be trained to recognize and propose candidate structure associated with one or more of these structural classes, including boundary proposals, inferred dependencies, candidate derived variables, predicted degrees of freedom, or auxiliary annotations. In some embodiments, a single learned model is trained across multiple structural classes to induce general structural regularities. In other embodiments, multiple learned models are trained for different structural classes and may be applied selectively, sequentially, or hierarchically. Model selection or composition may be based on input characteristics, configuration, confidence estimates, or other heuristics, but incorrect or suboptimal selection does not affect correctness.
+##### 11.19.4 Projection-Based Malware Discovery
 
-All structure proposed by learned models is treated as non-authoritative and is subject to validation by constraint-projected state computing. The constraint projection stage enforces declarative constraints defining valid state and determines whether a proposed structure is accepted, corrected, or rejected. Projection convergence defines successful interpretation of the proposed structure; projection failure defines invalid or unsupported structure. In some embodiments, learned models may explicitly abstain from proposing structure for inputs that appear structurally opaque or high-entropy, allowing the system to bypass learned induction and proceed directly to constraint projection without loss of correctness.
+In operation, a proposed state is formed from the observed payload data and submitted to the CPSC engine. The engine attempts to project the proposed state into a valid state that satisfies all declared constraints.
 
-##### 11.14.6 Benchmarking and Evaluation
+If projection converges within declared bounds, the payload is deemed structurally valid under the model.
 
-In certain embodiments, the effectiveness of learned structure-induction models organized by structural class is evaluated using Constraint-Projected Adaptive Compression benchmarking. Benchmarking is performed by comparing compression pipelines that include learned structure-induction stages against pipelines that omit such stages, while holding constant the constraint models, projection parameters, and entropy coding backends. Metrics may include compression ratio, reconstruction fidelity, encode and decode time, determinism, and projection convergence behavior.
+If projection fails to converge, or if no valid state exists that satisfies all constraints, the payload is deemed structurally invalid.
 
-Because learned structure-induction operates only as a proposal mechanism, benchmarking isolates its contribution by measuring changes in degree-of-freedom reduction, residual magnitude, or projection efficiency attributable to different structural-class models. This evaluation approach enables quantitative comparison of unified versus multiple learned models and of different structural classes without affecting correctness or lossless reconstruction guarantees.
+In this embodiment, structural invalidity is treated as an indicator of maliciousness, exploit activity, or protocol abuse, because legitimate payloads cannot violate fundamental format invariants.
 
-##### 11.14.7 Negative-Case Handling and Graceful Degradation
+##### 11.19.5 Streaming Operation
 
-In certain embodiments, the system explicitly supports negative cases in which learned structure-induction does not identify meaningful structure or proposes structure that is incompatible with the constraint model. In such cases, constraint projection may reject the proposed structure, correct it, or converge only on a trivial valid state corresponding to a high degree-of-freedom representation. The system may treat such inputs as structurally opaque and bypass learned structure-induction for subsequent processing.
+In one embodiment, the system operates in a streaming mode in which:
 
-This behavior ensures that performance degrades gracefully on incompressible, encrypted, already-compressed, or adversarial inputs, with compression ratios approaching those of baseline entropy coding and without introducing expansion beyond expected overhead. Correctness, determinism, and reconstruction fidelity are preserved regardless of learned model performance, and no learned component is permitted to cause acceptance of invalid state.
+- the payload is received incrementally;
+- partial state proposals are constructed as data arrives;
+- constraints are evaluated continuously; and
+- projection is attempted on partial states.
 
-#### 11.15 Quantum Resource Governance and Scheduling
+Because constraints apply locally and globally to state variables, projection failure may occur before the full payload is received. Upon detection of projection failure, the system may immediately terminate the stream, isolate the payload, or trigger defensive actions.
 
-In some embodiments, Constraint-Projected State Computing is applied to governance and scheduling of heterogeneous computing resources including one or more quantum processors. In these embodiments, a resource governance fabric is modeled as a constrained state space in which variables represent realms, resource pools, workloads, policies, and scheduling decisions across classical and quantum backends.
+This streaming embodiment avoids the need to buffer entire payloads and enables early detection of malformed or exploit-bearing content.
 
-Realms may include, for example, classical CPU clusters, GPU pools, one or more quantum processing units (QPUs), quantum simulators, and specialized accelerators. State variables describe realm capacities, queue depths, error budgets, access control attributes, tenancy and isolation labels, maintenance windows, and regulatory classifications. Additional variables represent workload descriptors such as required backend capabilities, latency and fidelity requirements, security posture, and tenancy constraints.
+##### 11.14.6 Reduction of False Positives and Distinction from Prior Art
 
-Constraints encode governance and scheduling rules. Examples include constraints that restrict particular workloads to specific realms (for example, requiring that certain safety-critical or regulated workloads may only target QPUs meeting declared calibration and error-rate thresholds), constraints that enforce isolation between tenant realms, constraints that bound aggregate error budgets or utilization metrics over time, and constraints that require that PQC-governed traffic use only realms configured with approved cryptographic stacks.
+Conventional malware detection systems employ signature-based detection (for example, traditional antivirus engines matching known malware signatures), heuristic detection (analyzing behavioral patterns or suspicious code sequences), or machine-learning classification (training models on labeled malware datasets). These approaches identify malware by recognizing patterns associated with known threats or learned characteristics of malicious behavior. Signature-based systems require continuous database updates and fail against novel or polymorphic malware. Heuristic and ML-based systems produce false positives when encountering unusual but legitimate payloads and false negatives when malware employs obfuscation or adversarial techniques.
 
-Given a proposed scheduling state—for example, proposed assignments of workloads to realms, start times, and resource slices—a projection engine enforces governance and resource constraints to determine a valid assignment. If a valid constrained state exists within the declared limits, projection converges to a scheduling configuration in which all workloads are assigned to compatible realms, error budgets and utilization bounds are respected, and isolation and policy rules are satisfied. If no such configuration exists, projection fails, and the proposed assignments are rejected or revised.
+The disclosed embodiment distinguishes fundamentally by enforcing structural validity rather than detecting malicious patterns. A payload is rejected only if it cannot satisfy explicit format invariants encoded as declarative constraints, independent of threat intelligence, signatures, or learned models. This constraint-projected approach does not require training data, signature databases, or behavioral heuristics. Instead, it validates whether a payload can exist as a structurally coherent state under the declared format constraints.
 
-In some embodiments, this quantum resource governance fabric is implemented directly in hardware as a realm-governance CPSC fabric coupled to or embedded within datacenter infrastructure. Projection may execute at the boundary between realms, such that any attempt to allocate, migrate, or submit workloads to quantum or classical resources is first projected into a constraint-satisfying governance state before taking effect. In other embodiments, the same constraint architecture is executed in software or hybrid software–hardware control planes, while still providing deterministic, auditable enforcement of quantum and classical resource policies.
+As a result, payloads that are unusual, compressed, obfuscated, or previously unseen but nevertheless structurally valid are accepted, thereby materially reducing false positive detections. Conversely, payloads violating fundamental format invariants are rejected deterministically regardless of obfuscation or novelty, reducing false negatives. The system operates deterministically with reproducible outcomes across implementations, enabling formal verification and audit of detection logic through inspection of constraint models rather than analysis of opaque signature databases or neural network weights.
 
-These governance embodiments treat quantum backends as first-class realms under a unified constraint-defined semantics, enabling deterministic, explainable, and policy-compliant allocation of quantum and classical resources over time. They do not define new quantum algorithms; instead, they govern when and how such algorithms may be executed within a broader, constraint-projected computing and resource-management environment.
+##### 11.19.7 Integration with Downstream Analysis
 
-#### 11.16 Quantum-Aware Validation and Regression Harness
+In one embodiment, structurally valid payloads may be forwarded to downstream systems for further analysis, including:
 
-In some embodiments, Constraint-Projected State Computing is employed as a validation and regression harness for quantum and other probabilistic execution backends. In these embodiments, a semantic system specification and corresponding constraint architecture define acceptable solution sets, invariants, and structural relationships for a target problem domain, while one or more classical and quantum backends are treated as proposal or sampling mechanisms operating under that specification.
+- behavioral sandboxing;
+- dynamic execution analysis;
+- signature-based scanning; or
+- statistical or machine learning classifiers.
 
-State variables in the constraint architecture represent problem instances, candidate solutions, auxiliary variables, and observable properties such as conserved quantities or structural invariants. Constraints define correctness conditions, including solution feasibility, objective structure, and domain-specific invariants that must hold across all acceptable outcomes. A deterministic CPSC executor acts as a reference implementation for small instances, reduced models, or projected subproblems for which exhaustive or deterministic verification is tractable.
+Structurally invalid payloads may be blocked or quarantined prior to such analysis, reducing computational load and attack surface.
 
-In these embodiments, quantum or approximate backends generate candidate solutions, distributions, or measurement outcome statistics for larger instances. Candidate outputs are injected into the constraint-architected state and projected. If projection converges to a valid state consistent with the declared constraints, the candidate output is accepted as structurally valid for the purposes of regression or drift analysis. If projection fails to converge or reveals constraint violations, the candidate output is flagged as invalid. Aggregated statistics of projection success or failure across batches of instances provide a deterministic, spec-defined regression signal for quantum backends.
+##### 11.19.8 Determinism and Reproducibility
 
-In some embodiments, this validation harness is used to compare multiple quantum providers, hardware generations, or compilation strategies against a common constraint-defined semantics. Divergence between backends is detected not by re-deriving algorithmic correctness proofs but by observing which backends produce candidate outputs that project into valid states under the shared constraint architecture. In further embodiments, the harness is used to detect calibration drift or configuration errors by periodically sampling workloads and projecting results to determine whether they remain within acceptable constraint-defined tolerances.
+The system operates deterministically such that:
 
-#### 11.17 Quantum-Safe Migration and Dual-Stack Cryptographic Governance
+- identical payloads produce identical projection outcomes;
+- no randomness or adaptive learning affects enforcement;
+- projection success or failure is reproducible across implementations; and
+- validity decisions are auditable by inspection of the constraint model.
 
-In some embodiments, Constraint-Projected State Computing is used to govern migration from pre-quantum cryptographic mechanisms to post-quantum cryptographic mechanisms. In these embodiments, a constraint architecture describes both legacy cryptographic state (for example, RSA or elliptic-curve key material, certificates, and protocol modes) and post-quantum cryptographic state (for example, PQC keys, certificates, and negotiated modes) within a unified constrained state space.
+##### 11.19.9 Example Applications
 
-State variables may include, for example, per-endpoint capability flags, supported cipher suites, certificate chains, key lifetimes, policy dates for quantum-safe enforcement, and deployment metadata describing which services or devices have been upgraded. Additional variables represent proposed configuration changes, such as key rotations, certificate reissuance, protocol mode changes, and rollout schedules.
+Without limitation, this embodiment may be applied to:
 
-Constraints express migration and governance policies. Examples include constraints that, after a specified policy date, external-facing services MUST NOT negotiate purely pre-quantum cipher suites; constraints that require certain high-sensitivity services to operate in dual-stack mode during a transition interval (for example, simultaneously presenting legacy and PQC certificates or signatures); constraints that govern the order in which keys and certificates may be rotated; and constraints that prohibit downgrade paths once specific milestones have been achieved.
+- executable file formats (e.g., ELF, PE, Mach-O);
+- script and bytecode formats;
+- firmware images;
+- document formats with embedded executable content;
+- network protocol streams; and
+- inter-process or inter-service message validation.
 
-Given a proposed migration or configuration state, projection determines whether the combined legacy and PQC configuration satisfies all declared policies. If a valid state exists, projection converges to a configuration that identifies which endpoints may remain legacy-only, which must operate in dual-stack mode, and which must be PQC-only, together with permissible transition steps. If no valid state exists—for example, because a proposed downgrade would violate a quantum-safe enforcement date—projection fails and the proposal is rejected.
+##### 11.19.10 Summary of Technical Advantage
 
-In some embodiments, this quantum-safe migration model is used both at design time, to synthesize compliant rollout plans, and at runtime, to enforce that only constraint-satisfying configurations are applied in production. In further embodiments, the same constraint architecture is bound to audit logs and configuration artefacts, enabling later reconstruction and verification that a system’s cryptographic posture at a given time conformed to declared quantum-safe policies.
+This embodiment discovers malicious payloads by enforcing what must be true, rather than attempting to predict what might be dangerous. By framing malware discovery as a constraint satisfiability problem over explicit structural state, the system enables early, deterministic, and low-false-positive detection, including in streaming environments.
 
-#### 11.18 Hybrid Quantum–Classical Constraint-Projected Adaptive Compression
+#### 11.15 CPSC-Governed Agentic Development Framework
 
-In some embodiments, Constraint-Projected Adaptive Compression is implemented using a combination of classical and quantum backends while preserving a single, constraint-defined semantics for compression and decompression. In these embodiments, the semantic system specification and associated constraint architecture define the degree-of-freedom space and valid reconstructed states, while different projection and prediction mechanisms are applied beneath that semantics.
+In CPSC-Governed Agentic Development (CGAD) embodiments, agentic artificial intelligence systems, software development workflows, hardware development processes, and cyber-physical system operations are governed using Constraint-Projected State Computing as a deterministic control plane. Unlike conventional agentic systems that assign authority to agents through procedural workflows or policy engines, CGAD treats agents (human or AI) as untrusted proposal generators whose actions are accepted only if projection into a constraint-defined state space succeeds.
 
-State variables and constraints define how raw input is mapped into a constraint-architected state, how a minimal degree-of-freedom representation is obtained, and how valid full states are reconstructed from degrees of freedom. Within this framework, an optional prediction stage may be realized using classical predictors, quantum-assisted predictors, or hybrid predictors that call quantum subroutines (for example, variational models or quantum approximate optimization components) to propose degrees of freedom or distributional parameters.
+##### 11.15.1 Problem Space and Limitations of Prior Art
 
-Regardless of the predictor backend, predictive outputs are treated as proposals that are injected into the constraint-architected state and projected. Projection enforces that reconstructed states satisfy all structural constraints before any entropy coding is applied or decoded. Compressed bitstreams therefore remain defined entirely in terms of degrees of freedom and constraint architectures, independent of whether classical or quantum mechanisms were used to generate predictions or intermediate proposals.
+Conventional agentic AI systems suffer from structural limitations including long-session slowdown due to unbounded context accumulation, context drift between conversational intent and code artifacts, implicit authority assigned through procedural approval pipelines, inability to safely govern hardware or remote system actions, and lack of deterministic reproducibility. These limitations become acute in hardware/software co-design, FPGA and SoC development flows, remote execution over SSH, and continuous integration across heterogeneous tools. Existing governance approaches encode authority procedurally, are brittle under scale and multi-agent interaction, fail to provide mathematically enforceable invariants, and detect drift only post hoc rather than preventing it structurally.
 
-In some embodiments, metadata in the compressed bitstream identifies the constraint architecture and, optionally, the predictor family used (for example, classical-only, quantum-assisted, or specific hybrid variants), enabling decoders to select appropriate execution paths while still relying on the same constraint-projected reconstruction semantics. This arrangement allows systems to adopt quantum accelerators for parts of the CPAC pipeline without changing the meaning of compressed data or the conditions under which reconstructions are considered valid.
+##### 11.15.2 CGAD Architecture and Core Principles
+
+The CGAD framework comprises five system components: **(1) Agents** (human or AI-driven tools that propose changes without embedded authority), **(2) Constraint Architecture Specification (CAS)** (declarative machine-readable description of system state and constraints), **(3) Projection Engine** (deterministic resolver of proposed states into validity or rejection), **(4) Version Control Ledger** (immutable record of accepted proposals and provenance enabling replay and auditability), and **(5) Execution Observers** (extractors of state from software, hardware, and external systems feeding observed facts into projection).
+
+The canonical governance pipeline is: Agent Action → Proposal Capture → State Injection → Constraint Projection → Accept or Reject → Ledger Recording. No step may be bypassed. Core architectural principles include: *separation of authority and intelligence* wherein agents generate proposals but projection engines determine validity, conversations and prompts are non-authoritative and disposable; *state-centric governance* wherein all system behavior is expressed as explicit state variables and declarative constraints with deterministic projection into valid state space, and intermediate execution steps have no semantic meaning unless they converge to a valid projected state; and *deterministic drift elimination* wherein context drift and long-session degradation are addressed by externalizing agent session summaries into explicit state, forcing periodic projection and reconciliation, and rejecting invalid or incoherent accumulated assumptions.
+
+##### 11.15.3 Technical Advantages
+
+CGAD provides deterministic enforcement of correctness, structural elimination of drift and session entropy, tool-agnostic agent integration, hardware–software unified governance, and reproducible and auditable development processes. Authority is derived from explicit constraints over declarative system state rather than granted to agents, workflows, or humans-in-the-loop. Intelligence is treated as a proposal source and correctness as a mathematical property of state, enabling scalable, safe, and deterministic collaboration between humans, AI agents, software systems, and hardware platforms.
+
+#### 11.16 Hardware Fabric Agentic Governance
+
+In some embodiments, CGAD is applied to agent-governed hardware development workflows for heterogeneous systems comprising system-on-chip (SoC) platforms with processing systems (PS) and programmable logic (PL) implemented via FPGA fabric, remote access via secure shell (SSH), hardware debugging tools such as integrated logic analyzers, and agent-driven automation using terminal and code-generation tools.
+
+Representative state variables include hardware configuration identifiers, bitstream identity and load status, executable binary identity and runtime status, debug instrumentation configuration, test and benchmark results, and provenance metadata including commit identifiers and agent identity. Representative constraints include: debug instrumentation may only be enabled when a compatible hardware configuration is active; executable code may only run when associated provenance is recorded; benchmarks may only execute after regression tests pass; and remote access credentials must be declared and validated.
+
+Agents interact by editing files, executing commands, and proposing configuration changes. All interactions are captured as proposals and subjected to projection. Agents receive only factual feedback describing constraint violations and observed state, without procedural guidance.
+
+In one concrete embodiment, CGAD governs a hardware-centric deterministic dataflow (DDF) environment in which Constraint-Projected State Computing is realized as a deterministic constraint fabric (for example, a proto-cell fabric with an epoch controller). CGAD state includes fields describing current phase (for example, Phase 1 or Phase 2 of a hardware development lifecycle), regression status, bitstream build mode, and sync/deploy requests. CGAD constraints enforce that hardware deployment or on-board benchmarking occurs only when regression is green, the bitstream has been rebuilt in an appropriate mode, and phase boundaries are respected. Agent proposals such as "rebuild bitstream", "sync to target", or "run regression" are treated as candidate state transitions and are accepted only when they project into a valid constrained state.
+
+#### 11.17 Specification-First Development Governance
+
+In further embodiments, CGAD is applied to software-centric development workflows requiring specification-first discipline, test-driven development, and ledger-based provenance. In one concrete embodiment, CPSC-based compression and benchmarking tools (for example, cpsc-python implementing CPAC) are governed by a CGAD profile.
+
+CGAD state includes fields describing the current set of referenced requirements, presence of a plan, regression status, whether repository Python entrypoints are invoked through a designated wrapper script, whether ledgers have been updated, and whether required benchmark profiles (for example, standard corpus runs) have been executed. Agent proposals such as "run benchmark", "update compression pipeline", or "push to git" are expressed as candidate state transitions and are accepted only if they satisfy declared constraints. Example constraints include: non-trivial changes must reference at least one requirement; `save session` commands must update a ledger; and benchmark-dependent work must record fresh benchmark runs before acceptance.
+
+This embodiment enforces spec-first discipline structurally rather than aspirationally, preventing drift between requirements, code, tests, benchmarks, and documentation. The same constraint-projected governance framework applies regardless of programming language, toolchain, or domain.
+
+#### 11.18 Session Governance and Anti-Drift Mechanisms
+
+In CGAD embodiments addressing long-running agent sessions, session characteristics including intent summaries, assumptions, and active goals are externalized into governed state variables rather than maintained implicitly in conversational context. Session constraints enforce bounded active goals, mandatory refresh of assumptions after defined thresholds, and rejection of incoherent or contradictory session state. This prevents long-session slowdown and cognitive drift.
+
+Constraints may include, for example: the number of simultaneously active goals may not exceed a declared limit; assumption variables must be refreshed or revalidated after a specified number of agent actions or elapsed time; and proposed session states containing contradictory intent summaries or mutually exclusive goals are rejected during projection. Session state is recorded in the version control ledger alongside code and configuration changes, enabling deterministic replay and forensic analysis of agent behavior over time.
+
+In some embodiments, session governance is combined with conversational state modeling wherein prompts, intent summaries, and unresolved questions are modeled as explicit state variables, and constraints bind intent to implementation artifacts.
+
+#### 11.19 Prompt-Code Instrumentation and Intent Binding
+
+In embodiments addressing programming-by-dialogue and agent-assisted development, conversational intent is modeled as explicit state variables coupled to implementation artifacts via declarative constraints. Prompts, intent summaries, unresolved questions, and declared requirements are represented as state variables in the CGAD model. Constraints enforce relationships such as: code changes must correspond to declared intent changes; unresolved conversational ambiguities block acceptance of related implementation changes; and implementation artifacts must cover declared intent scope.
+
+This constraint-based binding ensures that programming by dialogue becomes reconstructible and auditable, code artifacts are explainable by construction, and hallucinated or implicit requirements are structurally excluded. In some embodiments, intent state is versioned alongside code in the version control ledger, enabling traceability from conversational prompts to accepted code changes and vice versa.
+
+These CGAD embodiments generalize to multi-agent collaboration, distributed systems governance, safety-critical development, certification and compliance workflows, and long-running autonomous system operation. The same constraint-projected governance applies regardless of domain, with CGAD providing a unified architectural framework for deterministic agent governance across software, hardware, and cyber-physical environments.
 
 ---
 
@@ -678,310 +861,19 @@ flowchart LR
     PN --> OUT[Accept / reject]
 ```
 
-### 13. CPSC-Governed Agentic Development (CGAD)
+### FIG. 13 — CGAD Canonical Governance Pipeline
 
-## Provisional Patent – Background & Embodiment Specification (Draft)
-
----
-
-## 1. FIELD OF THE INVENTION
-
-The present disclosure relates to systems and methods for governing agentic artificial intelligence, software development, hardware development, and cyber-physical system workflows. More particularly, it relates to deterministic governance of agent-generated actions using constraint-projected state computing integrated with version control systems and external execution environments.
-
----
-
-## 2. BACKGROUND AND PROBLEMS ADDRESSED
-
-### 2.1 Agentic AI Limitations
-
-Current agentic AI systems suffer from fundamental structural limitations, including but not limited to:
-
-- Long-session slowdown due to unbounded context accumulation.
-- Context drift between conversational intent, code artifacts, and real-world system state.
-- Implicit authority assigned to agents through procedural workflows, approval logic, or orchestration frameworks.
-- Inability to safely govern actions that affect hardware, remote systems, or cyber-physical infrastructure.
-- Lack of deterministic reproducibility for agent-driven development sessions.
-
-These limitations become acute in environments involving:
-- Hardware/software co-design.
-- Remote execution over secure channels (e.g., SSH).
-- FPGA and SoC development flows.
-- Continuous integration across heterogeneous tools.
-
----
-
-### 2.2 Shortcomings of Existing Governance Approaches
-
-Existing governance approaches rely on:
-- Procedural approval pipelines.
-- Human-in-the-loop reviews.
-- Policy engines and rule-based orchestration.
-- Tool-specific plugins or agent runtimes.
-
-Such approaches:
-- Encode authority procedurally rather than declaratively.
-- Are brittle under scale and multi-agent interaction.
-- Fail to provide mathematically enforceable invariants.
-- Do not eliminate drift; they merely attempt to detect it post hoc.
-
----
-
-## 3. SUMMARY OF THE INVENTION
-
-The disclosed invention introduces a general-purpose framework for governing agentic systems using **Constraint-Projected State Computing (CPSC)** as a deterministic control plane.
-
-In this framework:
-
-- Agents are treated as untrusted proposal generators.
-- All agent actions are modeled as proposed state transitions.
-- Correctness, safety, and coherence are enforced exclusively through constraint-based projection of system state.
-- Version control systems (e.g., Git) act as immutable ledgers of proposals and accepted state transitions.
-- External execution environments (software, hardware, or hybrid) are incorporated as observable and reconstructible state.
-
-Unlike prior art, authority is not granted to agents, workflows, or humans-in-the-loop, but is instead derived from explicit constraints over a declarative system state model.
-
----
-
-## 4. CORE ARCHITECTURAL PRINCIPLES
-
-### 4.1 Separation of Authority and Intelligence
-
-- Agents generate proposals but do not decide correctness.
-- Projection engines determine validity, not heuristics or policies.
-- Conversations and prompts are non-authoritative and disposable.
-
----
-
-### 4.2 State-Centric Governance
-
-All system behavior is expressed in terms of:
-
-- Explicit state variables.
-- Declarative constraints.
-- Deterministic projection into valid state space.
-
-Intermediate execution steps have no semantic meaning unless they converge to a valid projected state.
-
----
-
-### 4.3 Deterministic Drift Elimination
-
-Context drift and long-session degradation are addressed by:
-
-- Externalizing agent session summaries into explicit state.
-- Forcing periodic projection and reconciliation.
-- Rejecting invalid or incoherent accumulated assumptions.
-
----
-
-## 5. GENERAL-PURPOSE GOVERNANCE FRAMEWORK
-
-### 5.1 System Components
-
-The framework consists of:
-
-1. **Agents**
-   - Human or AI-driven tools capable of proposing changes.
-   - No embedded authority or persistence beyond proposals.
-
-2. **Constraint Architecture Specification (CAS)**
-   - Declarative description of system state and constraints.
-   - Expressed in a machine-readable format (e.g., CAS-YAML).
-
-3. **Projection Engine**
-   - Resolves proposed state into validity or rejection.
-   - Deterministic, bounded, and reproducible.
-
-4. **Version Control Ledger**
-   - Records accepted proposals and provenance.
-   - Enables replay and auditability.
-
-5. **Execution Observers**
-   - Extract state from software, hardware, and external systems.
-   - Feed observed facts into projection.
-
----
-
-### 5.2 Canonical Governance Pipeline
-
+```mermaid
+%%{init: {'flowchart': {'useMaxWidth': false}}}%%
+flowchart LR
+    A[Agent Action] --> PC[Proposal Capture]
+    PC --> SI[State Injection]
+    SI --> CP[Constraint Projection]
+    CP --> D{Valid?}
+    D -->|Yes| ACC[Accept]
+    D -->|No| REJ[Reject]
+    ACC --> LR[Ledger Recording]
+    
+    CAS[Constraint Architecture] --> CP
+    EO[Execution Observers] --> SI
 ```
-
-Agent Action
-→ Proposal Capture
-→ State Injection
-→ Constraint Projection
-→ Accept or Reject
-→ Ledger Recording
-
-```
-
-No step may be bypassed.
-
----
-
-## 6. EMBODIMENT: AGENT-GOVERNED DEVELOPMENT WORKFLOW
-
-### 6.1 Embodiment Overview
-
-One embodiment applies the framework to a heterogeneous development environment comprising:
-
-- A system-on-chip (SoC) with:
-  - Processing System (PS) running an operating system.
-  - Programmable Logic (PL) implemented via FPGA fabric.
-- Remote access via secure shell (SSH).
-- Hardware debugging tools (e.g., integrated logic analyzers).
-- Agent-driven automation using terminal and code-generation tools.
-
----
-
-### 6.2 Example State Model (Non-Exhaustive)
-
-Representative state variables include:
-
-- Hardware configuration identifiers.
-- Bitstream identity and load status.
-- Executable binary identity and runtime status.
-- Debug instrumentation configuration.
-- Test and benchmark results.
-- Provenance metadata (commit identifiers, agent identity).
-
----
-
-### 6.3 Example Constraints
-
-Representative constraints include:
-
-- Debug instrumentation may only be enabled when a compatible hardware configuration is active.
-- Executable code may only run when associated provenance is recorded.
-- Benchmarks may only execute after regression tests pass.
-- Remote access credentials must be declared and validated.
-
----
-
-### 6.4 Agent Interaction Model
-
-Agents interact with the system by:
-
-- Editing files.
-- Executing commands.
-- Proposing configuration changes.
-
-All such interactions are captured as proposals and subjected to projection.
-
-Agents receive only factual feedback describing constraint violations and observed state, without procedural guidance.
-
----
-
-## 7. SESSION GOVERNANCE AND ANTI-DRIFT MECHANISMS
-
-### 7.1 Session State as Governed State
-
-Agent session characteristics (intent summaries, assumptions, active goals) are externalized into governed state variables.
-
----
-
-### 7.2 Session Constraints
-
-Constraints enforce:
-
-- Bounded active goals.
-- Mandatory refresh of assumptions after defined thresholds.
-- Rejection of incoherent or contradictory session state.
-
-This prevents long-session slowdown and cognitive drift.
-
----
-
-## 8. PROMPT–CODE INSTRUMENTATION EMBODIMENT
-
-### 8.1 Conversational State Modeling
-
-Prompts, intent summaries, and unresolved questions are modeled as explicit state variables.
-
----
-
-### 8.2 Constraint Binding Between Intent and Implementation
-
-Constraints enforce relationships such as:
-
-- Code changes must correspond to declared intent changes.
-- Unresolved conversational ambiguities block acceptance.
-- Implementation artifacts must cover declared intent scope.
-
----
-
-### 8.3 Resulting Benefits
-
-- Programming by dialogue becomes reconstructible and auditable.
-- Code artifacts are explainable by construction.
-- Hallucinated or implicit requirements are structurally excluded.
-
----
-
-## 9. GENERALIZATION AND EXTENSIONS
-
-The framework generalizes to:
-
-- Multi-agent collaboration.
-- Distributed systems governance.
-- Safety-critical development.
-- Certification and compliance workflows.
-- Long-running autonomous system operation.
-
-The same constraint-projected governance applies regardless of domain.
-
-In some embodiments, the CGAD framework is instantiated concretely in:
-
-1. **A hardware-centric DDF embodiment** in which Constraint-Projected State
-   Computing is realized as a deterministic constraint fabric (for example, a
-   proto-cell fabric with an epoch controller) and CGAD governs agentic
-   workflows that modify or deploy that fabric. In such embodiments, a CGAD
-   state may include, without limitation, fields describing the current
-   phase (for example, Phase 1 or Phase 2 of a hardware development lifecycle),
-   regression status, bitstream build mode, and sync/deploy requests. CGAD
-   constraints enforce that hardware deployment or on-board benchmarking occurs
-   only when regression is green, the bitstream has been rebuilt in an
-   appropriate mode, and phase boundaries are respected. Agent proposals such as
-   "rebuild bitstream", "sync to target", or "run regression" are treated as
-   candidate state transitions and are accepted only when they project into a
-   valid constrained state.
-
-2. **A software-centric cpsc-python / CPAC embodiment** in which CPSC-based
-   compression and benchmarking tools are governed by a CGAD profile. In such
-   embodiments, a CGAD state may include, without limitation, fields describing
-   the current set of referenced requirements, presence of a plan, regression
-   status, whether repository Python entrypoints are invoked through a
-   designated wrapper script, whether ledgers have been updated, and whether
-   required benchmark profiles (for example, standard corpus runs) have been
-   executed. Agent proposals such as "run benchmark", "update compression
-   pipeline", or "push to git" are expressed as candidate state transitions and
-   are accepted only if they satisfy declared constraints (for example, that
-   non-trivial changes reference at least one requirement, that `save session`
-   updates a ledger, and that benchmark-dependent work records fresh benchmark
-   runs).
-
-These embodiments illustrate, without limitation, how CGAD can be bound to
-concrete hardware and software development environments while remaining governed
-by a common constraint-projected state semantics.
-
----
-
-## 10. ADVANTAGES OVER PRIOR ART
-
-The disclosed system provides:
-
-- Deterministic enforcement of correctness.
-- Structural elimination of drift and session entropy.
-- Tool-agnostic agent integration.
-- Hardware–software unified governance.
-- Reproducible and auditable development processes.
-
----
-
-## 11. CONCLUSION
-
-This disclosure describes a novel architecture for governing agentic systems by elevating constraints and state projection above agents, tools, and workflows. By treating intelligence as a proposal source and correctness as a mathematical property of state, the invention enables scalable, safe, and deterministic collaboration between humans, AI agents, software systems, and hardware platforms.
-
----
-
-END OF PROVISIONAL PATENT APPLICATION

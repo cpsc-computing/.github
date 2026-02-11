@@ -43,7 +43,7 @@ Instead:
 - Components propose changes,
 - A **projection engine** snaps proposals back into the legal space (or rejects them).
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-constraint-projected-truth-table.png" alt="Constraint-Projected Truth Table" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
+<img src="images/cpsc-constraint-projected-truth-table.png" alt="Constraint-Projected Truth Table" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
 
 Figure: CPSC as a constraint-projected truth table. All possible states form a conceptual grid; constraints carve out a legal manifold, and proposals are snapped onto that manifold at epoch commit boundaries.
 
@@ -138,7 +138,7 @@ In hardware, CPSC looks less like a CPU and more like a **constraint fabric**:
 - **Convergence detection** decides when all constraints are satisfied (or when to give up).
 - **Commit logic** updates the state registers at the clock edge.
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-protocell-epoch-fabric.png"
+<img src="images/cpsc-protocell-epoch-fabric.png"
      alt="CPSC proto-cell constraint fabric with global epoch controller"
      style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
 
@@ -161,7 +161,7 @@ Other constraint fabrics that satisfy the same determinism and projection proper
 
 ## 6. Software mental model (state resolver)
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/cpsc-state-resolver.png" alt="CPSC State Resolver" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
+<img src="images/cpsc-state-resolver.png" alt="CPSC State Resolver" style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;"/>
 
 Figure: Inside a CPSC state resolver. Proposed degrees of freedom flow into a deterministic, bounded loop of constraint evaluation and update/relaxation until a valid state is found or failure is reported.
 

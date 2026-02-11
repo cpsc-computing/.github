@@ -12,7 +12,7 @@ Classical public-key cryptography (like RSA and ECC) underpins almost all secure
 
 Our new post-quantum cryptography (PQC) embodiments provide a practical path to securing systems against both today's classical adversaries and tomorrow's quantum-capable attackers. This document explains, at a high level, how the pieces fit together and how our PQC approach can be integrated into real systems.
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/pqc-overview-problem-solution.png" 
+<img src="images/pqc-overview-problem-solution.png" 
      alt="Problem and PQC Solution" 
      style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
 
@@ -50,7 +50,7 @@ At a high level, our PQC solution introduces post-quantum algorithms into three 
 
 These three areas are implemented through a set of modular "embodiments" that can be adopted individually or together, depending on the environment and risk profile.
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/pqc-architecture-embodiments.png" 
+<img src="images/pqc-architecture-embodiments.png" 
      alt="PQC Architecture and Embodiments" 
      style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
 
@@ -149,7 +149,7 @@ Lifecycle management includes:
 - **Revocation** – Handling compromised or superseded keys and certificates.
 - **Auditability** – Ensuring that all critical operations are logged and can be validated using PQC-secure signatures.
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/pqc-how-it-works.png" 
+<img src="images/pqc-how-it-works.png" 
      alt="How PQC Works in Practice" 
      style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
 
@@ -202,7 +202,7 @@ As PQC standards mature and new algorithms are standardized, our architecture al
   - 5G or 6G and edge computing.
   - Cross-organization data sharing and federated learning.
 
-<img src="file:///C:/Users/trist/Development/BitConcepts/.github/docs/public/images/pqc-migration-roadmap.png" 
+<img src="images/pqc-migration-roadmap.png" 
      alt="PQC Migration and Roadmap" 
      style="max-width: 95%; height: auto; display: block; margin: 0.5rem auto;" />
 

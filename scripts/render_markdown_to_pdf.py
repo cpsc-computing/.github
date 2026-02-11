@@ -30,11 +30,71 @@ This script does *not* change any patent semantics. It is tooling only.
 import argparse
 import subprocess
 import sys
+import re
+import tempfile
 from pathlib import Path
 import shutil
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def convert_relative_to_absolute_image_paths(md_content: str, md_file_path: Path) -> str:
+    """Convert relative image paths in markdown to absolute paths.
+    
+    This ensures images are found during PDF generation regardless of working directory.
+    Handles both <img src="..."> tags and ![...](...) markdown syntax.
+    """
+    md_dir = md_file_path.parent
+    
+    # Pattern for <img> tags with relative src paths
+    def replace_img_tag(match):
+        before = match.group(1)
+        rel_path = match.group(2)
+        after = match.group(3)
+        
+        # Skip if already absolute (starts with / or drive letter or http)
+        if rel_path.startswith(('/', 'http://', 'https://')) or (len(rel_path) > 1 and rel_path[1] == ':'):
+            return match.group(0)
+        
+        abs_path = (md_dir / rel_path).resolve()
+        # Use forward slashes and file:/// protocol for compatibility
+        abs_path_str = abs_path.as_posix()
+        if not abs_path_str.startswith('/'):
+            abs_path_str = '/' + abs_path_str
+        return f'{before}file://{abs_path_str}{after}'
+    
+    # Pattern for markdown image syntax ![alt](path)
+    def replace_md_image(match):
+        alt_text = match.group(1)
+        rel_path = match.group(2)
+        
+        # Skip if already absolute
+        if rel_path.startswith(('/', 'http://', 'https://')) or (len(rel_path) > 1 and rel_path[1] == ':'):
+            return match.group(0)
+        
+        abs_path = (md_dir / rel_path).resolve()
+        abs_path_str = abs_path.as_posix()
+        if not abs_path_str.startswith('/'):
+            abs_path_str = '/' + abs_path_str
+        return f'![{alt_text}](file://{abs_path_str})'
+    
+    # Replace <img src="relative/path"> with absolute paths
+    md_content = re.sub(
+        r'(<img\s+[^>]*src=["\']{0,1})([^"\'\s>]+)(["\'][^>]*>)',
+        replace_img_tag,
+        md_content,
+        flags=re.IGNORECASE
+    )
+    
+    # Replace ![alt](relative/path) with absolute paths
+    md_content = re.sub(
+        r'!\[([^\]]*)\]\(([^)]+)\)',
+        replace_md_image,
+        md_content
+    )
+    
+    return md_content
 
 
 def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -> int:
@@ -46,67 +106,106 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
     Python `Scripts`/`bin` directory (containing the `md2pdf` CLI)
     is on PATH.
 
-    To ensure that relative image paths (for example `figures/*.svg`)
-    are resolved correctly, we run the CLI with the current working
-    directory set to the *directory containing the input markdown*.
+    To ensure images are found, we create a temporary working copy of the
+    markdown file with relative image paths converted to absolute paths.
+    The PDF is generated in the same directory as the temp file,
+    then copied to the final output location.
     """
 
-    # Call the installed console script. Prefer PATH resolution but fall back to the
-    # Scripts/ directory next to the current Python executable on Windows when
-    # md2pdf is not on PATH.
-    md2pdf_cmd = shutil.which("md2pdf")
-    if md2pdf_cmd is None:
-        # On Windows, pip typically installs console scripts into the Scripts/
-        # directory next to the python executable. Derive that path and use it
-        # directly if present.
-        exe_path = Path(sys.executable)
-        candidate = exe_path.with_name("Scripts") / "md2pdf.exe"
-        if candidate.exists():
-            md2pdf_cmd = str(candidate)
-        else:
-            raise FileNotFoundError(
-                "md2pdf executable not found on PATH or in the Python Scripts/ directory. "
-                "Ensure 'md2pdf-mermaid' is installed and that its console script is "
-                "available."
-            )
-
-    cmd: list[str] = [md2pdf_cmd]
-
-    # Input markdown (can be absolute); we will run md2pdf from the markdown's
-    # parent directory and pass only the local filename so relative resources
-    # (like `images/foo.png`) resolve against the markdown directory.
-    local_name = input_md.name
-    cmd.append(local_name)
-
-    # Optional output PDF
-    if output_pdf is not None:
-        cmd.extend(["-o", str(output_pdf)])
-
-    # md2pdf-mermaid's CLI does not currently expose a separate HTML-output
-    # flag; it renders directly to PDF. We keep `html_out` in the function
-    # signature so the script interface is future-proof, but we do not pass
-    # it through to the CLI.
-
-    print(f"[render] Running: {' '.join(cmd)}")
+    # Read original markdown content
+    print(f"[render] Reading original markdown: {input_md}")
+    original_content = input_md.read_text(encoding='utf-8')
+    
+    # Convert relative image paths to absolute
+    print(f"[render] Converting relative image paths to absolute...")
+    modified_content = convert_relative_to_absolute_image_paths(original_content, input_md)
+    
+    # Create temporary working file with absolute paths
+    temp_md_fd, temp_md_path_str = tempfile.mkstemp(suffix='.md', prefix=f'{input_md.stem}_', text=True)
+    temp_md_path = Path(temp_md_path_str)
+    
     try:
-        # Run md2pdf with CWD set to the markdown's parent directory so that
-        # relative image paths like `images/*.png` are resolved correctly.
-        workdir = str(input_md.parent)
-        print(f"[render] Working directory: {workdir}")
-        print(f"[render] Debug: full input_md path : {input_md}")
-        print(f"[render] Debug: expected image dir : {input_md.parent / 'images'}")
-        print(f"[render] Debug: output PDF path    : {output_pdf}")
-        result = subprocess.run(cmd, check=False, cwd=workdir)
-    except FileNotFoundError as exc:
-        print("error: failed to invoke md2pdf via Python module 'md2pdf'.", file=sys.stderr)
-        print("       Ensure 'md2pdf-mermaid' is installed in this environment.", file=sys.stderr)
-        print(f"       Details: {exc}", file=sys.stderr)
-        return 1
+        # Write modified content to temp file
+        with open(temp_md_fd, 'w', encoding='utf-8') as f:
+            f.write(modified_content)
+        print(f"[render] Created temporary working file: {temp_md_path}")
+        
+        # Call the installed console script. Prefer PATH resolution but fall back to the
+        # Scripts/ directory next to the current Python executable on Windows when
+        # md2pdf is not on PATH.
+        md2pdf_cmd = shutil.which("md2pdf")
+        if md2pdf_cmd is None:
+            # On Windows, pip typically installs console scripts into the Scripts/
+            # directory next to the python executable. Derive that path and use it
+            # directly if present.
+            exe_path = Path(sys.executable)
+            candidate = exe_path.with_name("Scripts") / "md2pdf.exe"
+            if candidate.exists():
+                md2pdf_cmd = str(candidate)
+            else:
+                raise FileNotFoundError(
+                    "md2pdf executable not found on PATH or in the Python Scripts/ directory. "
+                    "Ensure 'md2pdf-mermaid' is installed and that its console script is "
+                    "available."
+                )
 
-    print(f"[render] md2pdf return code: {result.returncode}")
-    if result.returncode != 0:
-        print(f"error: md2pdf exited with status {result.returncode}", file=sys.stderr)
-    return result.returncode
+        cmd: list[str] = [md2pdf_cmd]
+
+        # Use the temp file with absolute paths
+        local_name = temp_md_path.name
+        cmd.append(local_name)
+
+        # Generate PDF in the same directory as the temp MD file
+        temp_pdf_name = temp_md_path.stem + ".pdf"
+        cmd.extend(["-o", temp_pdf_name])
+
+        # md2pdf-mermaid's CLI does not currently expose a separate HTML-output
+        # flag; it renders directly to PDF. We keep `html_out` in the function
+        # signature so the script interface is future-proof, but we do not pass
+        # it through to the CLI.
+
+        print(f"[render] Running: {' '.join(cmd)}")
+        try:
+            # Run md2pdf with CWD set to the temp markdown's parent directory
+            workdir = str(temp_md_path.parent)
+            temp_pdf_path = temp_md_path.parent / temp_pdf_name
+            print(f"[render] Working directory: {workdir}")
+            print(f"[render] Debug: temp md path       : {temp_md_path}")
+            print(f"[render] Debug: original md path   : {input_md}")
+            print(f"[render] Debug: expected image dir : {input_md.parent / 'images'}")
+            print(f"[render] Debug: temp PDF path      : {temp_pdf_path}")
+            print(f"[render] Debug: final output path  : {output_pdf}")
+            result = subprocess.run(cmd, check=False, cwd=workdir)
+        except FileNotFoundError as exc:
+            print("error: failed to invoke md2pdf via Python module 'md2pdf'.", file=sys.stderr)
+            print("       Ensure 'md2pdf-mermaid' is installed in this environment.", file=sys.stderr)
+            print(f"       Details: {exc}", file=sys.stderr)
+            return 1
+
+        print(f"[render] md2pdf return code: {result.returncode}")
+        if result.returncode != 0:
+            print(f"error: md2pdf exited with status {result.returncode}", file=sys.stderr)
+            return result.returncode
+
+        # If generation succeeded and we have an output location, copy the PDF there
+        if result.returncode == 0 and output_pdf is not None:
+            if temp_pdf_path.exists():
+                print(f"[render] Copying {temp_pdf_path} -> {output_pdf}")
+                shutil.copy2(temp_pdf_path, output_pdf)
+                # Clean up the temp PDF
+                print(f"[render] Removing temporary PDF: {temp_pdf_path}")
+                temp_pdf_path.unlink()
+            else:
+                print(f"error: expected temporary PDF not found: {temp_pdf_path}", file=sys.stderr)
+                return 1
+
+        return result.returncode
+        
+    finally:
+        # Clean up temporary markdown file
+        if temp_md_path.exists():
+            print(f"[render] Removing temporary markdown: {temp_md_path}")
+            temp_md_path.unlink()
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -208,14 +307,11 @@ def run_test_mode(html_out: Path | None, pdf_out: Path | None) -> int:
         md_path = tmpdir_path / "mermaid-test.md"
         md_path.write_text(build_test_markdown(), encoding="utf-8")
 
-        # Default outputs in the patents/figures directory if not overridden.
-        figures_dir = REPO_ROOT / "patents" / "figures"
-        figures_dir.mkdir(parents=True, exist_ok=True)
-
+        # Default output in a temp location if not overridden.
         if pdf_out is None:
-            pdf_out = figures_dir / "mermaid-test.pdf"
+            pdf_out = tmpdir_path / "mermaid-test.pdf"
         if html_out is None:
-            html_out = figures_dir / "mermaid-test.html"
+            html_out = tmpdir_path / "mermaid-test.html"
 
         print(f"[test] Writing temporary Markdown to {md_path}")
         print(f"[test] HTML out: {html_out}")
