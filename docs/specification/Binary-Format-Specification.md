@@ -239,7 +239,29 @@ A binary blob is valid only if:
 
 ---
 
-## 12. Relationship to Other Specifications
+## 12. Normative Examples
+
+### 12.1 Synthetic Log Binary DoF Format
+
+A minimal reference implementation of this binary format is provided in the `cpsc-python` repository:
+
+* **Implementation**: `cpsc/binary_format_demo.py`
+* **CAS Model**: `CAS-Example-Synthetic-Log.yaml` (this specification directory)
+* **Test suite**: `cpsc/test/test_binary_format_synthetic_log.py`
+
+This implementation demonstrates:
+
+* Header encoding with magic "CPSC", version, and numeric mode (fixed_point)
+* Model metadata binding (model_id hash, CAS hash)
+* DoF vector encoding for 4-variable telemetry state (t_seconds, user, action, status)
+* Round-trip encode/decode with float32 precision
+* Integration with CAS-YAML-based projection
+
+The synthetic-log binary format serves as the canonical minimal example for embodiments E-11.8 (Telemetry, Logging, and Replay) and E-11.10 (CPAC Core Compression Pipeline) described in the provisional patent.
+
+---
+
+## 13. Relationship to Other Specifications
 
 This document depends on:
 

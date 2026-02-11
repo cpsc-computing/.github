@@ -314,7 +314,33 @@ Invalid documents MUST be rejected prior to execution.
 
 ---
 
-## 13. Relationship to CPSC Core Specification
+## 13. Normative Examples
+
+### 13.1 Synthetic Log Telemetry Model
+
+A complete, conformant CAS-YAML model for telemetry and logging applications is provided as:
+
+* **CAS-Example-Synthetic-Log.yaml** (this specification directory)
+
+This model demonstrates:
+
+* A simple 4-variable state (t_seconds, user, action, status)
+* Explicit degrees of freedom declaration
+* Time-bounds constraint
+* Fixed-point numeric execution
+* Integration with CPSC binary format
+
+**Reference implementation**: The `cpsc-python` repository provides a canonical implementation of this model:
+
+* Pipeline: `cpac/scripts/run_synthetic_log_cpsc_model.py`
+* Binary format: `cpsc/binary_format_demo.py`
+* Test suite: `cpsc/test/test_binary_format_synthetic_log.py`
+
+This pipeline implements the Stage A/B/C pattern described in provisional patent embodiment E-11.8 (Telemetry, Logging, and Replay) and E-11.10 (CPAC Core Compression Pipeline).
+
+---
+
+## 14. Relationship to CPSC Core Specification
 
 CAS-YAML defines the **declarative model** consumed by a CPSC execution engine.
 
