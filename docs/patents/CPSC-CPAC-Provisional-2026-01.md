@@ -263,11 +263,7 @@ Software embodiments implement equivalent semantics using deterministic projecti
 ### 11. APPLICATION EMBODIMENTS (NON-EXHAUSTIVE)
 
 This section provides a non-exhaustive catalog of application embodiments for
-CPSC, CPAC, and CGAD. For a continuously updated, public-facing index of
-embodiments (including identifiers and one-sentence summaries), see also
-`docs/public/cpsc-embodiments-overview.md` in the `.github` repository. That
-overview document is informational and does not alter the scope of this
-specification or any associated claims.
+CPSC, CPAC, and CGAD.
 
 #### 11.1 Constraint Optimization and Satisfiability
 
@@ -555,7 +551,7 @@ In one embodiment, the present disclosure provides a deterministic system and me
 
 This embodiment is particularly suited for streaming operation, where the payload is evaluated incrementally as data is received, and structural invalidity may be detected prior to receipt of the complete payload.
 
-##### 11.19.1 System Architecture
+##### 11.14.1 System Architecture
 
 In this embodiment, a computing system comprises:
 
@@ -567,7 +563,7 @@ In this embodiment, a computing system comprises:
 
 The constraint model and projection engine operate without instruction sequencing, probabilistic thresholds, or learned decision boundaries. Only the existence or non-existence of a valid projected state is semantically meaningful.
 
-##### 11.19.2 Structural State Representation
+##### 11.14.2 Structural State Representation
 
 In this embodiment, the payload is represented as a finite state comprising variables that encode structural properties of the payload. Such variables may include, without limitation:
 
@@ -581,7 +577,7 @@ In this embodiment, the payload is represented as a finite state comprising vari
 
 Each variable is associated with an explicit domain, and certain variables are designated as derived variables whose values are fully determined by the constraints.
 
-##### 11.19.3 Constraint Model for Validity Enforcement
+##### 11.14.3 Constraint Model for Validity Enforcement
 
 The constraint model encodes format-level invariants that must hold for a payload to be structurally valid. In one embodiment, the constraints include:
 
@@ -595,7 +591,7 @@ The constraint model encodes format-level invariants that must hold for a payloa
 
 Constraints are side-effect free, order-independent, and jointly enforced. The model does not encode malicious behavior patterns, signatures, or threat intelligence.
 
-##### 11.19.4 Projection-Based Malware Discovery
+##### 11.14.4 Projection-Based Malware Discovery
 
 In operation, a proposed state is formed from the observed payload data and submitted to the CPSC engine. The engine attempts to project the proposed state into a valid state that satisfies all declared constraints.
 
@@ -605,7 +601,7 @@ If projection fails to converge, or if no valid state exists that satisfies all 
 
 In this embodiment, structural invalidity is treated as an indicator of maliciousness, exploit activity, or protocol abuse, because legitimate payloads cannot violate fundamental format invariants.
 
-##### 11.19.5 Streaming Operation
+##### 11.14.5 Streaming Operation
 
 In one embodiment, the system operates in a streaming mode in which:
 
@@ -626,7 +622,7 @@ The disclosed embodiment distinguishes fundamentally by enforcing structural val
 
 As a result, payloads that are unusual, compressed, obfuscated, or previously unseen but nevertheless structurally valid are accepted, thereby materially reducing false positive detections. Conversely, payloads violating fundamental format invariants are rejected deterministically regardless of obfuscation or novelty, reducing false negatives. The system operates deterministically with reproducible outcomes across implementations, enabling formal verification and audit of detection logic through inspection of constraint models rather than analysis of opaque signature databases or neural network weights.
 
-##### 11.19.7 Integration with Downstream Analysis
+##### 11.14.7 Integration with Downstream Analysis
 
 In one embodiment, structurally valid payloads may be forwarded to downstream systems for further analysis, including:
 
@@ -637,7 +633,7 @@ In one embodiment, structurally valid payloads may be forwarded to downstream sy
 
 Structurally invalid payloads may be blocked or quarantined prior to such analysis, reducing computational load and attack surface.
 
-##### 11.19.8 Determinism and Reproducibility
+##### 11.14.8 Determinism and Reproducibility
 
 The system operates deterministically such that:
 
@@ -646,7 +642,7 @@ The system operates deterministically such that:
 - projection success or failure is reproducible across implementations; and
 - validity decisions are auditable by inspection of the constraint model.
 
-##### 11.19.9 Example Applications
+##### 11.14.9 Example Applications
 
 Without limitation, this embodiment may be applied to:
 
@@ -657,7 +653,7 @@ Without limitation, this embodiment may be applied to:
 - network protocol streams; and
 - inter-process or inter-service message validation.
 
-##### 11.19.10 Summary of Technical Advantage
+##### 11.14.10 Summary of Technical Advantage
 
 This embodiment discovers malicious payloads by enforcing what must be true, rather than attempting to predict what might be dangerous. By framing malware discovery as a constraint satisfiability problem over explicit structural state, the system enables early, deterministic, and low-false-positive detection, including in streaming environments.
 
