@@ -158,6 +158,9 @@ def run_md2pdf(input_md: Path, output_pdf: Path | None, html_out: Path | None) -
         # Generate PDF in the same directory as the temp MD file
         temp_pdf_name = temp_md_path.stem + ".pdf"
         cmd.extend(["-o", temp_pdf_name])
+        
+        # Use US Letter (8.5" x 11") page size
+        cmd.extend(["--page-size", "letter"])
 
         # md2pdf-mermaid's CLI does not currently expose a separate HTML-output
         # flag; it renders directly to PDF. We keep `html_out` in the function
