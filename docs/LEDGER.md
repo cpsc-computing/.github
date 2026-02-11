@@ -44,6 +44,18 @@ Session note – USPTO PFW MCP proxy port conflict
 - Observation: MCP server initialized correctly, but HTTP proxy failed to bind on ports 8080 and 8081 with `WinError 10048` ("only one usage of each socket address...") indicating other processes were already holding those ports.
 - Status: Treated as an environmental/temporary port conflict; no changes made to server code or default proxy port (kept at 8080). Future sessions should assume the implementation is good and resolve port usage at the OS level if the error recurs.
 
+Session note – VLBI performance update and PDF rendering fixes
+--------------------------------------------------------------
+- Date: 2026-02-10
+- Context: Updated CPAC embodiment performance claims and fixed image rendering in public documentation PDFs.
+- Changes completed:
+  - Updated CPAC VLBI performance claim from 1.51x to 3.0x-4.0x improvement with validation note "based on real-world VLBI observatory logs" in provisional patent (line 406).
+  - Fixed image links in public overview documents (`cpsc-overview.md`, `pqc-overview.md`) to use relative paths (`images/...`) instead of absolute `file:///` paths for proper GitHub rendering.
+  - Enhanced PDF generation script (`render_markdown_to_pdf.py`) to create temporary working files with absolute image paths, ensuring images are embedded in generated PDFs.
+  - Removed obsolete `patents/figures/mermaid-test.pdf` and empty figures directory.
+  - Regenerated all documentation PDFs (19 files) with properly embedded images, confirmed by increased file sizes (e.g., cpsc-overview.pdf: 101 KB → 1191.7 KB).
+- Artifacts: Commit `71cd6ee` pushed to `main`.
+
 ---
 
 Theme B – CPAC representations / compression
