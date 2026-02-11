@@ -751,7 +751,7 @@ These CGAD embodiments generalize to multi-agent collaboration, distributed syst
 
 The foregoing description is illustrative and not limiting. Variations, modifications, and combinations fall within the scope of the disclosed invention. Optional validation properties do not restrict the scope of the computing paradigm.
 
-The embodiments described herein may be claimed independently or in combination, and no embodiment is required for practice of another unless explicitly stated.`n`nUnless explicitly stated otherwise, statements describing system behavior refer to disclosed embodiments operating under declared constraints, precision modes, and convergence parameters.
+The embodiments described herein may be claimed independently or in combination, and no embodiment is required for practice of another unless explicitly stated. Unless explicitly stated otherwise, statements describing system behavior refer to disclosed embodiments operating under declared constraints, precision modes, and convergence parameters.
 
 ---
 
