@@ -185,7 +185,7 @@ Recursion-stability is validation-only and does not constrain runtime semantics 
 
 CPSC is not limited to a solver, preprocessor, filter, or auxiliary analysis step. Projection defines the primary computational mechanism by which system state is evolved, validated, reconstructed, or enforced across software and hardware systems.
 
-CPSC does not construct or traverse search trees. CPSC does not rely on backtracking. CPSC does not perform episodic invocation external to runtime state. Projection is the primary state evolution mechanism, not an auxiliary solving step. State is continuously governed by constraint projection. Unlike SAT/SMT solvers, projection defines system execution semantics.
+In the disclosed embodiments, CPSC does not construct or traverse search trees. In the disclosed embodiments, CPSC does not rely on backtracking. In the disclosed embodiments, CPSC does not perform episodic invocation external to runtime state. Projection is the primary state evolution mechanism, not an auxiliary solving step. State is continuously governed by constraint projection. Unlike SAT/SMT solvers, projection defines system execution semantics.
 
 ---
 
@@ -407,7 +407,7 @@ CPSC enables deterministic, explainable computation without reliance on neural i
 
 #### 11.10 Constraint-Projected Adaptive Compression
 
-In Constraint-Projected Adaptive Compression (CPAC), lossless data compression is achieved through a four-stage adaptive architecture that automatically detects data domains, extracts semantic structure, applies constraint projection to reduce degrees of freedom, and adaptively selects entropy coding methods. The system achieves compression improvements of 1.5x to 3.4x over domain-agnostic compressors on structured data while maintaining bit-exact reconstruction and supporting streaming operation.
+In Constraint-Projected Adaptive Compression (CPAC), lossless data compression is achieved through a four-stage adaptive architecture that automatically detects data domains, extracts semantic structure, applies constraint projection to reduce degrees of freedom, and adaptively selects entropy coding methods. The system has achieved compression improvements of 1.5x to 3.4x in representative implementations over domain-agnostic compressors on structured data while maintaining bit-exact reconstruction and supporting streaming operation.
 
 ##### 11.10.1 Four-Stage Compression Pipeline
 
@@ -656,7 +656,7 @@ Conventional malware detection systems employ signature-based detection (for exa
 
 The disclosed embodiment distinguishes fundamentally by enforcing structural validity rather than detecting malicious patterns. A payload is rejected only if it cannot satisfy explicit format invariants encoded as declarative constraints, independent of threat intelligence, signatures, or learned models. This constraint-projected approach does not require training data, signature databases, or behavioral heuristics. Instead, it validates whether a payload can exist as a structurally coherent state under the declared format constraints.
 
-As a result, payloads that are unusual, compressed, obfuscated, or previously unseen but nevertheless structurally valid are accepted, thereby materially reducing false positive detections. Conversely, payloads violating fundamental format invariants are rejected deterministically regardless of obfuscation or novelty, reducing false negatives. The system operates deterministically with reproducible outcomes across implementations, enabling formal verification and audit of detection logic through inspection of constraint models rather than analysis of opaque signature databases or neural network weights.
+As a result, payloads that are unusual, compressed, obfuscated, or previously unseen but nevertheless structurally valid are accepted, thereby reducing false positive detections in representative deployments. Conversely, payloads violating fundamental format invariants are rejected deterministically regardless of obfuscation or novelty, reducing false negatives. The system operates deterministically with reproducible outcomes across implementations, enabling formal verification and audit of detection logic through inspection of constraint models rather than analysis of opaque signature databases or neural network weights.
 
 ##### 11.14.7 Integration with Downstream Analysis
 
@@ -751,7 +751,7 @@ These CGAD embodiments generalize to multi-agent collaboration, distributed syst
 
 The foregoing description is illustrative and not limiting. Variations, modifications, and combinations fall within the scope of the disclosed invention. Optional validation properties do not restrict the scope of the computing paradigm.
 
-The embodiments described herein may be claimed independently or in combination, and no embodiment is required for practice of another unless explicitly stated.
+The embodiments described herein may be claimed independently or in combination, and no embodiment is required for practice of another unless explicitly stated.`n`nUnless explicitly stated otherwise, statements describing system behavior refer to disclosed embodiments operating under declared constraints, precision modes, and convergence parameters.
 
 ---
 
