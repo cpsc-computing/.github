@@ -71,8 +71,18 @@ Session note – Provisional patent filing preparation (February 11, 2026)
   - Updated `docs/patents/CPSC-CPAC-Provisional-2026-01.md` filing date from "TBD" to "February 11, 2026".
   - Verified alignment between provisional Section 11.13.5 PQC embodiments and `docs/public/pqc-overview.md` (provisional explicitly references the three-layer architecture described in public overview).
   - Regenerated provisional PDF (897.0 KB) with embedded Mermaid diagrams and updated filing date.
-- Status: Provisional patent documentation ready for USPTO filing via EFS-Web.
-- Next action: File provisional patent application, then update README.md status from "DRAFT (pre-filing)" to "FILED" and populate post-filing metadata (application number, exact date, entity status, PDF hash, git commit SHA).
+  - Applied 6 comprehensive hardening passes addressing §101 risk, enablement vulnerabilities, indefiniteness, overstatement, and argumentative language (33 precision refinements total):
+    * Pass 1 (commit c459c07): Formal convergence definition, canonical valid state rules, numeric precision declarations, SAT/SMT distinction, §101 structural improvements, CPAC performance qualifiers, quantum/neuromorphic examples, side-channel clarifications, marketing language removal.
+    * Pass 2 (commit fc6d5e6): CPAC performance language softening, "Constraint-Enforced Under Declared Constraints" terminology, global architectural improvement qualifier.
+    * Pass 3 (commit 56f06f3): Early CPAC performance conditioning, SAT/SMT embodiment qualifiers, malware false-positive softening, global scope clarifier in Section 12.
+    * Pass 4 (commit 570723b): Section 12 typographical corrections, "higher compression ratios" softening, "fundamentally" removal, "avoidance" terminology, hardware embodiment conditioning.
+    * Pass 5 (commit 721777a): Critical Section 12 encoding artifact fix (`\`n\`n` malformed text).
+    * Pass 6 (commit 8a152fc): Ultra-conservative "reduced false-positive detection" language in Section 11.14.10.
+  - Fixed PDF generator to enforce US Letter (8.5" x 11") page size via `--page-size letter` flag (commit b83e6a9).
+  - Regenerated all 20 documentation PDFs with correct US Letter dimensions for USPTO EFS-Web compliance.
+  - Final provisional PDF: 903.3 KB at US Letter format.
+- Status: Provisional patent fully hardened and ready for USPTO EFS-Web filing.
+- Next action: Complete USPTO EFS-Web submission, then update README.md status from "DRAFT (pre-filing)" to "FILED" and populate post-filing metadata (application number, exact date, entity status, PDF hash, git commit SHA).
 
 ---
 
