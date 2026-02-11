@@ -691,7 +691,7 @@ Without limitation, this embodiment may be applied to:
 
 ##### 11.14.10 Summary of Technical Advantage
 
-This embodiment discovers malicious payloads by enforcing what must be true, rather than attempting to predict what might be dangerous. By framing malware discovery as a constraint satisfiability problem over explicit structural state, the system enables early, deterministic, and low-false-positive detection, including in streaming environments.
+This embodiment discovers malicious payloads by enforcing what must be true, rather than attempting to predict what might be dangerous. By framing malware discovery as a constraint satisfiability problem over explicit structural state, the system enables early, deterministic, and reduced false-positive detection, including in streaming environments.
 
 #### 11.15 CPSC-Governed Agentic Development Framework
 
