@@ -77,6 +77,8 @@ Additional embodiments include deterministic optimization and satisfiability, re
 
 In some embodiments, the semantic system specification and corresponding constraint architectures define a stable, execution-independent intent layer for heterogeneous backends, including but not limited to classical processors, quantum computing systems, neuromorphic or analog accelerators, and learned or data-driven models such as neural networks, reinforcement learning agents, and large language models. In such embodiments, correctness conditions, invariants, and acceptable outcomes are defined declaratively at the semantic specification level, and one or more execution backends are selected, combined, or replaced over time without changing the specification.
 
+The disclosed systems provide structural computing improvements including: deterministic state evolution, elimination of instruction sequencing in certain embodiments, hardware-level constraint enforcement, unified semantic layer decoupled from execution backend, reduced recomputation of derived state, and explicit convergence bounds. These improvements constitute specific enhancements to computer functionality itself.
+
 The disclosed embodiments are illustrative and non-limiting.
 
 ---
@@ -121,7 +123,7 @@ Projection: A deterministic process mapping a proposed state to a valid state or
 Degree of Freedom (DoF): An independent variable required to reconstruct a valid state.
 Epoch: A discrete execution phase at which state updates are atomically committed.
 Semantic System Specification (SSS): A design-time representation describing system intent, state roles, and invariant relationships independently of execution mechanics. In some embodiments, an SSS is expressed in a structured, human-readable text format, such as a YAML-based encoding sometimes referred to as "Semantic-YAML," although the particular syntax is not limiting.
-Canonical Valid State: A deterministic representative valid state used for validation.
+Canonical Valid State: A deterministically selected representative valid state among potentially multiple satisfying states. Selection rule must be declared (for example, lexicographic minimum, minimal norm, or deterministic tie-break) to ensure uniqueness.
 
 ---
 
@@ -143,6 +145,28 @@ Given a proposed state, a projection operator deterministically resolves the sta
 
 Determinism is enforced through explicit numeric modes and precision, bounded update magnitudes, fixed iteration or epoch limits, deterministic tie-breaking rules, and commit-only state updates. Identical inputs and configuration yield identical outputs or identical failure indications.
 
+Arithmetic precision mode is declared as part of the constraint architecture. All projection arithmetic executes under declared precision. Precision differences across platforms are prohibited unless explicitly declared.
+
+#### 7.4.1 Formal Convergence Definition
+
+Convergence occurs when one of the following conditions is satisfied:
+
+(a) No constraint evaluation produces a state update exceeding a declared magnitude threshold under declared precision rules; OR
+(b) A fixed-point condition is reached where P(S) = S under declared numeric precision; OR
+(c) A maximum epoch bound is reached, producing deterministic failure.
+
+Numeric precision mode (fixed-point, bounded integer, rational, or declared floating precision) must be explicitly specified. Tie-breaking rules must be deterministic. Convergence criteria are declared as part of the constraint architecture. Identical inputs plus identical convergence parameters yield identical results. Convergence is a structural property of projection under declared bounds.
+
+#### 7.4.2 Failure Condition
+
+Failure occurs when:
+
+- No valid state exists within declared bounds; OR
+- Projection exceeds maximum epoch/iteration limit; OR
+- Update magnitude oscillates without reaching fixed-point under declared rules.
+
+Failure must be deterministic and reproducible. Identical inputs and convergence parameters yield identical failure indications.
+
 #### 7.5 Epoch-Based Execution
 
 In some embodiments, projection is structured into epochs comprising state observation, constraint evaluation, candidate update computation, and atomic commit. No state changes occur outside commit boundaries.
@@ -155,9 +179,13 @@ Variables may be classified as fixed, derived, or free. Degrees-of-freedom extra
 
 In some embodiments, CPSC supports an optional validation-time property referred to as recursion-stability. For a deterministic projection function P and a canonical valid state S, recursion-stability may require that P(S) equals S and that degrees of freedom remain invariant. This property is evaluated only during validation or certification and does not alter runtime semantics unless required by deployment.
 
+Recursion-stability is validation-only and does not constrain runtime semantics unless explicitly required by the deployment context. Systems may execute projection without enforcing recursion-stability during normal operation.
+
 #### 7.8 Distinction from Solvers and Preprocessors
 
 CPSC is not limited to a solver, preprocessor, filter, or auxiliary analysis step. Projection defines the primary computational mechanism by which system state is evolved, validated, reconstructed, or enforced across software and hardware systems.
+
+CPSC does not construct or traverse search trees. CPSC does not rely on backtracking. CPSC does not perform episodic invocation external to runtime state. Projection is the primary state evolution mechanism, not an auxiliary solving step. State is continuously governed by constraint projection. Unlike SAT/SMT solvers, projection defines system execution semantics.
 
 ---
 
@@ -351,11 +379,11 @@ The constraint-governed control plane may be realized in software, hardware, or 
 
 The constraint-governed smart control plane provides several technical advantages over conventional orchestration and scheduling systems:
 
-**Distinction from Conventional Orchestration Systems**. Conventional procedural orchestration systems such as Kubernetes, OpenStack, Apache Mesos, and cloud provider schedulers (AWS ECS, Azure Service Fabric, Google Kubernetes Engine) employ heuristic scheduling algorithms, imperative placement logic, and procedural policy enforcement. These systems make allocation decisions through code execution paths that branch on resource availability, policy checks, and optimization heuristics. In contrast, the disclosed constraint-governed control plane treats scheduling as deterministic constraint projection: all allocation logic is expressed declaratively as constraints over explicit state variables, proposals are validated through mathematical projection rather than procedural evaluation, and policy violations are structurally impossible rather than caught by runtime checks. This fundamental architectural difference enables deterministic reproducibility, unified multi-scheduler coexistence, and mathematically enforceable isolation that conventional orchestration systems cannot provide.
+**Distinction from Conventional Orchestration Systems**. Conventional procedural orchestration systems such as Kubernetes, OpenStack, Apache Mesos, and cloud provider schedulers (AWS ECS, Azure Service Fabric, Google Kubernetes Engine) employ heuristic scheduling algorithms, imperative placement logic, and procedural policy enforcement. These systems make allocation decisions through code execution paths that branch on resource availability, policy checks, and optimization heuristics. In contrast, the disclosed constraint-governed control plane treats scheduling as deterministic constraint projection: all allocation logic is expressed declaratively as constraints over explicit state variables, proposals are validated through mathematical projection rather than procedural evaluation, and policy violations are rejected during projection rather than caught by runtime checks. In certain embodiments, this architectural approach is configured to provide deterministic reproducibility, unified multi-scheduler coexistence, and constraint-based isolation enforcement.
 
 **Deterministic Governance**. All allocation decisions are deterministic functions of system state and constraint models, enabling reproducible scheduling behavior, simplified testing and validation, and elimination of emergent multi-scheduler conflicts.
 
-**Mathematically Enforceable Policies**. Isolation, resource bounds, SLAs, and security policies are expressed as constraints and enforced through projection rather than through procedural checks that may be bypassed or incorrectly implemented. Policy violations are structurally impossible if projection succeeds.
+**Mathematically Enforceable Policies**. Isolation, resource bounds, SLAs, and security policies are expressed as constraints and enforced through projection rather than through procedural checks that may be bypassed or incorrectly implemented. Under declared constraints, policy violations cannot occur if projection succeeds.
 
 **Unified Multi-Scheduler Support**. Multiple external schedulers, optimizers, or learned allocation agents can coexist, each generating proposals that the control plane validates. This enables experimentation with novel scheduling algorithms without risking policy violations or resource conflicts.
 
@@ -399,9 +427,11 @@ The system supports streaming mode for real-time and large-file compression via 
 
 ##### 11.10.3 Performance Characteristics and Two-Track Operation
 
-The system achieves representative compression ratios versus gzip-9 baseline of: VLBI observatory logs 3.0x-4.0x improvement (based on real-world VLBI observatory logs); Syslog large files 3.38x improvement (23.79x total versus 7.04x gzip); Apache access logs 1.43x improvement (7.12x total versus 4.98x gzip); XML documents 1.36-1.57x improvement scaling to gigabyte files; WAV audio 1.45-18.9x improvement via domain-specific projection; and Python source 1.20-1.40x estimated via AST-based structure.
+The system has demonstrated in representative tests compression ratios versus gzip-9 baseline of: VLBI observatory logs 3.0x-4.0x improvement (in representative real-world VLBI observatory logs); Syslog large files 3.38x improvement (23.79x total versus 7.04x gzip in tested samples); Apache access logs 1.43x improvement (7.12x total versus 4.98x gzip in tested samples); XML documents 1.36-1.57x improvement in tested files scaling to gigabyte sizes; WAV audio 1.45-18.9x improvement via domain-specific projection in certain experimental datasets; and Python source 1.20-1.40x in internal benchmarking via AST-based structure.
 
-The system maintains two operational modes: Track 1 domain-aware compression (semantic normalization + CPSC + entropy) activated when domain is detected with confidence exceeding 0.7 and a parser is available, achieving 1.5x to 3.4x improvement over gzip for logs, source code, and structured data; and Track 2 generic compression (fallback) activated when domain is unknown or confidence detection is low, applying generic CPSC (32-byte blocks) or direct entropy coding, achieving baseline performance that may underperform gzip, used for Calgary and Canterbury benchmarks, encrypted data, and pre-compressed archives. Adaptive decision logic routes input through domain detection, then if confidence exceeds 0.7 and parser exists applies Track 1 (semantic normalization + CPSC) yielding 1.5-3.4x improvement, otherwise applies Track 2 (generic) yielding baseline compression.
+Performance characteristics vary based on dataset composition, entropy profile, and implementation configuration. All performance metrics are illustrative, dataset-dependent, and non-limiting.
+
+The system maintains two operational modes: Track 1 domain-aware compression (semantic normalization + CPSC + entropy) activated when domain is detected with confidence exceeding 0.7 and a parser is available, has demonstrated 1.5x to 3.4x improvement over gzip in representative implementations for logs, source code, and structured data; and Track 2 generic compression (fallback) activated when domain is unknown or confidence detection is low, applying generic CPSC (32-byte blocks) or direct entropy coding, achieving baseline performance that may underperform gzip, used for Calgary and Canterbury benchmarks, encrypted data, and pre-compressed archives. Adaptive decision logic routes input through domain detection, then if confidence exceeds 0.7 and parser exists applies Track 1 (semantic normalization + CPSC), otherwise applies Track 2 (generic) yielding baseline compression.
 
 ##### 11.10.4 Container Format and Technical Advantages
 
@@ -423,9 +453,13 @@ In one embodiment, a system designer specifies variables, constraints, degrees o
 
 In such embodiments, quantum hardware is treated as a probabilistic execution backend for the constraint architecture rather than as the location of semantic intent. Correctness conditions, invariants, and acceptable solution sets are defined declaratively in the semantic system specification and constraint architecture, and quantum programs or Hamiltonians are generated as one of several possible execution realizations.
 
+As an illustrative example, a Boolean constraint set may be lowered to quadratic unconstrained binary optimization (QUBO). Constraint terms are mapped to Hamiltonian energy penalties. Acceptable states correspond to ground states under declared energy bounds. This example is illustrative and non-limiting.
+
 In another embodiment, the same semantic system specification is used to target both quantum and classical backends. Classical solvers, heuristic optimizers, or deterministic CPSC engines may be applied to the constraint architecture alongside or in place of quantum execution. This enables hybrid classical–quantum systems in which different backends are selected or combined without changing the semantic specification of the problem.
 
 In further embodiments, analogous techniques are applied to neuromorphic processors, analog computing systems, in-memory compute fabrics, or other non-von-neumann architectures. These backends may realize the constraint architecture using spiking dynamics, continuous-time evolution, or other non-instructional mechanisms, while the semantic system specification continues to define the intended variables, constraints, and acceptable outcomes independently of the underlying hardware.
+
+For neuromorphic and analog embodiments, analog convergence is defined relative to declared tolerance bounds. Sampling boundary must meet declared stability duration. Precision and error bounds are part of the constraint model. These declarations ensure that analog convergence criteria are explicitly specified rather than implicit.
 
 #### 11.12 Learned Predictor Embodiments for Constraint-Projected Adaptive Compression
 
@@ -470,6 +504,8 @@ Cryptographic rules—including ring arithmetic relations, modular reduction, no
 Verification proceeds by injecting values for the degrees of freedom into a partial cryptographic state and deterministically projecting the state until all constraints are satisfied or a failure condition is detected. Cryptographic verification therefore corresponds to convergence of the projection process, while cryptographic failure corresponds to non-convergence or violation of constraints. There is no explicit procedural verification logic, branching on secret data, or instruction-level control flow determining validity.
 
 In some embodiments, determinism and side-channel resistance are improved by enforcing that, for a given cryptographic input and configuration, projection converges to the same valid state or fails in the same manner across executions. Numeric precision, arithmetic modes, and convergence criteria are explicitly declared. Randomized control flow and data-dependent branching are eliminated. Because cryptographic validity is determined through constraint satisfaction rather than conditional execution paths, the system may reduce side-channel leakage arising from timing, branching, or microarchitectural effects.
+
+While projection reduces certain classes of timing and branch-based side channels by eliminating secret-dependent control flow, no claim is made that projection alone eliminates all side-channel vectors. Additional countermeasures may be required for comprehensive side-channel resistance.
 
 In some embodiments, only the minimal independent cryptographic information required to define a valid state is injected into the system. Derived values, such as public key components, intermediate products, or verification artifacts, are reconstructed through projection and need not be stored or transmitted. This minimizes exposure of sensitive material and reduces persistent storage of derived cryptographic state. Cryptographic state may be serialized or reconstructed using a deterministic binary interchange format that encodes degrees of freedom and model identity, allowing secure reconstruction of full cryptographic state only when required.
 
@@ -599,7 +635,7 @@ If projection converges within declared bounds, the payload is deemed structural
 
 If projection fails to converge, or if no valid state exists that satisfies all constraints, the payload is deemed structurally invalid.
 
-In this embodiment, structural invalidity is treated as an indicator of maliciousness, exploit activity, or protocol abuse, because legitimate payloads cannot violate fundamental format invariants.
+In this embodiment, structural invalidity is treated as an indicator of maliciousness, exploit activity, protocol abuse, or corruption in contexts where strict conformance to declared structural invariants is required. Benign corruption or truncation may also result in structural invalidity; deployment context determines response policy.
 
 ##### 11.14.5 Streaming Operation
 
@@ -714,6 +750,8 @@ These CGAD embodiments generalize to multi-agent collaboration, distributed syst
 ### 12. NON-LIMITING STATEMENT
 
 The foregoing description is illustrative and not limiting. Variations, modifications, and combinations fall within the scope of the disclosed invention. Optional validation properties do not restrict the scope of the computing paradigm.
+
+The embodiments described herein may be claimed independently or in combination, and no embodiment is required for practice of another unless explicitly stated.
 
 ---
 
