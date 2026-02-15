@@ -1,0 +1,44 @@
+version: 1.0
+model_id: synthetic_log_cpsc_v1
+includes: []
+
+state:
+  variables:
+    - name: t_seconds
+      type: float
+      domain: [0.0, 86400.0]
+      description: seconds since midnight
+    - name: user
+      type: string
+      domain: []  # domain is model-dependent symbol table
+      description: user identifier
+    - name: action
+      type: string
+      domain: []
+      description: action label
+    - name: status
+      type: string
+      domain: []
+      description: status label
+
+degrees_of_freedom:
+  free:
+    - t_seconds
+    - user
+    - action
+    - status
+
+constraints:
+  - id: time_bounds
+    expression: 0.0 <= t_seconds && t_seconds <= 86400.0
+    description: timestamp must be within a 24-hour window
+
+projection:
+  method: bounded_relaxation
+  max_iterations: 1
+  convergence_epsilon: 0
+
+execution:
+  deterministic: true
+  numeric_mode: fixed_point
+  precision_bits: 32

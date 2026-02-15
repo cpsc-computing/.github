@@ -162,6 +162,23 @@ flagging inconsistencies. This enables deterministic replay and analysis, where
 any corruption or tampering manifests as projection failure or structural
 anomalies.
 
+A concrete reference implementation for this embodiment lives in the
+`cpsc-python` repository as the synthetic-log CPSC pipeline:
+- CAS-YAML model `CAS-Example-Synthetic-Log.yaml` under `.github/docs/specification`.
+- Stage A/B/C experiment `cpac/scripts/run_synthetic_log_cpsc_model.py` using
+  MSN-normalized `(t_seconds, user, action, status)` records.
+- Minimal binary DoF demo in `cpsc/binary_format_demo.py` exercised by
+  `cpsc/test/test_binary_format_synthetic_log.py`.
+
+The projection engine modes (Iterative and Cellular) applicable to telemetry
+and logging workloads are defined in `CPSC-Engine-Modes-Specification.md`.
+The Iterative Engine is suited for continuous arithmetic constraints; the
+Cellular Engine (with DLIF streaming) is suited for discrete structural or
+pattern-based convergence scenarios.
+
+These artifacts serve as the canonical small-scale telemetry/logging
+compression exemplar for E-11.8/E-11.10.
+
 ### 2.9 E-11.9: Embedded and Low-Power Systems
 
 CPSC supports embedded and low-power designs by replacing complex control logic

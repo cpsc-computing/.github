@@ -131,9 +131,10 @@ For a plain-language explanation, see `LEGAL-FAQ.md`.
 
 ## Getting Started
 
-1. Read `docs/specification/CPSC-Specification.md`
-2. Review CAS-YAML examples under `docs/specification/`
-3. Consult `docs/LEGAL-FAQ.md` for licensing guidance
+1. Read `docs/specification/CPSC-Specification.md` (core computation model)
+2. Read `docs/specification/CPSC-Engine-Modes-Specification.md` (Iterative and Cellular projection engines)
+3. Review CAS-YAML examples under `docs/specification/`
+4. Consult `docs/LEGAL-FAQ.md` for licensing guidance
 
 ---
 

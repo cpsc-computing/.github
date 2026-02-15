@@ -22,6 +22,7 @@ Those semantics are defined normatively in:
 - `CAS-YAML-Specification.md`
 - `Binary-Format-Specification.md`
 - `Binary-Format-RTL-Mapping.md`
+- `CPSC-Engine-Modes-Specification.md`
 
 ---
 
@@ -94,5 +95,6 @@ If any statement in this document appears to conflict with:
 - `CAS-YAML-Specification.md`
 - `Binary-Format-Specification.md`
 - `Binary-Format-RTL-Mapping.md`
+- `CPSC-Engine-Modes-Specification.md`
 
 then the normative specifications above take precedence and this document MUST be updated.

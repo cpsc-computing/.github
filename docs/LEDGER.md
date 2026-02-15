@@ -56,6 +56,24 @@ Session note – VLBI performance update and PDF rendering fixes
   - Regenerated all documentation PDFs (19 files) with properly embedded images, confirmed by increased file sizes (e.g., cpsc-overview.pdf: 101 KB → 1191.7 KB).
 - Artifacts: Commit `71cd6ee` pushed to `main`.
 
+Session note – CPSC Engine Modes Specification added (February 15, 2026)
+------------------------------------------------------------------------
+- Date: 2026-02-15
+- Context: New normative specification added for CPSC projection engine modes.
+- New document: `docs/specification/CPSC-Engine-Modes-Specification.md` (v1.0, Draft)
+- Summary: Defines two projection engine modes for CPSC:
+  1. **Iterative Engine** — Global constraint evaluation with numerical iteration (gradient/Newton methods)
+  2. **Cellular Engine** — Local rule evaluation with neighbor-based self-organization (proto-cell fabric)
+  - Both software and hardware (RTL/VHDL) embodiments specified
+  - Introduces **DLIF** (Degrees-of-freedom Line-In Format) as streaming element format for Cellular Engine
+  - Includes reference local rule (PropagationRule) matching DDF ARCHITECTURE.md §4.4
+  - Cross-references: CPSC-Specification.md §5/§6/§7/§12, CAS-YAML-Specification.md §7/§8/§10, Binary-Format-Specification.md, Binary-Format-RTL-Mapping.md
+- Supporting artifact: `docs/specification/CAS-Example-Synthetic-Log.yaml` (reference CAS model for testing)
+- Updates required: README.md, CPSC-Specification.md §15, CPSC-Implementation-Governance.md §1, cpsc-embodiments-overview.md
+- Status: Draft specification, pending commit.
+
+---
+
 Session note – Provisional patent filing preparation (February 11, 2026)
 -----------------------------------------------------------------------
 - Date: 2026-02-11

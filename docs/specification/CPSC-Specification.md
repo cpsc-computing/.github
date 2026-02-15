@@ -271,11 +271,14 @@ CPSC does not define:
 
 ## 15. Related Specifications
 
-The declarative constraint definition format is specified separately:
+The following specifications complement the core CPSC model:
 
-- **CAS-YAML Specification** (forthcoming)
+- **CAS-YAML Specification** — Declarative Constraint Architecture Specification format
+- **Binary-Format-Specification** — Deterministic State Interchange Format (DSIF)
+- **Binary-Format-RTL-Mapping** — Hardware signal-level interpretation for DSIF
+- **CPSC-Engine-Modes-Specification** — Iterative and Cellular projection engine modes with software and hardware embodiments, including the DLIF streaming format for cellular engines
 
-This document defines the execution and computation model only.
+This document defines the core execution and computation model; engine-specific behavior is defined in the Engine Modes specification.
 
 ---
 
