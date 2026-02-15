@@ -39,6 +39,7 @@ This specification depends on and must remain consistent with:
 | `CAS-YAML-Specification.md`         | Constraint model format | §7 State, §8 Constraints, §10 Projection Config              |
 | `Binary-Format-Specification.md`    | DSIF binary format      | §3 Structure, §7 DoF Vector, §9 Streaming Properties         |
 | `Binary-Format-RTL-Mapping.md`      | Hardware signal mapping | §6 DoF Mapping, §8 Constraint Fabric Interface               |
+| `CPSC-Adaptive-Engine-Specification.md` | AdaptiveEngine meta-engine | §2 CAS-YAML Schema, §3 API, §4 Constraint Graph          |
 | `CPSC-Implementation-Governance.md` | Development practices   | §2 Spec-First Workflow, §3 Determinism                       |
 | `CAS-Example-Synthetic-Log.yaml`    | Reference CAS model     | 4-variable telemetry example                                 |
 ### 1.4 Specification Relationships
@@ -1455,6 +1456,10 @@ Wrap-around connections are implemented by:
 
 ## 5. AdaptiveEngine
 
+> **Canonical specification:** The complete AdaptiveEngine specification is defined in
+> `CPSC-Adaptive-Engine-Specification.md`. This section provides an integrated summary
+> for implementers of CPSC engines.
+
 ### 5.1 Overview
 
 The AdaptiveEngine is a **meta-engine** that automatically detects the optimal solving strategy for a given constraint problem. Rather than requiring users to manually select between Iterative and Cellular engines, the AdaptiveEngine analyzes the constraint structure and selects the most appropriate execution mode.
@@ -2343,5 +2348,6 @@ Per CPSC-Implementation-Governance.md §3:
 | `CAS-YAML-Specification.md`         | Constraint model definition format     |
 | `Binary-Format-Specification.md`    | DSIF binary interchange format         |
 | `Binary-Format-RTL-Mapping.md`      | Hardware signal-level mapping          |
+| `CPSC-Adaptive-Engine-Specification.md` | AdaptiveEngine meta-engine specification |
 | `CPSC-Implementation-Governance.md` | Development practices                  |
 | `CAS-Example-Synthetic-Log.yaml`    | Reference 4-variable CAS model         |

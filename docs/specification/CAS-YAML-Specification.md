@@ -259,6 +259,7 @@ The `projection` section defines convergence parameters:
 
 ```yaml
 projection:
+  strategy: auto             # Engine selection strategy
   method: bounded_relaxation
   max_iterations: 32
   convergence_epsilon: 0
@@ -272,6 +273,29 @@ projection:
 * Implementations MUST document supported methods
 * Bounds MUST be explicit
 * Failure to converge MUST be reported
+
+---
+
+### 10.3 Strategy Field
+
+The optional `strategy` field controls engine selection for implementations supporting multiple projection engines (per CPSC-Engine-Modes-Specification.md §5):
+
+| Value       | Behavior                                                                 |
+| ----------- | ------------------------------------------------------------------------ |
+| `auto`      | AdaptiveEngine selects based on constraint graph analysis (default)      |
+| `iterative` | Force IterativeEngine regardless of constraint structure                 |
+| `cellular`  | Force CellularEngine regardless of constraint structure                  |
+| `hybrid`    | Staged execution: iterative then cellular (reserved for future use)      |
+
+**Default:** `auto` (if `strategy` field is omitted)
+
+**Priority chain:** When AdaptiveEngine is available:
+1. API override (highest priority)
+2. CAS-YAML `projection.strategy` field
+3. Auto-detection from constraint graph analysis
+4. Default fallback: iterative engine
+
+Implementations not supporting AdaptiveEngine SHOULD ignore this field and use their default engine
 
 ---
 
