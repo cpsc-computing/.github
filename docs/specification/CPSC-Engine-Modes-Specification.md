@@ -1861,11 +1861,11 @@ An implementation MAY:
 | **Determinism**           | Via solver parameters    | Via local rules              | Via constraint graph + delegate |
 ---
 
-## 6. Configuration via CAS-YAML
+## 7. Configuration via CAS-YAML
 
 Per CAS-YAML-Specification.md §10:
 
-### 6.1 Iterative Engine Configuration
+### 7.1 Iterative Engine Configuration
 
 ```yaml
 projection:
@@ -1878,7 +1878,7 @@ execution:
   numeric_mode: float64      # or: float32, fixed_point
   precision_bits: 64
 ```
-### 6.2 Cellular Engine Configuration
+### 7.2 Cellular Engine Configuration
 
 ```yaml
 projection:
@@ -1904,9 +1904,9 @@ cellular:
 ```
 ---
 
-## 7. Binary Format Integration
+## 8. Binary Format Integration
 
-### 7.1 DSIF (Block Format)
+### 8.1 DSIF (Block Format)
 
 Per Binary-Format-Specification.md, DSIF is used for:
 - Iterative Engine: Full DoF vector loaded at start
@@ -1920,7 +1920,7 @@ DSIF structure (Binary-Format-Specification.md §3):
 [DoF Vector]       N×P bits - Packed DoF values
 [Residual Stream]  Optional - Residual corrections
 ```
-### 7.2 DSIF-to-Cellular Mapping
+### 8.2 DSIF-to-Cellular Mapping
 
 When using DSIF with Cellular Engine:
 1. DoF vector values map to `cell_param` for each cell
@@ -1929,9 +1929,9 @@ When using DSIF with Cellular Engine:
 
 ---
 
-## 8. Relationship to Existing Specifications
+## 9. Relationship to Existing Specifications
 
-### 8.1 CPSC-Specification.md
+### 9.1 CPSC-Specification.md
 
 | Section               | This Specification                               |
 | --------------------- | ------------------------------------------------ |
@@ -1939,7 +1939,7 @@ When using DSIF with Cellular Engine:
 | §6 Determinism        | Both engines guarantee deterministic convergence |
 | §7 Degrees of Freedom | DoF vector initializes both engines              |
 | §12 Hardware Guidance | Cellular Engine implements proto-cell fabric     |
-### 8.2 CAS-YAML-Specification.md
+### 9.2 CAS-YAML-Specification.md
 
 | Section        | This Specification                                    |
 | -------------- | ----------------------------------------------------- |
@@ -1947,14 +1947,14 @@ When using DSIF with Cellular Engine:
 | §8 Constraints | Iterative uses expressions; Cellular uses local rules |
 | §10 Projection | `method` field selects engine mode                    |
 | §11 Execution  | `numeric_mode`, `precision_bits` apply to both        |
-### 8.3 Binary-Format-Specification.md
+### 9.3 Binary-Format-Specification.md
 
 | Section            | This Specification                                     |
 | ------------------ | ------------------------------------------------------ |
 | §7 DoF Vector      | Loads Iterative state or Cellular cell params          |
 | §8 Residual Stream | Applied before projection (Iterative only)             |
 | §9 Streaming       | DSIF is block-oriented; DLIF (§10) is element-oriented |
-### 8.4 Binary-Format-RTL-Mapping.md
+### 9.4 Binary-Format-RTL-Mapping.md
 
 | Section              | This Specification                                    |
 | -------------------- | ----------------------------------------------------- |
@@ -1963,9 +1963,9 @@ When using DSIF with Cellular Engine:
 | §9 FSM               | Both engines use linear FSM (no nested control)       |
 ---
 
-## 9. Reference Implementation
+## 10. Reference Implementation
 
-### 9.1 CAS-Example-Synthetic-Log.yaml Compatibility
+### 10.1 CAS-Example-Synthetic-Log.yaml Compatibility
 
 The reference model `CAS-Example-Synthetic-Log.yaml` can be processed by either engine:
 
@@ -1979,7 +1979,7 @@ The reference model `CAS-Example-Synthetic-Log.yaml` can be processed by either 
 - PropagationRule with default parameters
 - Self-organizes to stable pattern
 
-### 9.2 Expected Behavior (Grid1D Reference)
+### 10.2 Expected Behavior (Grid1D Reference)
 
 For the reference 4-cell scenario (per DDF ARCHITECTURE.md §4.4):
 - Initial: `[INACTIVE, INACTIVE, INACTIVE, INACTIVE]`
@@ -1989,9 +1989,9 @@ For the reference 4-cell scenario (per DDF ARCHITECTURE.md §4.4):
 - Expected attractor: `[ACTIVE, ACTIVE, INACTIVE, INACTIVE]`
 - Convergence: Within 8 cycles, stable for 4+ cycles
 
-### 9.3 Multi-Topology Test Vectors
+### 10.3 Multi-Topology Test Vectors
 
-#### 9.3.1 Grid2D Reference (4×4 mesh)
+#### 10.3.1 Grid2D Reference (4×4 mesh)
 
 ```
 Initial (all INACTIVE):
@@ -2011,7 +2011,7 @@ Expected attractor (corner cells active due to boundary):
   [0, 0, 0, 0]
 ```
 
-#### 9.3.2 GraphGrid Reference (Star topology)
+#### 10.3.2 GraphGrid Reference (Star topology)
 
 ```
 Topology: Hub (0) connected to spokes (1, 2, 3)
@@ -2026,7 +2026,7 @@ Expected: All ACTIVE after 1 cycle
   [1, 1, 1, 1]
 ```
 
-#### 9.3.3 ToroidalGrid1D Reference (Ring)
+#### 10.3.3 ToroidalGrid1D Reference (Ring)
 
 ```
 N=4 cells, params=[0, 0, 0, 0]
@@ -2040,7 +2040,7 @@ Expected propagation:
   Cycle 2: [1, 1, 1, 1]  # All connected via ring
 ```
 
-#### 9.3.4 Grid2D with MajorityRule Reference
+#### 10.3.4 Grid2D with MajorityRule Reference
 
 ```
 3×3 grid, initial state:
@@ -2061,9 +2061,9 @@ Expected attractor (cells take majority of neighbors):
 
 ---
 
-## 10. DLIF (Degrees-of-freedom Line-In Format)
+## 11. DLIF (Degrees-of-freedom Line-In Format)
 
-### 10.1 Purpose
+### 11.1 Purpose
 
 DLIF is a **streaming element format** for the Cellular Engine that enables:
 - Element-by-element flow through cell arrays
@@ -2073,7 +2073,7 @@ DLIF is a **streaming element format** for the Cellular Engine that enables:
 
 DLIF complements DSIF (block format) for streaming-oriented cellular computation.
 
-### 10.2 Design Goals
+### 11.2 Design Goals
 
 Per Binary-Format-Specification.md §2 design goals, DLIF is:
 - **Deterministic**: Element order defines processing order
@@ -2081,7 +2081,7 @@ Per Binary-Format-Specification.md §2 design goals, DLIF is:
 - **Hardware-compatible**: Fixed element sizes, no dynamic allocation
 - **Minimal**: Small header, simple element encoding
 
-### 10.3 Format Structure
+### 11.3 Format Structure
 
 ```
 ┌─────────────────────────────────────┐
@@ -2095,7 +2095,7 @@ Per Binary-Format-Specification.md §2 design goals, DLIF is:
 │  [End Marker]     4 bytes           │
 └─────────────────────────────────────┘
 ```
-### 10.4 Header Format
+### 11.4 Header Format
 
 | Field         | Offset | Size    | Description                         |
 | ------------- | ------ | ------- | ----------------------------------- |
@@ -2109,7 +2109,7 @@ Per Binary-Format-Specification.md §2 design goals, DLIF is:
 - Bit 0: Has end marker (1) or implicit end (0)
 - Bits 1-7: Reserved (must be zero)
 
-### 10.5 Element Format
+### 11.5 Element Format
 
 Each element is 4 bytes (32 bits):
 
@@ -2122,10 +2122,10 @@ Each element is 4 bytes (32 bits):
 ```
 | Field | Bits  | Description                                    |
 | ----- | ----- | ---------------------------------------------- |
-| Type  | 31:28 | Element type (see §10.6)                       |
+| Type  | 31:28 | Element type (see §11.6)                       |
 | Index | 27:16 | Cell index or parameter ID                     |
 | Value | 15:0  | Element value (interpretation depends on type) |
-### 10.6 Element Types
+### 11.6 Element Types
 
 | Type         | Code | Description                   | Index       | Value                        |
 | ------------ | ---- | ----------------------------- | ----------- | ---------------------------- |
@@ -2137,9 +2137,9 @@ Each element is 4 bytes (32 bits):
 | CTRL_RESET   | 0x9  | Reset cells to initial state  | —           | —                            |
 | CTRL_RUN     | 0xA  | Begin/continue cycles         | —           | Cycle count (0=until stable) |
 | END_MARKER   | 0xF  | End of stream                 | —           | Checksum (optional)          |
-### 10.7 Streaming Semantics
+### 11.7 Streaming Semantics
 
-#### 10.7.1 Configuration Phase
+#### 11.7.1 Configuration Phase
 
 CONFIG elements are processed before cycles begin:
 
@@ -2153,7 +2153,7 @@ CONFIG elements are processed before cycles begin:
 [CTRL_RUN:     value=32]            # Run up to 32 cycles
 [END_MARKER]
 ```
-#### 10.7.2 Data Streaming (Advanced)
+#### 11.7.2 Data Streaming (Advanced)
 
 DATA elements can flow through cells during execution:
 
@@ -2169,7 +2169,7 @@ Data elements shift through the cell array:
 
 Cells may modify data based on their state (application-specific).
 
-### 10.8 Software Interface
+### 11.8 Software Interface
 
 ```python
 @dataclass
@@ -2231,9 +2231,9 @@ class DlifStream:
         elements.append(DlifElement(type=0xA, index=0, value=max_cycles))  # CTRL_RUN
         return DlifStream.encode(elements)
 ```
-### 10.9 Hardware Interface
+### 11.9 Hardware Interface
 
-#### 10.9.1 AXI4-Stream Interface
+#### 11.9.1 AXI4-Stream Interface
 
 DLIF streams are transported via AXI4-Stream:
 
@@ -2243,7 +2243,7 @@ DLIF streams are transported via AXI4-Stream:
 | `s_axis_dlif_tvalid` | 1     | Data valid                              |
 | `s_axis_dlif_tready` | 1     | Ready to accept                         |
 | `s_axis_dlif_tlast`  | 1     | Last element in stream                  |
-#### 10.9.2 DLIF Decoder RTL
+#### 11.9.2 DLIF Decoder RTL
 
 ```vhdl
 entity dlif_decoder is
@@ -2272,7 +2272,7 @@ entity dlif_decoder is
   );
 end entity;
 ```
-### 10.10 DLIF vs DSIF Comparison
+### 11.10 DLIF vs DSIF Comparison
 
 | Aspect             | DSIF                                 | DLIF                             |
 | ------------------ | ------------------------------------ | -------------------------------- |
@@ -2282,7 +2282,7 @@ end entity;
 | **Use case**       | Initial configuration, checkpointing | Streaming input, runtime updates |
 | **Engine support** | Both (Iterative preferred)           | Cellular only                    |
 | **HW interface**   | AXI4 DMA / register load             | AXI4-Stream                      |
-### 10.11 DLIF Conformance
+### 11.11 DLIF Conformance
 
 An implementation claiming DLIF conformance MUST:
 1. Parse header magic "DLIF" and version 1
@@ -2299,9 +2299,9 @@ An implementation MAY:
 
 ---
 
-## 11. Conformance
+## 12. Conformance
 
-### 11.1 Mandatory Requirements
+### 12.1 Mandatory Requirements
 
 An implementation claiming conformance to this specification MUST:
 
@@ -2312,7 +2312,7 @@ An implementation claiming conformance to this specification MUST:
 5. Document which engine modes and features are supported
 6. Follow CPSC-Implementation-Governance.md §2 spec-first workflow
 
-### 11.2 Optional Features
+### 12.2 Optional Features
 
 Implementations MAY:
 1. Support both engine modes with runtime selection
@@ -2322,10 +2322,11 @@ Implementations MAY:
    - Grid2D (2D mesh with 4 or 8 connectivity) — OPTIONAL
    - ToroidalGrid1D/2D (periodic boundaries) — OPTIONAL
    - GraphGrid (arbitrary topology) — OPTIONAL
-4. Implement DLIF streaming (§10)
-5. Provide engine-specific configuration extensions
+4. Implement DLIF streaming (§11)
+5. Implement AdaptiveEngine strategy selection (§5)
+6. Provide engine-specific configuration extensions
 
-### 11.3 Implementation Notes
+### 12.3 Implementation Notes
 
 Per CPSC-Implementation-Governance.md §3:
 - Numeric modes and precision MUST be explicit
@@ -2334,13 +2335,13 @@ Per CPSC-Implementation-Governance.md §3:
 
 ---
 
-## 12. References
+## 13. References
 
-| Document                            | Description                        |
-| ----------------------------------- | ---------------------------------- |
-| `CPSC-Specification.md`             | Core CPSC computation model        |
-| `CAS-YAML-Specification.md`         | Constraint model definition format |
-| `Binary-Format-Specification.md`    | DSIF binary interchange format     |
-| `Binary-Format-RTL-Mapping.md`      | Hardware signal-level mapping      |
-| `CPSC-Implementation-Governance.md` | Development practices              |
-| `CAS-Example-Synthetic-Log.yaml`    | Reference 4-variable CAS model     |
+| Document                            | Description                            |
+| ----------------------------------- | -------------------------------------- |
+| `CPSC-Specification.md`             | Core CPSC computation model            |
+| `CAS-YAML-Specification.md`         | Constraint model definition format     |
+| `Binary-Format-Specification.md`    | DSIF binary interchange format         |
+| `Binary-Format-RTL-Mapping.md`      | Hardware signal-level mapping          |
+| `CPSC-Implementation-Governance.md` | Development practices                  |
+| `CAS-Example-Synthetic-Log.yaml`    | Reference 4-variable CAS model         |
