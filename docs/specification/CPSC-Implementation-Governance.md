@@ -23,6 +23,7 @@ Those semantics are defined normatively in:
 - `Binary-Format-Specification.md`
 - `Binary-Format-RTL-Mapping.md`
 - `CPSC-Engine-Modes-Specification.md`
+- `CPSC-Adaptive-Engine-Specification.md`
 
 ---
 
@@ -61,6 +62,18 @@ In practice, implementations SHOULD:
 
 Changes that weaken determinism or introduce implicit behavior SHOULD be treated as semantics changes and subjected to careful review.
 
+### 3.1 Grid Topology Determinism
+
+When implementing multi-topology grid support for the Cellular Engine:
+
+- Grid dimensions (width, height) MUST be explicit in configuration
+- Neighbor ordering MUST be consistent and documented
+- For GraphGrid, edge list order defines neighbor iteration order
+- Connectivity mode (4 vs 8) MUST be explicit for 2D grids
+- Boundary conditions MUST be declared (no implicit defaults)
+
+Changes to neighbor ordering or boundary handling MUST be treated as semantics changes.
+
 ---
 
 ## 4. Agent-Assisted Development (Optional)
@@ -96,5 +109,6 @@ If any statement in this document appears to conflict with:
 - `Binary-Format-Specification.md`
 - `Binary-Format-RTL-Mapping.md`
 - `CPSC-Engine-Modes-Specification.md`
+- `CPSC-Adaptive-Engine-Specification.md`
 
-then the normative specifications above take precedence and this document MUST be updated.
+then the normative specifications above take precedence

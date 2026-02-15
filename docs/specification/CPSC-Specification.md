@@ -277,8 +277,9 @@ The following specifications complement the core CPSC model:
 - **Binary-Format-Specification** — Deterministic State Interchange Format (DSIF)
 - **Binary-Format-RTL-Mapping** — Hardware signal-level interpretation for DSIF
 - **CPSC-Engine-Modes-Specification** — Iterative and Cellular projection engine modes with software and hardware embodiments, including the DLIF streaming format for cellular engines
+- **CPSC-Adaptive-Engine-Specification** — Unified meta-engine with auto-detection of optimal solving strategy based on constraint graph analysis
 
-This document defines the core execution and computation model; engine-specific behavior is defined in the Engine Modes specification.
+This document defines the core execution and computation model; engine-specific behavior is defined in the Engine Modes and Adaptive Engine specifications.
 
 ---
 

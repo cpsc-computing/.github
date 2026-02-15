@@ -559,11 +559,53 @@ class Cell:
         """
         self._current = self._next
 
+### 4.2.2a Grid Protocol
+
+All grid implementations satisfy the `Grid` protocol:
+
+```python
+class Grid(Protocol):
+    """Protocol defining the interface for all grid implementations.
+    
+    Grids provide:
+    - Cell storage and indexing
+    - Neighbor topology (via get_neighbors)
+    - Cycle orchestration (observe, compute, apply)
+    - State extraction (types, fitness, params)
+    """
+    
+    def get_neighbors(self, index: int) -> list[CellState]:
+        """Get neighbor states for a cell.
+        
+        This is the key method that defines grid topology.
+        Different grid types implement different neighbor relationships.
+        """
+        ...
+    
+    def __len__(self) -> int: ...
+    def __iter__(self) -> Iterator[Cell]: ...
+    def __getitem__(self, index: int) -> Cell: ...
+    def observe(self) -> None: ...
+    def compute(self, rule: LocalRule) -> None: ...
+    def apply(self) -> None: ...
+    def get_types(self) -> list[int]: ...
+    def get_fitness(self) -> list[int]: ...
+    def get_params(self) -> list[int]: ...
+    def reset(self) -> None: ...
+```
+
+### 4.2.2b Grid Implementations
+
+#### Grid1D (Linear Chain)
+
 class Grid1D:
     """
     One-dimensional chain of cells with configurable boundaries.
     
     Per CPSC-Specification.md §12: "regular array or graph of proto-cells"
+    
+    Topology: Each cell has 2 neighbors (left, right).
+    Boundary modes: 'active_left', 'inactive', 'wrap'
     """
     
     def __init__(self, n_cells: int, params: list[int], boundary: str = 'active_left'):
@@ -643,6 +685,76 @@ class Grid1D:
                 return CellState(cell_type=CELL_INACTIVE, cell_param=0, fitness=0)
         return self.cells[index + 1].state
 
+#### Grid2D (2D Mesh)
+
+```python
+class Grid2D(BaseGrid):
+    """Two-dimensional mesh of cells.
+    
+    Topology: Each cell has 4 (von Neumann) or 8 (Moore) neighbors.
+    Index mapping: index = y * width + x
+    """
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        params: list[int] | None = None,
+        boundary: Literal["inactive", "active"] = "inactive",
+        connectivity: Literal[4, 8] = 4,
+    ): ...
+```
+
+**Connectivity modes:**
+- `4` (von Neumann): up, down, left, right
+- `8` (Moore): + diagonal neighbors (ul, ur, dl, dr)
+
+#### GraphGrid (Arbitrary Topology)
+
+```python
+class GraphGrid(BaseGrid):
+    """Grid with arbitrary topology defined by edges.
+    
+    Topology: User-defined via edge list.
+    Can represent trees, DAGs, cycles, irregular meshes.
+    """
+    def __init__(
+        self,
+        n_cells: int,
+        edges: list[tuple[int, int]],
+        params: list[int] | None = None,
+        directed: bool = False,
+    ): ...
+```
+
+#### ToroidalGrid1D (Ring)
+
+```python
+class ToroidalGrid1D(BaseGrid):
+    """One-dimensional ring of cells (periodic boundary).
+    
+    Topology: Each cell has 2 neighbors, cell 0 neighbors cell N-1.
+    No boundary cells - edges wrap around.
+    """
+    def __init__(self, n_cells: int, params: list[int] | None = None): ...
+```
+
+#### ToroidalGrid2D (Torus)
+
+```python
+class ToroidalGrid2D(BaseGrid):
+    """Two-dimensional torus (periodic boundaries in both dimensions).
+    
+    Topology: Each cell has 4 or 8 neighbors, edges wrap around.
+    """
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        params: list[int] | None = None,
+        connectivity: Literal[4, 8] = 4,
+    ): ...
+```
+
 class CycleController:
     """
     Orchestrates grid cycles and detects convergence.
@@ -706,13 +818,11 @@ class LocalRule(Protocol):
     def evaluate(
         self, 
         current: CellState, 
-        left: CellState | None, 
-        right: CellState | None
+        neighbors: list[CellState],  # Topology-agnostic neighbor list
     ) -> CellState:
-        """Compute next state from current state and neighbor states."""
-        ...
-
-class PropagationRule:
+        """Compute next state from current state and neighbor states.
+        
+ class PropagationRule:
     """
     Propagate ACTIVE state within max_distance of an active neighbor.
     
@@ -735,14 +845,10 @@ class PropagationRule:
     def evaluate(
         self, 
         current: CellState, 
-        left: CellState | None, 
-        right: CellState | None
+        neighbors: list[CellState],  # Topology-agnostic
     ) -> CellState:
-        # Check if either neighbor is ACTIVE
-        neighbor_active = (
-            (left is not None and left.cell_type == CELL_ACTIVE) or
-            (right is not None and right.cell_type == CELL_ACTIVE)
-        )
+        # Check if any neighbor is ACTIVE
+        neighbor_active = any(n.cell_type == CELL_ACTIVE for n in neighbors)
         
         # Check if within propagation distance
         within_distance = current.cell_param < self.max_distance
@@ -761,6 +867,50 @@ class PropagationRule:
             cell_param=current.cell_param,  # Param is configuration, immutable
             fitness=new_fitness
         )
+
+class MajorityRule:
+    """Cell becomes the majority type of its neighbors.
+    
+    Useful for 2D grids and consensus problems.
+    Ties are broken in favor of INACTIVE (conservative).
+    """
+    
+    def __init__(self, max_fitness: int = 255):
+        self.max_fitness = max_fitness
+    
+    def evaluate(
+        self, 
+        current: CellState, 
+        neighbors: list[CellState],
+    ) -> CellState:
+        if not neighbors:
+            return current
+        
+        active_count = sum(1 for n in neighbors if n.cell_type == CELL_ACTIVE)
+        threshold = len(neighbors) / 2
+        
+        if active_count > threshold:
+            new_type = CELL_ACTIVE
+            new_fitness = min(current.fitness + 1, self.max_fitness)
+        else:
+            new_type = CELL_INACTIVE
+            new_fitness = max(current.fitness - 1, 0)
+        
+        return CellState(
+            cell_type=new_type,
+            cell_param=current.cell_param,
+            fitness=new_fitness,
+        )
+
+class IdentityRule:
+    """Preserve current state (no-op rule for testing)."""
+    
+    def evaluate(
+        self,
+        current: CellState,
+        neighbors: list[CellState],
+    ) -> CellState:
+        return current
 ```
 #### 4.2.4 Engine Implementation
 
@@ -777,22 +927,53 @@ class CellularEngine:
         max_cycles: int = 32,
         stability_window: int = 4,
         max_propagation: int = 2,
-        boundary: str = 'active_left'
+        boundary: str = 'active_left',
+        grid_type: Literal["1d", "2d", "toroidal_1d", "toroidal_2d", "graph"] = "1d",
+        rule_type: Literal["propagation", "majority", "identity"] = "propagation",
+        connectivity: Literal[4, 8] = 4,  # For 2D grids
     ):
+        """
+        Args:
+            max_cycles: Maximum cycles before termination
+            stability_window: Consecutive stable cycles required for convergence
+            max_propagation: PropagationRule max_distance parameter
+            boundary: Boundary condition mode for 1D grids
+            grid_type: Grid topology (1d, 2d, toroidal_1d, toroidal_2d, graph)
+            rule_type: Local rule to use (propagation, majority, identity)
+            connectivity: For 2D grids, 4 (von Neumann) or 8 (Moore)
+        """
         self.max_cycles = max_cycles
         self.stability_window = stability_window
         self.rule = PropagationRule(max_distance=max_propagation)
         self.boundary = boundary
     
-    def solve(self, model: CasModel, dof_values: Sequence[float]) -> ProjectionResult:
+    def solve(
+        self, 
+        model: CasModel, 
+        dof_values: Sequence[float],
+        max_iterations: int | None = None,
+        grid: Grid | None = None,        # Pre-configured grid
+        width: int | None = None,         # For 2D grids
+        height: int | None = None,        # For 2D grids  
+        edges: list[tuple[int, int]] | None = None,  # For GraphGrid
+    ) -> ProjectionResult:
         """
         Project DoF values via cellular self-organization.
         
         Process:
-        1. Configure grid from DoF values
+        1. Configure grid from DoF values (or use provided grid)
         2. Run cycles: OBSERVE → COMPUTE → APPLY
         3. Detect convergence or reach max_cycles
         4. Extract final state from cell types
+        
+        Args:
+            model: CAS model defining the problem
+            dof_values: Initial DoF values (cell parameters)
+            max_iterations: Override max_cycles for this solve
+            grid: Pre-configured grid (bypasses grid_type)
+            width: Grid width for 2D grids
+            height: Grid height for 2D grids
+            edges: Edge list for GraphGrid
         """
         # 1. Configure grid from DoF
         n_cells = len(dof_values)
@@ -1180,20 +1361,504 @@ Per-cell resources:
 | N=256         | 256   | ~4096     | ~3072      |
 Controller overhead: ~100 FFs, ~150 LUTs (FSM, stability counter, comparator)
 
+#### 4.3.7 Multi-Topology Hardware Considerations
+
+##### Grid2D Hardware Architecture
+
+For 2D grids, the cell array extends to a mesh:
+
+```
+┌──────────────────────────────────────────┐
+│  Cell Array (W × H mesh)                 │
+│                                          │
+│  ┌────┐    ┌────┐    ┌────┐    ┌────┐   │
+│  │0,0 │◀──▶│1,0 │◀──▶│2,0 │◀──▶│3,0 │   │
+│  └─┬──┘    └─┬──┘    └─┬──┘    └─┬──┘   │
+│    │▲        │▲        │▲        │▲      │
+│    ▼│        ▼│        ▼│        ▼│      │
+│  ┌─┴──┐    ┌─┴──┐    ┌─┴──┐    ┌─┴──┐   │
+│  │0,1 │◀──▶│1,1 │◀──▶│2,1 │◀──▶│3,1 │   │
+│  └────┘    └────┘    └────┘    └────┘   │
+└──────────────────────────────────────────┘
+```
+
+**Resource scaling:** O(W × H) cells, each with 4 or 8 neighbor connections.
+
+##### Cell Module Updates for Multi-Topology
+
+The cell module neighbor interface extends to support variable neighbor counts:
+
+```vhdl
+-- Old interface (1D only)
+neighbor_l    : in  std_logic_vector(1 downto 0);
+neighbor_r    : in  std_logic_vector(1 downto 0);
+
+-- New interface (multi-topology)
+neighbor_count : in  integer range 0 to 8;
+neighbors      : in  std_logic_vector(8*2-1 downto 0);  -- Up to 8 neighbors, 2 bits each
+```
+
+##### 2D Mesh Wiring Pattern
+
+For Grid2D hardware:
+
+```vhdl
+-- 4-connected (von Neumann)
+cell(x,y).neighbors(0) <= cell(x, y-1).type;  -- Up
+cell(x,y).neighbors(1) <= cell(x, y+1).type;  -- Down
+cell(x,y).neighbors(2) <= cell(x-1, y).type;  -- Left
+cell(x,y).neighbors(3) <= cell(x+1, y).type;  -- Right
+
+-- 8-connected (Moore) adds:
+cell(x,y).neighbors(4) <= cell(x-1, y-1).type;  -- Upper-left
+cell(x,y).neighbors(5) <= cell(x+1, y-1).type;  -- Upper-right
+cell(x,y).neighbors(6) <= cell(x-1, y+1).type;  -- Lower-left
+cell(x,y).neighbors(7) <= cell(x+1, y+1).type;  -- Lower-right
+```
+
+##### MajorityRule RTL
+
+```vhdl
+-- Majority rule (combinational)
+process(current_type, neighbors, neighbor_count)
+  variable active_count : integer := 0;
+begin
+  for i in 0 to neighbor_count-1 loop
+    if neighbors(i*2+1 downto i*2) = TYPE_ACTIVE then
+      active_count := active_count + 1;
+    end if;
+  end loop;
+  
+  if active_count > neighbor_count / 2 then
+    type_next <= TYPE_ACTIVE;
+  else
+    type_next <= TYPE_INACTIVE;
+  end if;
+end process;
+```
+
+##### Graph Topology Hardware
+
+For arbitrary graph topologies:
+- Neighbor connections defined by configuration registers
+- Crossbar or mesh network for non-local connections
+- Higher routing complexity but maximum flexibility
+
+##### Toroidal Boundaries (Hardware)
+
+Wrap-around connections are implemented by:
+- Direct wiring of edge cells to opposite edge cells
+- No virtual boundary logic needed
+- Simplifies boundary handling at cost of fixed topology
+
 ---
 
-## 5. Engine Comparison
+## 5. AdaptiveEngine
 
-| Aspect                    | Iterative Engine         | Cellular Engine              |
-| ------------------------- | ------------------------ | ---------------------------- |
-| **Constraint evaluation** | Global (all constraints) | Local (per cell + neighbors) |
-| **State communication**   | Centralized StateVector  | Neighbor-only exchange       |
-| **Parallelism model**     | Constraint-parallel      | Cell-parallel                |
-| **Best suited for**       | Continuous arithmetic    | Discrete structural          |
-| **Convergence method**    | Error minimization       | Pattern stabilization        |
-| **HW resource scaling**   | O(M×N) for M constraints | O(N) for N cells             |
-| **Streaming support**     | DSIF (block load)        | DLIF (element stream)        |
-| **Determinism**           | Via solver parameters    | Via local rules              |
+### 5.1 Overview
+
+The AdaptiveEngine is a **meta-engine** that automatically detects the optimal solving strategy for a given constraint problem. Rather than requiring users to manually select between Iterative and Cellular engines, the AdaptiveEngine analyzes the constraint structure and selects the most appropriate execution mode.
+
+**Key capabilities:**
+- Automatic constraint graph analysis
+- Heuristic-based strategy selection
+- Seamless delegation to underlying engines
+- CAS-YAML integration with manual override support
+
+**Implements:** CPSC-Specification.md §5 (Projection) via adaptive engine selection
+
+### 5.2 Constraint Graph Analysis
+
+#### 5.2.1 ConstraintGraph Construction
+
+The AdaptiveEngine builds a constraint graph from the CAS model:
+
+```python
+@dataclass
+class ConstraintGraph:
+    """Graph representation of constraint structure for strategy analysis."""
+    
+    variables: set[str]                    # All variable names
+    constraints: list[str]                 # Constraint IDs
+    var_to_constraints: dict[str, set[str]]  # Variable → constraints referencing it
+    constraint_to_vars: dict[str, set[str]]  # Constraint → variables it references
+    adjacency: dict[str, set[str]]         # Variable co-occurrence in constraints
+    
+    @classmethod
+    def from_cas_model(cls, model: 'CasModel') -> 'ConstraintGraph':
+        """Build constraint graph from CAS-YAML model."""
+        variables = {v.name for v in model.state.variables}
+        constraints = [c.id for c in model.constraints]
+        
+        var_to_constraints: dict[str, set[str]] = {v: set() for v in variables}
+        constraint_to_vars: dict[str, set[str]] = {}
+        adjacency: dict[str, set[str]] = {v: set() for v in variables}
+        
+        for constraint in model.constraints:
+            refs = _extract_variable_refs(constraint.expression)
+            constraint_to_vars[constraint.id] = refs
+            for v in refs:
+                var_to_constraints[v].add(constraint.id)
+            # Build adjacency: variables that appear together in constraints
+            for v1 in refs:
+                for v2 in refs:
+                    if v1 != v2:
+                        adjacency[v1].add(v2)
+        
+        return cls(
+            variables=variables,
+            constraints=constraints,
+            var_to_constraints=var_to_constraints,
+            constraint_to_vars=constraint_to_vars,
+            adjacency=adjacency
+        )
+    
+    def avg_degree(self) -> float:
+        """Average variable connectivity (edges per node)."""
+        if not self.variables:
+            return 0.0
+        return sum(len(adj) for adj in self.adjacency.values()) / len(self.variables)
+    
+    def grid_locality_score(self) -> float:
+        """Fraction of constraints with only neighbor references.
+        
+        Returns value in [0.0, 1.0] where:
+        - 1.0 = all constraints reference only adjacent variables
+        - 0.0 = no constraints show locality
+        """
+        if not self.constraints:
+            return 0.0
+        local_count = 0
+        for cid, vars_ in self.constraint_to_vars.items():
+            if self._is_local_constraint(vars_):
+                local_count += 1
+        return local_count / len(self.constraints)
+    
+    def global_constraint_ratio(self) -> float:
+        """Fraction of constraints referencing >30% of all variables."""
+        if not self.constraints:
+            return 0.0
+        threshold = len(self.variables) * 0.3
+        global_count = sum(
+            1 for vars_ in self.constraint_to_vars.values()
+            if len(vars_) > threshold
+        )
+        return global_count / len(self.constraints)
+    
+    def _is_local_constraint(self, vars_: set[str]) -> bool:
+        """Check if constraint references only adjacent variables."""
+        if len(vars_) <= 2:
+            return True
+        # Check if all variables are neighbors of each other
+        for v1 in vars_:
+            for v2 in vars_:
+                if v1 != v2 and v2 not in self.adjacency.get(v1, set()):
+                    return False
+        return True
+```
+
+### 5.3 Detection Heuristics
+
+The AdaptiveEngine uses three primary heuristics to classify constraint problems:
+
+#### 5.3.1 Grid Locality Detection
+
+**Heuristic:** If >50% of constraints reference only neighbor variables → **Cellular Engine**
+
+```python
+def detect_grid_locality(graph: ConstraintGraph) -> bool:
+    """Detect grid-like locality patterns suitable for cellular execution."""
+    return graph.grid_locality_score() > 0.50
+```
+
+**Rationale:** Problems with high locality benefit from the cellular engine's neighbor-based communication pattern. Examples:
+- Image processing (pixel neighborhoods)
+- PDE discretizations (stencil operations)
+- Lattice-based simulations
+
+#### 5.3.2 Sparse Linear Detection
+
+**Heuristic:** If average variable degree < 5 → **Iterative Engine**
+
+```python
+def detect_sparse_linear(graph: ConstraintGraph) -> bool:
+    """Detect sparse linear constraint patterns."""
+    return graph.avg_degree() < 5.0
+```
+
+**Rationale:** Sparse problems with few variable interactions are efficiently handled by iterative methods with gradient computation. Examples:
+- Linear programming relaxations
+- Sparse equation systems
+- Flow networks
+
+#### 5.3.3 Global Constraint Detection
+
+**Heuristic:** If >30% of constraints reference >30% of variables → **Iterative Engine**
+
+```python
+def detect_global_constraints(graph: ConstraintGraph) -> bool:
+    """Detect global constraint patterns requiring full state visibility."""
+    return graph.global_constraint_ratio() > 0.30
+```
+
+**Rationale:** Global constraints require simultaneous access to many variables, which the iterative engine's centralized state model handles more efficiently. Examples:
+- Cardinality constraints
+- Global resource limits
+- Symmetry-breaking constraints
+
+### 5.4 Strategy Selection
+
+#### 5.4.1 Priority Order
+
+Strategy selection follows strict precedence:
+
+1. **API Override** (highest priority): Explicit `strategy` parameter to `project()` call
+2. **CAS-YAML Hint**: `projection.strategy` field in model specification
+3. **Auto-Detection**: Heuristic-based selection from constraint analysis
+4. **Default Fallback** (lowest priority): Iterative engine
+
+```python
+class Strategy(Enum):
+    """Engine selection strategy."""
+    AUTO = "auto"           # Use detection heuristics
+    ITERATIVE = "iterative" # Force iterative engine
+    CELLULAR = "cellular"   # Force cellular engine
+    HYBRID = "hybrid"       # Staged execution (future)
+```
+
+#### 5.4.2 Detection Algorithm
+
+```python
+def _determine_strategy(self, graph: ConstraintGraph) -> Strategy:
+    """Determine optimal strategy from constraint graph analysis.
+    
+    Detection priority:
+    1. Grid locality (>50% neighbor refs) → CELLULAR
+    2. Global constraints (>30% wide refs) → ITERATIVE
+    3. Sparse linear (<5 avg degree) → ITERATIVE
+    4. Default fallback → ITERATIVE
+    """
+    # Check for cellular-friendly patterns first
+    if detect_grid_locality(graph):
+        return Strategy.CELLULAR
+    
+    # Check for iterative-requiring patterns
+    if detect_global_constraints(graph):
+        return Strategy.ITERATIVE
+    
+    if detect_sparse_linear(graph):
+        return Strategy.ITERATIVE
+    
+    # Default fallback
+    return Strategy.ITERATIVE
+```
+
+### 5.5 AdaptiveEngine Class
+
+```python
+class AdaptiveEngine:
+    """Meta-engine that auto-detects optimal solving strategy.
+    
+    AdaptiveEngine wraps IterativeEngine and CellularEngine, selecting
+    the appropriate engine based on constraint structure analysis.
+    
+    Strategy selection priority:
+    1. API override (strategy parameter)
+    2. CAS-YAML hint (projection.strategy)
+    3. Auto-detection from constraint graph
+    4. Default: iterative
+    """
+    
+    def __init__(
+        self,
+        iterative_engine: 'IterativeEngine | None' = None,
+        cellular_engine: 'CellularEngine | None' = None
+    ):
+        """Initialize with optional pre-configured engines."""
+        self._iterative = iterative_engine or IterativeEngine()
+        self._cellular = cellular_engine or CellularEngine()
+        self._last_strategy: Strategy | None = None
+        self._last_graph: ConstraintGraph | None = None
+    
+    def project(
+        self,
+        model: 'CasModel',
+        dof_values: list[float],
+        strategy: Strategy | None = None
+    ) -> 'ProjectionResult':
+        """Execute projection with automatic engine selection.
+        
+        Args:
+            model: CAS-YAML model specification
+            dof_values: Initial degrees of freedom values
+            strategy: Optional strategy override (highest priority)
+        
+        Returns:
+            ProjectionResult with selected engine's output
+        """
+        # Build constraint graph for analysis
+        graph = ConstraintGraph.from_cas_model(model)
+        self._last_graph = graph
+        
+        # Determine strategy with priority chain
+        effective_strategy = self._resolve_strategy(model, strategy, graph)
+        self._last_strategy = effective_strategy
+        
+        # Delegate to appropriate engine
+        if effective_strategy == Strategy.CELLULAR:
+            result = self._cellular.project(model, dof_values)
+        elif effective_strategy == Strategy.HYBRID:
+            result = self._project_hybrid(model, dof_values, graph)
+        else:  # ITERATIVE or AUTO (fallback)
+            result = self._iterative.project(model, dof_values)
+        
+        # Add strategy info to result details
+        result.details['adaptive_strategy'] = effective_strategy.value
+        result.details['constraint_graph'] = {
+            'n_vars': len(graph.variables),
+            'n_constraints': len(graph.constraints),
+            'avg_degree': graph.avg_degree(),
+            'grid_locality': graph.grid_locality_score(),
+            'global_ratio': graph.global_constraint_ratio()
+        }
+        
+        return result
+    
+    def _resolve_strategy(
+        self,
+        model: 'CasModel',
+        api_override: Strategy | None,
+        graph: ConstraintGraph
+    ) -> Strategy:
+        """Resolve effective strategy from priority chain."""
+        # 1. API override (highest priority)
+        if api_override is not None and api_override != Strategy.AUTO:
+            return api_override
+        
+        # 2. CAS-YAML hint
+        cas_strategy = model.projection.get('strategy', 'auto')
+        if cas_strategy != 'auto':
+            return Strategy(cas_strategy)
+        
+        # 3. Auto-detection
+        return self._determine_strategy(graph)
+    
+    def _project_hybrid(
+        self,
+        model: 'CasModel',
+        dof_values: list[float],
+        graph: ConstraintGraph
+    ) -> 'ProjectionResult':
+        """Staged hybrid execution (future extension).
+        
+        Hybrid mode executes iterative engine first for global
+        convergence, then switches to cellular for local refinement.
+        """
+        # Phase 1: Iterative for global structure
+        iter_result = self._iterative.project(
+            model, dof_values,
+            max_iterations=model.projection.get('max_iterations', 32) // 2
+        )
+        
+        if not iter_result.success:
+            return iter_result
+        
+        # Phase 2: Cellular for local refinement
+        refined_dof = iter_result.state.to_dof_list()
+        cell_result = self._cellular.project(
+            model, refined_dof,
+            max_cycles=model.projection.get('max_iterations', 32) // 2
+        )
+        
+        # Combine results
+        cell_result.iterations += iter_result.iterations
+        cell_result.details['hybrid_phases'] = [
+            {'engine': 'iterative', 'iterations': iter_result.iterations},
+            {'engine': 'cellular', 'cycles': cell_result.iterations - iter_result.iterations}
+        ]
+        
+        return cell_result
+    
+    @property
+    def last_strategy(self) -> Strategy | None:
+        """Strategy used in most recent projection."""
+        return self._last_strategy
+    
+    @property
+    def last_graph(self) -> ConstraintGraph | None:
+        """Constraint graph from most recent analysis."""
+        return self._last_graph
+```
+
+### 5.6 CAS-YAML Integration
+
+The AdaptiveEngine respects the `projection.strategy` field in CAS-YAML:
+
+```yaml
+projection:
+  strategy: auto           # auto | iterative | cellular | hybrid
+  method: bounded_relaxation
+  max_iterations: 32
+  convergence_epsilon: 0
+```
+
+**Strategy values:**
+
+| Value       | Behavior                                                          |
+| ----------- | ----------------------------------------------------------------- |
+| `auto`      | AdaptiveEngine selects based on constraint graph analysis         |
+| `iterative` | Force IterativeEngine regardless of constraint structure          |
+| `cellular`  | Force CellularEngine regardless of constraint structure           |
+| `hybrid`    | Staged execution: iterative then cellular (reserved, future use)  |
+
+**Default:** `auto` (if `strategy` field is omitted)
+
+### 5.7 Hybrid Execution (Future Extension)
+
+Hybrid mode enables staged execution combining both engines:
+
+1. **Phase 1 (Iterative):** Establish global structure with gradient-based convergence
+2. **Phase 2 (Cellular):** Refine local patterns with neighbor-based self-organization
+
+This is beneficial for problems with both global constraints and local structure, such as:
+- Constrained image segmentation
+- Hierarchical scheduling
+- Multi-scale optimization
+
+**Status:** Reserved for future implementation. Current implementations SHOULD treat `hybrid` as equivalent to `auto`.
+
+### 5.8 Conformance
+
+An implementation claiming AdaptiveEngine conformance MUST:
+
+1. Build a constraint graph from the CAS model
+2. Implement at least grid locality detection (>50% threshold)
+3. Respect the strategy priority chain: API > CAS-YAML > auto-detect > default
+4. Default to iterative engine when auto-detection is inconclusive
+5. Include strategy selection details in `ProjectionResult.details`
+
+An implementation MAY:
+
+1. Implement sparse linear detection (<5 avg degree threshold)
+2. Implement global constraint detection (>30% threshold)
+3. Implement hybrid execution mode
+4. Tune detection thresholds for domain-specific optimization
+5. Cache constraint graph analysis across multiple projections
+
+---
+
+## 6. Engine Comparison
+
+| Aspect                    | Iterative Engine         | Cellular Engine              | AdaptiveEngine                  |
+| ------------------------- | ------------------------ | ---------------------------- | ------------------------------- |
+| **Constraint evaluation** | Global (all constraints) | Local (per cell + neighbors) | Delegates to selected engine    |
+| **State communication**   | Centralized StateVector  | Neighbor-only exchange       | Depends on selected engine      |
+| **Parallelism model**     | Constraint-parallel      | Cell-parallel                | Inherits from delegate          |
+| **Best suited for**       | Continuous arithmetic    | Discrete structural          | Automatic selection             |
+| **Convergence method**    | Error minimization       | Pattern stabilization        | Via delegate engine             |
+| **HW resource scaling**   | O(M×N) for M constraints | O(N) for N cells             | N/A (software meta-engine)      |
+| **Streaming support**     | DSIF (block load)        | DLIF (element stream)        | Inherits from delegate          |
+| **Determinism**           | Via solver parameters    | Via local rules              | Via constraint graph + delegate |
 ---
 
 ## 6. Configuration via CAS-YAML
@@ -1228,7 +1893,12 @@ execution:
 
 # Engine-specific extension (optional, not in core CAS-YAML spec)
 cellular:
-  boundary: active_left      # active_left | inactive | wrap
+  grid_type: 1d              # 1d | 2d | toroidal_1d | toroidal_2d | graph
+  grid_width: 10             # For 2D grids
+  grid_height: 10            # For 2D grids
+  connectivity: 4            # 4 (von Neumann) | 8 (Moore), for 2D only
+  boundary: active_left      # active_left | inactive | active | wrap
+  rule_type: propagation     # propagation | majority | identity
   max_propagation: 2         # PropagationRule max_distance
   stability_window: 4        # Cycles of stability for convergence
 ```
@@ -1309,7 +1979,7 @@ The reference model `CAS-Example-Synthetic-Log.yaml` can be processed by either 
 - PropagationRule with default parameters
 - Self-organizes to stable pattern
 
-### 9.2 Expected Behavior
+### 9.2 Expected Behavior (Grid1D Reference)
 
 For the reference 4-cell scenario (per DDF ARCHITECTURE.md §4.4):
 - Initial: `[INACTIVE, INACTIVE, INACTIVE, INACTIVE]`
@@ -1318,6 +1988,76 @@ For the reference 4-cell scenario (per DDF ARCHITECTURE.md §4.4):
 - MAX_DISTANCE: 2
 - Expected attractor: `[ACTIVE, ACTIVE, INACTIVE, INACTIVE]`
 - Convergence: Within 8 cycles, stable for 4+ cycles
+
+### 9.3 Multi-Topology Test Vectors
+
+#### 9.3.1 Grid2D Reference (4×4 mesh)
+
+```
+Initial (all INACTIVE):
+  [0, 0, 0, 0]
+  [0, 0, 0, 0]
+  [0, 0, 0, 0]
+  [0, 0, 0, 0]
+
+Boundary: active (all edges inject ACTIVE)
+Connectivity: 4 (von Neumann)
+Rule: Propagation (max_distance=2)
+
+Expected attractor (corner cells active due to boundary):
+  [1, 1, 0, 0]
+  [1, 0, 0, 0]
+  [0, 0, 0, 0]
+  [0, 0, 0, 0]
+```
+
+#### 9.3.2 GraphGrid Reference (Star topology)
+
+```
+Topology: Hub (0) connected to spokes (1, 2, 3)
+  Edges: [(0,1), (0,2), (0,3)]
+
+Initial: Hub ACTIVE, spokes INACTIVE
+  [1, 0, 0, 0]
+
+Rule: Propagation (max_distance=2), all params=0
+
+Expected: All ACTIVE after 1 cycle
+  [1, 1, 1, 1]
+```
+
+#### 9.3.3 ToroidalGrid1D Reference (Ring)
+
+```
+N=4 cells, params=[0, 0, 0, 0]
+Cell 0 initially ACTIVE
+
+Rule: Propagation (max_distance=2)
+
+Expected propagation:
+  Cycle 0: [1, 0, 0, 0]
+  Cycle 1: [1, 1, 0, 1]  # Cell 3 sees cell 0 via wrap
+  Cycle 2: [1, 1, 1, 1]  # All connected via ring
+```
+
+#### 9.3.4 Grid2D with MajorityRule Reference
+
+```
+3×3 grid, initial state:
+  [1, 1, 0]
+  [1, 0, 0]
+  [0, 0, 0]
+
+Connectivity: 4 (von Neumann)
+Boundary: inactive
+Rule: MajorityRule
+
+Expected attractor (cells take majority of neighbors):
+  [1, 1, 0]
+  [1, 0, 0]
+  [0, 0, 0]
+  (stable - edge cells lack majority ACTIVE neighbors)
+```
 
 ---
 
@@ -1576,8 +2316,12 @@ An implementation claiming conformance to this specification MUST:
 
 Implementations MAY:
 1. Support both engine modes with runtime selection
-2. Implement additional local rules for Cellular Engine
-3. Support 2D grids for Cellular Engine
+2. Implement additional local rules for Cellular Engine (MajorityRule, IdentityRule, custom)
+3. Support multiple grid topologies for Cellular Engine:
+   - Grid1D (linear chain) — RECOMMENDED minimum
+   - Grid2D (2D mesh with 4 or 8 connectivity) — OPTIONAL
+   - ToroidalGrid1D/2D (periodic boundaries) — OPTIONAL
+   - GraphGrid (arbitrary topology) — OPTIONAL
 4. Implement DLIF streaming (§10)
 5. Provide engine-specific configuration extensions
 

@@ -56,6 +56,8 @@ Includes:
 - CAS-YAML-Specification.md
 - Binary-Format-Specification.md
 - Binary-Format-RTL-Mapping.md
+- CPSC-Engine-Modes-Specification.md
+- CPSC-Adaptive-Engine-Specification.md
 
 Normative content:
 - MUST be precise

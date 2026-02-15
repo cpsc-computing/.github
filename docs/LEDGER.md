@@ -56,6 +56,39 @@ Session note – VLBI performance update and PDF rendering fixes
   - Regenerated all documentation PDFs (19 files) with properly embedded images, confirmed by increased file sizes (e.g., cpsc-overview.pdf: 101 KB → 1191.7 KB).
 - Artifacts: Commit `71cd6ee` pushed to `main`.
 
+Session note – CPSC Adaptive Engine Specification added (February 15, 2026)
+---------------------------------------------------------------------------
+- Date: 2026-02-15
+- Context: New normative specification for unified meta-engine with auto-detection.
+- New document: `docs/specification/CPSC-Adaptive-Engine-Specification.md` (v1.0, Draft)
+- Summary: Defines **AdaptiveEngine** meta-engine that:
+  - Analyzes CAS model constraint graph structure
+  - Auto-detects optimal solving strategy (Iterative vs Cellular)
+  - Introduces `projection.strategy` CAS-YAML field (`auto`, `iterative`, `cellular`, `hybrid`)
+  - Respects priority: API override > CAS-YAML hint > auto-detection
+  - Returns strategy selection reasoning in `ProjectionResult.details`
+- Key components: ConstraintGraph analysis, detection heuristics (grid locality, sparse linear, global constraints)
+- Cross-references: CPSC-Specification.md §5/§6, CAS-YAML-Specification.md §10, CPSC-Engine-Modes-Specification.md §3/§4
+- Status: Draft specification, committed.
+
+---
+
+Session note – CPSC Engine Modes Specification expanded (February 15, 2026)
+---------------------------------------------------------------------------
+- Date: 2026-02-15
+- Context: Major expansion of Engine Modes spec with multi-topology and multi-rule support.
+- Updated document: `docs/specification/CPSC-Engine-Modes-Specification.md`
+- Changes:
+  - **Grid Protocol** (§4.2.2a): Topology-agnostic interface with `get_neighbors()` returning variable-length neighbor lists
+  - **Grid Implementations** (§4.2.2b): Grid1D, Grid2D, GraphGrid, ToroidalGrid1D, ToroidalGrid2D
+  - **New Local Rules**: MajorityRule (majority voting), IdentityRule (passthrough), in addition to PropagationRule
+  - **Engine Configuration**: Extended with `grid_type`, `rule_type`, `connectivity` parameters
+  - **Hardware Considerations** (§4.3.7): Multi-topology wiring, 2D neighbor routing, toroidal boundaries
+  - **Test Vectors** (§9.3): Added Grid2D, GraphGrid, ToroidalGrid1D, Grid2D+MajorityRule scenarios
+- Status: Draft specification, committed.
+
+---
+
 Session note – CPSC Engine Modes Specification added (February 15, 2026)
 ------------------------------------------------------------------------
 - Date: 2026-02-15
@@ -70,7 +103,7 @@ Session note – CPSC Engine Modes Specification added (February 15, 2026)
   - Cross-references: CPSC-Specification.md §5/§6/§7/§12, CAS-YAML-Specification.md §7/§8/§10, Binary-Format-Specification.md, Binary-Format-RTL-Mapping.md
 - Supporting artifact: `docs/specification/CAS-Example-Synthetic-Log.yaml` (reference CAS model for testing)
 - Updates required: README.md, CPSC-Specification.md §15, CPSC-Implementation-Governance.md §1, cpsc-embodiments-overview.md
-- Status: Draft specification, pending commit.
+- Status: Draft specification, committed.
 
 ---
 
