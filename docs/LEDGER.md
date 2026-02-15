@@ -56,6 +56,20 @@ Session note – VLBI performance update and PDF rendering fixes
   - Regenerated all documentation PDFs (19 files) with properly embedded images, confirmed by increased file sizes (e.g., cpsc-overview.pdf: 101 KB → 1191.7 KB).
 - Artifacts: Commit `71cd6ee` pushed to `main`.
 
+Session note – Specification session complete (February 15, 2026)
+-----------------------------------------------------------------
+- Date: 2026-02-15
+- Context: Session completing new engine specifications and documentation updates.
+- Specifications added/updated:
+  1. **CPSC-Engine-Modes-Specification.md** — Multi-topology expansion complete (Grid1D/2D, GraphGrid, Toroidal, MajorityRule, IdentityRule)
+  2. **CPSC-Adaptive-Engine-Specification.md** — New meta-engine spec with auto-detection
+- Cross-references updated: WARP.md, AGENTS.md, README.md, CPSC-Specification.md, CPSC-Implementation-Governance.md, cpsc-embodiments-overview.md
+- Implementation: Deferred to `cpsc-engine-python` repository (not this spec repo)
+- Outstanding prior-art work: Themes B–G remain placeholder; prior-art searches to be scheduled separately
+- Status: Session saved.
+
+---
+
 Session note – CPSC Adaptive Engine Specification added (February 15, 2026)
 ---------------------------------------------------------------------------
 - Date: 2026-02-15
