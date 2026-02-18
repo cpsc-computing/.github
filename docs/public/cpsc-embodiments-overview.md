@@ -166,7 +166,9 @@ A concrete reference implementation for this embodiment lives in the
 `cpsc-python` repository as the synthetic-log CPSC pipeline:
 - CAS-YAML model `CAS-Example-Synthetic-Log.yaml` under `.github/docs/specification`.
 - Stage A/B/C experiment `cpac/scripts/run_synthetic_log_cpsc_model.py` using
-  MSN-normalized `(t_seconds, user, action, status)` records.
+  Multi-Scale Normalization (MSN) normalized `(t_seconds, user, action, status)` records.
+  MSN performs deterministic extraction and canonicalization of structured data across
+  multiple scales before CPSC projection
 - Minimal binary DoF demo in `cpsc/binary_format_demo.py` exercised by
   `cpsc/test/test_binary_format_synthetic_log.py`.
 
