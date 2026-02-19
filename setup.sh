@@ -12,7 +12,17 @@ set -e
 # Parse arguments
 RENDER_TOOLS=false
 USPTO_MCP=false
-PYTHON="python3"
+# Honor .python-version if present
+if [ -f ".python-version" ]; then
+    PY_VER=$(head -n1 .python-version | tr -d '\r')
+    if command -v "python${PY_VER%.*}" >/dev/null 2>&1; then
+        PYTHON="python${PY_VER%.*}"
+    else
+        PYTHON="python3"
+    fi
+else
+    PYTHON="python3"
+fi
 ROOT_DIR="$HOME"
 SKIP_CLONE=false
 SKIP_SETUP=false

@@ -141,6 +141,29 @@ For a plain-language explanation, see `LEGAL-FAQ.md`.
 
 ---
 
+## Agent Session Management
+
+This repository supports AI agent workflows with session commands.
+
+### Resuming a Session (New Agent)
+
+When starting a new agent session, use this prompt:
+
+> You are in the cpsc-core repository (CPSC specification); first read and internalize AGENTS.md and WARP.md, then execute the load session command as defined in AGENTS.md.
+
+### Session Commands
+
+| Command | Description |
+|---------|-------------|
+| `load session` | Pull latest changes and summarize any relevant updates. |
+| `save session` | Update relevant docs and commit changes locally without pushing. |
+| `save session and push` | Same as save session, then push to the default remote. |
+| `push to git` | Stage, commit, and push current work to origin. |
+
+See `AGENTS.md` and `WARP.md` for full agent instructions.
+
+---
+
 ## Contact
 
 For research questions, discussion, or licensing inquiries,
@@ -148,4 +171,4 @@ contact BitConcepts, LLC.
 
 ---
 
-**CPSC Specifications** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0
+**CPSC Specifications**

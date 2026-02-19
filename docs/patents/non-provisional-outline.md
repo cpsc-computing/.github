@@ -4,7 +4,7 @@
 
 ---
 
-## 0. Metadata (Administrative)
+## 1. Metadata (Administrative)
 
 * Title
   **Constraint-Projected State Computing Systems and Methods**
@@ -19,11 +19,11 @@
 
 * Government Rights (if any)
 
-  * Typically “None”
+  * Typically "None"
 
 ---
 
-## 1. Technical Field
+## 2. Technical Field
 
 * General field: computing systems and architectures
 * Sub-fields:
@@ -42,9 +42,9 @@ Purpose of this section:
 
 ---
 
-## 2. Background
+## 3. Background
 
-### 2.1 Instruction-Driven Computing
+### 3.1 Instruction-Driven Computing
 
 * Define instruction execution, control flow, mutable state
 * Limitations:
@@ -53,25 +53,25 @@ Purpose of this section:
   * difficulty enforcing correctness
   * complexity in safety-critical systems
 
-### 2.2 Constraint Programming & Solvers
+### 3.2 Constraint Programming & Solvers
 
 * SAT / MaxSAT / CSP systems as *tools*, not substrates
 * Episodic invocation
 * Lack of system-wide state semantics
 
-### 2.3 Optimization & Numerical Methods
+### 3.3 Optimization & Numerical Methods
 
 * Floating-point dependence
 * Tolerance-based convergence
 * Platform variance
 
-### 2.4 Learned & Adaptive Systems
+### 3.4 Learned & Adaptive Systems
 
 * Opaque behavior
 * Non-determinism
 * Certification difficulty
 
-### 2.5 Unsolved Problem
+### 3.5 Unsolved Problem
 
 > No existing paradigm defines computation itself as deterministic projection of state into an explicitly constrained space, independent of instruction sequencing, learning, or heuristic optimization.
 
@@ -81,14 +81,14 @@ This paragraph is **critical**.
 
 ---
 
-## 3. Summary of the Invention
+## 4. Summary of the Invention
 
-### 3.1 Paradigm Statement (Must Be Explicit)
+### 4.1 Paradigm Statement (Must Be Explicit)
 
 * CPSC defines computation as **state projection**, not instruction execution
 * Correctness derives from constraints + projection semantics
 
-### 3.2 Core Contributions (Bullet Form)
+### 4.2 Core Contributions (Bullet Form)
 
 *  Explicit state + constraint model
 *  Deterministic projection operator
@@ -99,7 +99,7 @@ This paragraph is **critical**.
 *  Constraint architectures and execution backends spanning classical processors, quantum systems, AI/ML models, and other non-von-neumann hardware
 *  Application of the paradigm to cryptographic state, including constraint-projected post-quantum signing, verification, and key establishment using minimal degree-of-freedom representations of cryptographic artifacts
 
-### 3.3 Applications (Non-Limiting)
+### 4.3 Applications (Non-Limiting)
 
 * Compression (CPAC)
 * Optimization (SAT / MaxSAT)
@@ -111,7 +111,7 @@ This paragraph is **critical**.
 
 ---
 
-## 4. Brief Description of the Drawings
+## 5. Brief Description of the Drawings
 
 Enumerate figures (FIG. 1–FIG. N)
 Each with **one-sentence purpose**
@@ -124,7 +124,7 @@ This is largely identical to your provisional, but formalized, with additional f
 
 ---
 
-## 5. Definitions
+## 6. Definitions
 
 Formal, examiner-friendly definitions:
 
@@ -142,16 +142,16 @@ These definitions are later **referenced in claims**.
 
 ---
 
-## 6. System Overview
+## 7. System Overview
 
-### 6.1 CPSC System Model
+### 7.1 CPSC System Model
 
 * State variables
 * Constraint set
 * Projection engine
 * Output valid state or failure
 
-### 6.2 What CPSC Is Not (Explicit)
+### 7.2 What CPSC Is Not (Explicit)
 
 * Not a solver
 * Not a filter
@@ -162,15 +162,15 @@ This section protects claim interpretation.
 
 ---
 
-## 7. State and Constraint Model
+## 8. State and Constraint Model
 
-### 7.1 State Variable Representation
+### 8.1 State Variable Representation
 
 * Types
 * Domains
 * Fixed vs derived vs free
 
-### 7.2 Constraint Semantics
+### 8.2 Constraint Semantics
 
 * Declarative
 * Side-effect free
@@ -179,29 +179,29 @@ This section protects claim interpretation.
 
 ---
 
-## 8. Projection and Execution Semantics
+## 9. Projection and Execution Semantics
 
-### 8.1 Projection Operator
+### 9.1 Projection Operator
 
 * Deterministic mapping
 * Bounded execution
 * Explicit failure modes
 
-### 8.2 Determinism Guarantees
+### 9.2 Determinism Guarantees
 
 * Numeric modes
 * Precision
 * Update bounds
 * Ordering rules
 
-### 8.3 Epoch / Commit Execution (Optional Embodiment)
+### 9.3 Epoch / Commit Execution (Optional Embodiment)
 
 * Sense
 * Compute
 * Evaluate
 * Commit
 
-### 8.4 Backend-Agnostic and Non-Von-Neumann Execution
+### 9.4 Backend-Agnostic and Non-Von-Neumann Execution
 
 Describe how the same semantic system specification and constraint architecture can drive multiple execution backends:
 
@@ -214,15 +214,15 @@ Emphasize that correctness conditions and acceptable outcome sets are defined at
 
 ---
 
-## 9. Degrees of Freedom (DoF)
+## 10. Degrees of Freedom (DoF)
 
-### 9.1 Identification of DoF
+### 10.1 Identification of DoF
 
 * Explicit declaration
 * Derived variables
 * Fixed variables
 
-### 9.2 Reconstruction from DoF
+### 10.2 Reconstruction from DoF
 
 * Injection
 * Projection
@@ -232,13 +232,13 @@ This section supports **compression, logging, replay, and transmission claims**.
 
 ---
 
-## 10. Validation and Certification
+## 11. Validation and Certification
 
-### 10.1 Canonical Valid State
+### 11.1 Canonical Valid State
 
 * Deterministic representative state
 
-### 10.2 Recursion-Stability (Validation-Only)
+### 11.2 Recursion-Stability (Validation-Only)
 
 * P(S) = S
 * DoF invariance
@@ -249,22 +249,22 @@ This is a **claim differentiator** later.
 
 ---
 
-## 11. Hardware Embodiments
+## 12. Hardware Embodiments
 
-### 11.1 Constraint Fabric Architecture
+### 12.1 Constraint Fabric Architecture
 
 * State registers
 * Constraint evaluation units
 * Projection network
 * Commit logic
 
-### 11.2 FPGA / ASIC Implementations
+### 12.2 FPGA / ASIC Implementations
 
 * Static RTL
 * No instruction execution
 * Deterministic observables
 
-### 11.3 On-Chip Policy & Resource Enforcement
+### 12.3 On-Chip Policy & Resource Enforcement
 
 * Realms
 * Bandwidth
@@ -275,7 +275,7 @@ This enables **hardware-focused continuations**.
 
 ---
 
-## 12. Software and Hybrid Embodiments
+## 13. Software and Hybrid Embodiments
 
 * Pure software execution
 * CPU + accelerator
@@ -284,32 +284,32 @@ This enables **hardware-focused continuations**.
 
 ---
 
-## 13. Application Embodiments (Non-Limiting)
+## 14. Application Embodiments (Non-Limiting)
 
 Each subsection becomes a **dependent claim cluster** later. Theme tags [A–H] indicate which internal Themes a subsection primarily supports for prior-art and claim-mapping purposes.
 
-### 13.1 Constraint Optimization (SAT / MaxSAT) [Theme A]
+### 14.1 Constraint Optimization (SAT / MaxSAT) [Theme A]
 
-### 13.2 Constraint-Projected Adaptive Compression (CPAC) [Theme B]
+### 14.2 Constraint-Projected Adaptive Compression (CPAC) [Theme B]
 
 * Structural elimination by CPSC/CAS projection and DoF extraction applied before any prediction
 * Prediction-optional, with predictors (AI or non-AI) operating only on DoF sequences, not raw bytes
 * Learned predictor embodiments as described in a dedicated specification section (for example, linear and non-linear models, class-aware models, CAS/SSS-derived feature inputs, offline training over CAS-projected DoF sequences, quantized deployment, model identification in the bitstream, and residual- and distribution-based entropy coding variants)
 * Entropy backend independence, with entropy coding applied last over residual and/or DoF streams
 
-### 13.3 Real-Time Control Systems [Theme A, Theme G]
+### 14.3 Real-Time Control Systems [Theme A, Theme G]
 
 * Safety envelopes
 * Deterministic actuation
 * Explicit failure
 
-### 13.4 Autonomous Driving & Robotics [Theme A, Theme G]
+### 14.4 Autonomous Driving & Robotics [Theme A, Theme G]
 
 * Safety layer
 * Trajectory validation
 * Actuator gating
 
-### 13.5 AI / LLM / Neural Governance [Theme C, Theme G]
+### 14.5 AI / LLM / Neural Governance [Theme C, Theme G]
 
 * Pre-processing
 * Post-processing
@@ -317,25 +317,25 @@ Each subsection becomes a **dependent claim cluster** later. Theme tags [A–H] 
 * No model modification
 * Learned systems propose candidate states or degrees of freedom; deterministic projection enforces SSS-defined constraints
 
-### 13.6 Security & Integrity Enforcement [Theme F, Theme G]
+### 14.6 Security & Integrity Enforcement [Theme F, Theme G]
 
 * Protocol invariants
 * Access control
 * Tamper detection
 * Constraint-projected execution, verification, and state handling for post-quantum cryptographic algorithms, including embodiments in which NIST-selected ML-DSA, SLH-DSA, and ML-KEM artifacts are represented as degree-of-freedom vectors over a constrained cryptographic state and derived structures are reconstructed deterministically by projection
 
-### 13.7 Telemetry, Logging, and Replay [Theme B, Theme G]
+### 14.7 Telemetry, Logging, and Replay [Theme B, Theme G]
 
 * Validated state logging
 * Deterministic replay
 
-### 13.8 Embedded & Low-Power Systems [Theme A, Theme B]
+### 14.8 Embedded & Low-Power Systems [Theme A, Theme B]
 
 * MCU-class
 * No training
 * Energy bounded
 
-### 13.9 Quantum and Non-Von-Neumann Execution Backends [Theme A, Theme E, Theme G]
+### 14.9 Quantum and Non-Von-Neumann Execution Backends [Theme A, Theme E, Theme G]
 
 * SSS-driven constraint architectures compiled into quantum circuits or Hamiltonians while preserving declared constraints and acceptable outcomes
 * Hybrid classical–quantum execution targeting the same SSS/constraint architecture without changing semantic intent
@@ -344,7 +344,7 @@ Each subsection becomes a **dependent claim cluster** later. Theme tags [A–H] 
 
 ---
 
-## 14. Advantages Over Prior Art
+## 15. Advantages Over Prior Art
 
 Explicit comparison table style:
 
@@ -358,7 +358,7 @@ This section helps during **prosecution**.
 
 ---
 
-## 15. Example Claim Strategy (Outline Only)
+## 16. Example Claim Strategy (Outline Only)
 
 (Not claims themselves, but structure)
 
@@ -383,7 +383,7 @@ This section helps during **prosecution**.
 
 ---
 
-## 16. Non-Limiting Statement
+## 17. Non-Limiting Statement
 
 * Explicit preservation of scope
 * Combination of embodiments
