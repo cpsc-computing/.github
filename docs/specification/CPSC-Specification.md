@@ -288,3 +288,7 @@ This document defines the core execution and computation model; engine-specific 
 Constraint-Projected State Computing defines computation as the resolution of valid system states under explicit constraints. By operating on degrees of freedom rather than instruction sequences, CPSC enables deterministic, parallel, and hardware-aligned computation across software and physical systems.
 
 This document is the authoritative technical specification for CPSC.
+
+---
+
+**CPSC-Specification.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

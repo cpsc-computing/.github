@@ -82,3 +82,7 @@ Our PQC embodiments apply CPSC/CPAC to cryptographic state so that signatures, c
   - Use counsel to manage portfolio strategy (dividing core platform, PQC applications, and other applications into coordinated filings).
 
 This document is a **non-confidential technical and impact overview** meant for grant proposals and partner discussions; it is not a legal specification and does not limit the scope of any eventual patent claims.
+
+---
+
+**PQC Technical Overview for Grants** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

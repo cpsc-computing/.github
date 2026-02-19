@@ -393,3 +393,7 @@ It exists to describe **what must be true**, not how to compute it.
 CAS-YAML provides a portable, deterministic, and composable way to describe constraint-based systems for CPSC. By separating declarative system definition from execution mechanics, CAS-YAML enables reuse across domains, implementations, and hardware targets.
 
 This document is the authoritative specification for CAS-YAML.
+
+---
+
+**CAS-YAML-Specification.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

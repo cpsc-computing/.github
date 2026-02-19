@@ -229,3 +229,7 @@ without touching the provisional:
 - The choice of renderer (md2pdf-mermaid vs. other tools) does not affect the
   semantics or priority date of the filing; it only affects the local draft
   formatting used for review.
+
+---
+
+**Patents Documentation README** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

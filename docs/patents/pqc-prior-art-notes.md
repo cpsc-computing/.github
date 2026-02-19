@@ -127,3 +127,7 @@ For each theme, record what you searched, what you found, and how you currently 
 ## 3. General Observations
 
 Use this section for higher-level notes (e.g., which companies/papers keep showing up, gaps you see, potential claim angles).
+
+---
+
+**PQC Prior Art Notes** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

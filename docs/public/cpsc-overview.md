@@ -220,3 +220,7 @@ Because constraints are enforced on both sides, reconstruction can be both exact
 
 This document is an informal overview and does not describe or limit any particular patent claims.
 
+---
+
+**CPSC Overview** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0
+

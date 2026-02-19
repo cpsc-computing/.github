@@ -2351,3 +2351,7 @@ Per CPSC-Implementation-Governance.md §3:
 | `CPSC-Adaptive-Engine-Specification.md` | AdaptiveEngine meta-engine specification |
 | `CPSC-Implementation-Governance.md` | Development practices                  |
 | `CAS-Example-Synthetic-Log.yaml`    | Reference 4-variable CAS model         |
+
+---
+
+**CPSC-Engine-Modes-Specification.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

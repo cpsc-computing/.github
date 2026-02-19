@@ -156,3 +156,7 @@ Key point:
 - It keeps the semantics of your data clear and testable while still taking advantage of classical and learned prediction and standard entropy coding.
 
 This document is an informal overview and does not describe or limit any particular patent claims.
+
+---
+
+**CPAC Overview** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

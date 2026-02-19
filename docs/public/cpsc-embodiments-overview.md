@@ -312,3 +312,7 @@ and auditable, code artifacts are explainable by construction, and hallucinated
 or implicit requirements are structurally excluded. Intent state is versioned
 alongside code in version control, enabling bidirectional traceability between
 conversational prompts and accepted code changes.
+
+---
+
+**CPSC Embodiments Overview** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

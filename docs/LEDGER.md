@@ -221,3 +221,7 @@ Completed so far:
 
 Next action for Theme G (resume point):
 - Define one comparator in the "validation harness / monitoring framework" space (e.g., safety-case or assurance-harness patents) and write a non-normative Theme G prior-art note in `patents/README.md` highlighting differences between ad hoc harnesses and a CPSC-style constraint-projected validation fabric.
+
+---
+
+**LEDGER.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

@@ -221,3 +221,7 @@ Our PQC embodiments provide a comprehensive, modular approach to quantum-resilie
 Together, they offer a practical, standards-aligned path from today's classical cryptography to a fully post-quantum-ready ecosystem.
 
 This document is an informal overview and does not describe or limit any particular patent claims.
+
+---
+
+**PQC Overview** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

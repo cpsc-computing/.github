@@ -138,3 +138,7 @@ This executive summary is intended for:
 - and high-level IP communication.
 
 Detailed specifications, filings, and claims are maintained separately.
+
+---
+
+**Executive Summary** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

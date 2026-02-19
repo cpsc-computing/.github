@@ -112,3 +112,7 @@ If any statement in this document appears to conflict with:
 - `CPSC-Adaptive-Engine-Specification.md`
 
 then the normative specifications above take precedence
+
+---
+
+**CPSC-Implementation-Governance.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

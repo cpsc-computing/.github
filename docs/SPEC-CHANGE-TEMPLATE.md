@@ -66,3 +66,7 @@ List any required updates to examples, docs, or demos.
 - [ ] Hardware implications considered
 - [ ] Licensing unaffected
 - [ ] WARP.md and AGENTS.md respected
+
+---
+
+**SPEC-CHANGE-TEMPLATE.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

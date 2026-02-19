@@ -466,3 +466,7 @@ Implementations MAY:
 | `CAS-YAML-Specification.md` | Constraint model format |
 | `CPSC-Engine-Modes-Specification.md` | Iterative and Cellular engine implementations |
 | `Binary-Format-Specification.md` | DSIF binary format |
+
+---
+
+**CPSC-Adaptive-Engine-Specification.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

@@ -70,3 +70,7 @@ The execution layer that coordinates constraint solving, handles solver backends
 
 **Last updated**: Session after CPSC v1.0 release with parallel Ising engine  
 **Maintainer**: Keep this glossary synchronized when introducing new terminology
+
+---
+
+**GLOSSARY.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

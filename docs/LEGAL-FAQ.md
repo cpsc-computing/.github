@@ -147,3 +147,7 @@ If there is any conflict between this FAQ and the LICENSE, the LICENSE controls.
 ---
 
 End of FAQ
+
+---
+
+**LEGAL-FAQ.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

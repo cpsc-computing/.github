@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+# Copyright (c) 2026 BitConcepts, LLC
+# SPDX-License-Identifier: LicenseRef-CPAC-Research-Evaluation-1.0
+#
+# This file is part of the CPSC Specifications.
+# For full license terms, see LICENSE in the repository root.
+
 """Render CPSC/CPAC provisional Markdown to PDF with Mermaid diagrams.
 
 This is a thin, repo-local wrapper around the `md2pdf` CLI provided by the

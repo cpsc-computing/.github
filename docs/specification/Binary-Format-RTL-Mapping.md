@@ -230,3 +230,7 @@ No nested FSMs or dynamic branching are required.
 ## 11. Summary
 
 The CPSC binary format maps directly to RTL as a sequence of fixed-width registers and simple FSM-controlled loaders feeding a constraint projection fabric. This design enables deterministic, low-latency, and hardware-native reconstruction of CPSC state without a CPU.
+
+---
+
+**Binary-Format-RTL-Mapping.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

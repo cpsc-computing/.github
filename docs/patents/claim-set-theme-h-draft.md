@@ -160,3 +160,7 @@ These are **not** final legal claims and MUST be reviewed and rewritten by couns
   - whether Claim 1 (paradigm) remains in the anchor family while Claim 2+ moves to a Theme H continuation, or
   - whether Theme H should have its own independent paradigm-style claim referencing cryptographic state specifically.
 - All algorithm names (ML-DSA, SLH-DSA, ML-KEM) are intended as examples and should be framed non-limitingly in any filed claim language.
+
+---
+
+**Claim Set Theme H Draft** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

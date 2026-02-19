@@ -281,3 +281,7 @@ This document does not define execution, projection, or constraint semantics.
 The CPSC Binary Format provides a deterministic, compact, and implementation-agnostic representation of CPSC state information. It enables efficient storage, transmission, and reconstruction across software and hardware systems while remaining independent of specific execution architectures.
 
 This document is the authoritative specification for the CPSC binary format.
+
+---
+
+**Binary-Format-Specification.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0
