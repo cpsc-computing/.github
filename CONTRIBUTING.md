@@ -167,4 +167,4 @@ Thank you for contributing responsibly.
 
 ---
 
-**CONTRIBUTING.md** | © 2024-2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.1
+**CONTRIBUTING.md** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0

@@ -143,3 +143,7 @@ For a plain-language explanation, see `LEGAL-FAQ.md`.
 
 For research questions, discussion, or licensing inquiries,
 contact BitConcepts, LLC.
+
+---
+
+**CPSC Specifications** | © 2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.0
