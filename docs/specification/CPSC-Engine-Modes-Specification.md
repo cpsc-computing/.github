@@ -616,7 +616,7 @@ class Grid1D:
             params: Initial cell_param for each cell (from DoF vector)
             boundary: Boundary condition mode:
                 - 'active_left': Left boundary = ACTIVE, right = INACTIVE
-                  (reference behavior per cpsc-engine-rtl docs/DDF-ARCHITECTURE.md §4.4)
+                  (reference behavior per cpsc-engine-rtl docs/CPSC-RTL-ARCHITECTURE.md §4.4)
                 - 'inactive': Both boundaries see virtual INACTIVE
                 - 'wrap': Periodic boundary (cell 0 neighbors cell N-1)
         """
@@ -827,7 +827,7 @@ class LocalRule(Protocol):
     """
     Propagate ACTIVE state within max_distance of an active neighbor.
     
-    Reference behavior per cpsc-engine-rtl docs/DDF-ARCHITECTURE.md §4.4:
+    Reference behavior per cpsc-engine-rtl docs/CPSC-RTL-ARCHITECTURE.md §4.4:
     
     "If at least one neighbor is CELL_TYPE_ACTIVE and the local parameter is
     strictly less than MAX_ACTIVE_DISTANCE, the cell is biased toward
@@ -1232,7 +1232,7 @@ begin
   -- COMPUTE phase: Combinational local rule evaluation
   -- Per CPSC §12: "applies fixed local update rules"
   --
-  -- Implements PropagationRule (cpsc-engine-rtl docs/DDF-ARCHITECTURE.md §4.4):
+  -- Implements PropagationRule (cpsc-engine-rtl docs/CPSC-RTL-ARCHITECTURE.md §4.4):
   -- - If neighbor ACTIVE and param < MAX_DISTANCE → ACTIVE, fitness++
   -- - Otherwise → INACTIVE, fitness--
   -----------------------------------------------------------------------------
@@ -1986,7 +1986,7 @@ The reference model `CAS-Example-Synthetic-Log.yaml` can be processed by either 
 
 ### 10.2 Expected Behavior (Grid1D Reference)
 
-For the reference 4-cell scenario (per cpsc-engine-rtl docs/DDF-ARCHITECTURE.md §4.4):
+For the reference 4-cell scenario (per cpsc-engine-rtl docs/CPSC-RTL-ARCHITECTURE.md §4.4):
 - Initial: `[INACTIVE, INACTIVE, INACTIVE, INACTIVE]`
 - Boundary: Left=ACTIVE (virtual), Right=INACTIVE (virtual)
 - Parameters: `[0, 1, 2, 3]` (cell indices)
