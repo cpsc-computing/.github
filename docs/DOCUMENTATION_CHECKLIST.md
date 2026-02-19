@@ -133,7 +133,7 @@ For complete governance rules, see:
 
 ### Check Python files can be imported:
 ```powershell
-python -c "import sys; sys.path.insert(0, 'scripts'); import cgad_check"
+python -c "import sys; sys.path.insert(0, 'scripts'); import render_markdown_to_pdf"
 ```
 
 ### Check for missing copyright headers (Python):
