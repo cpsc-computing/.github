@@ -1,11 +1,11 @@
 # Constraint-Projected State Computing (CPSC)
 
-Constraint-Projected State Computing (CPSC) is a declarative computing model in which
-computation is performed by projecting system state onto explicit constraints,
-rather than executing ordered instructions.
+**Declarative computing through constraint projection**
 
-CPSC provides a foundation for deterministic, constraint-driven systems across
-software, compression, control systems, and hardware (FPGA / ASIC).
+Constraint-Projected State Computing (CPSC) is a declarative computing model in which computation is performed by projecting system state onto explicit constraints, rather than executing ordered instructions. CPSC provides a foundation for deterministic, constraint-driven systems across software, compression, control systems, and hardware (FPGA/ASIC).
+
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/cpsc-computing/cpsc-core)
+[![License](https://img.shields.io/badge/license-Research%20%26%20Evaluation-orange.svg)](LICENSE)
 
 ---
 
