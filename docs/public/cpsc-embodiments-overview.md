@@ -267,10 +267,7 @@ executable binary status, debug instrumentation configuration, and provenance
 metadata. Constraints enforce that debug instrumentation requires compatible
 hardware configuration, executable code requires recorded provenance, benchmarks
 require passing regression tests, and remote access requires validated
-credentials. In the DDF embodiment, CGAD governs proto-cell fabric workflows
-where agent proposals like "rebuild bitstream", "sync to target", or "run
-regression" are accepted only when projection validates regression status,
-bitstream build mode, and phase boundaries.
+credentials. In the CPSC RTL embodiment ([cpsc-engine-rtl](https://github.com/cpsc-computing/cpsc-engine-rtl)), CGAD governs proto-cell fabric workflows where agent proposals like "rebuild bitstream", "sync to target", or "run regression" are accepted only when projection validates regression status, bitstream build mode, and phase boundaries.
 
 ### 2.17 E-11.17: Specification-First Development Governance
 

@@ -24,7 +24,7 @@ Completed so far:
   - gaps relative to Theme A (no generalized constraint plane, no first-class constraint structure, no justification artifacts, no separable constraint program).
 - Analyzed a second comparator in the automated-vehicle safety-controller family (US 10,234,871 B2 – distributed safety monitors for automated vehicles) and added a non-normative Theme A prior-art note in `patents/README.md` capturing its representative claim pattern, overlaps (safety monitors gating an automated control loop, ASIL-oriented architecture), and gaps relative to CPSC (no explicit constraint-structured control plane, no generalized constraint program, no constraint-centric state/justification artifacts).
 - Integrated a concrete proto-cell / epoch-controller hardware fabric embodiment and the CAS-YAML → CPSC Binary → hardware configuration path into the CPSC specification under `docs/specification/`, and updated `docs/public/cpsc-overview.md` to use the proto-cell/epoch fabric as a canonical CPSC hardware example while fixing several stray encoding artifacts in that document.
-- Later refined the public CPSC overview text to remove an obsolete reference to "ConvergeCore" while preserving the proto-cell / epoch-controller embodiment as an example linked to the Deterministic Developmental Fabric (DDF), and regenerated the corresponding `docs-pdf/public/cpsc-overview.pdf` artifact.
+- Later refined the public CPSC overview text to remove an obsolete reference to "ConvergeCore" while preserving the proto-cell / epoch-controller embodiment as an example linked to cpsc-engine-rtl (internally called DDF — Deterministic Developmental Fabric), and regenerated the corresponding `docs-pdf/public/cpsc-overview.pdf` artifact.
 
 Next action for Theme A (resume point):
 - Consolidate the Theme A differentiation story across the clinician hazardous-behavior controller and the distributed safety-monitor architecture into a short, internal claim-structuring note (non-normative) that identifies the key architectural axes where CPSC departs from traditional safety controllers (generalized constraint plane, explicit constraint structures, constraint-centric state/justification artifacts, separable constraint program).
@@ -113,7 +113,7 @@ Session note – CPSC Engine Modes Specification added (February 15, 2026)
   2. **Cellular Engine** — Local rule evaluation with neighbor-based self-organization (proto-cell fabric)
   - Both software and hardware (RTL/VHDL) embodiments specified
   - Introduces **DLIF** (Degrees-of-freedom Line-In Format) as streaming element format for Cellular Engine
-  - Includes reference local rule (PropagationRule) matching DDF ARCHITECTURE.md §4.4
+  - Includes reference local rule (PropagationRule) matching cpsc-engine-rtl docs/DDF-ARCHITECTURE.md §4.4
   - Cross-references: CPSC-Specification.md §5/§6/§7/§12, CAS-YAML-Specification.md §7/§8/§10, Binary-Format-Specification.md, Binary-Format-RTL-Mapping.md
 - Supporting artifact: `docs/specification/CAS-Example-Synthetic-Log.yaml` (reference CAS model for testing)
 - Updates required: README.md, CPSC-Specification.md §15, CPSC-Implementation-Governance.md §1, cpsc-embodiments-overview.md
