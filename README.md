@@ -2,11 +2,11 @@
 
 This repository contains organization-level files for [CPSC Computing](https://github.com/cpsc-computing):
 
-- **`profile/README.md`** — Organization profile displayed on our GitHub landing page
+- **[Discussions](https://github.com/cpsc-computing/.github/discussions)** — Community Q&A and announcements
+- **`profile/README.md`** — Organization profile
 - **`CONTRIBUTING.md`** — Contribution guidelines
 - **`CODE_OF_CONDUCT.md`** — Community code of conduct
-- **`SECURITY.md`** — Security policy and vulnerability reporting
-- **`FUNDING.yml`** — Sponsorship configuration
+- **`SECURITY.md`** — Security policy
 
 ---
 
