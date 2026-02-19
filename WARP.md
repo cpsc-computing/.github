@@ -239,7 +239,7 @@ Supported examples are:
 
 To install and update these servers on a development machine, use:
 
-- `scripts/setup-ptab-mcp-for-warp.ps1` – clones or updates the four upstream USPTO MCP repositories under `$env:USERPROFILE` and invokes each repository's `deploy/windows_setup.ps1` (when not run with `-SkipSetup`). Those upstream scripts install dependencies, prompt for USPTO/Mistral API keys, store them securely via Windows DPAPI, and can optionally configure Claude/Warp MCP integration.
+- `./setup.ps1 -UsptoMcp` (Windows) or `./setup.sh --uspto-mcp` (Linux/macOS) – clones or updates the four upstream USPTO MCP repositories under `$env:USERPROFILE` (or `$HOME`) and invokes each repository's setup script (when not run with `-SkipSetup`). Those upstream scripts install dependencies, prompt for USPTO/Mistral API keys, store them securely, and can optionally configure Claude/Warp MCP integration.
 
 Workflow rules for these tools:
 - Results from MCP servers and external patent tools are **informational only** and MUST NOT be treated as normative specifications.
@@ -454,9 +454,9 @@ behave as follows (non-normative orchestration hints):
 ### 14.5 Starting local USPTO MCP servers from PowerShell
 
 For local testing or manual invocation outside of Warp's built-in MCP management,
-contributors MAY start individual USPTO MCP servers directly from a PowerShell prompt
-using `uv` once `scripts/setup-ptab-mcp-for-warp.ps1` (and each upstream
-`deploy/windows_setup.ps1`) has been run. For example:
+contributors MAY start individual USPTO MCP servers directly from a shell prompt
+using `uv` once `./setup.ps1 -UsptoMcp` (Windows) or `./setup.sh --uspto-mcp` (Linux/macOS)
+and each upstream setup script has been run. For example:
 
 ```powershell
 uv --directory "$env:USERPROFILE\uspto_ptab_mcp" run ptab-mcp

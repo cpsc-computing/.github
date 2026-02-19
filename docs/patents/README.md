@@ -178,8 +178,7 @@ Python-based `md2pdf` CLI provided by the `md2pdf-mermaid` package. This tool
 renders Markdown to PDF using an HTML/Chromium engine and includes built-in
 support for Mermaid diagrams.
 
-You can either call `md2pdf` directly or use the helper scripts under
-`.github/scripts/`.
+You can either call `md2pdf` directly or use the helper scripts in the `scripts/` directory.
 
 ### 1. One-time setup (Python environment)
 
@@ -193,12 +192,12 @@ From the repository root (or any Python environment you prefer):
 This installs the `md2pdf` command and downloads a local Chromium build used for
 HTML-to-PDF conversion.
 
-On Windows / PowerShell, you MAY instead run:
+You MAY instead run:
 
-- `pwsh -File .github/scripts/setup-render-docs-env.ps1`
+- Windows: `pwsh -File setup.ps1 -RenderTools`
+- Linux/macOS: `bash setup.sh --render-tools`
 
-This script installs `md2pdf-mermaid` and the required Playwright Chromium
-runtime into the selected Python environment (`python` by default).
+This installs `md2pdf-mermaid` and the required Playwright Chromium runtime into the selected Python environment (`python` by default).
 
 ### 2. Rendering the provisional to PDF
 
@@ -206,9 +205,10 @@ From the repository root, you MAY run `md2pdf` directly:
 
 - `md2pdf docs/patents/CPSC-CPAC-Provisional-2026-01.md -o docs-pdf/patents/CPSC-CPAC-Provisional-2026-01.pdf`
 
-or, on Windows / PowerShell, use the helper script:
+or use the helper scripts:
 
-- `pwsh -File .github/scripts/render-docs-pdf.ps1`
+- Windows: `pwsh -File scripts/render-docs-pdf.ps1`
+- Linux/macOS: `bash scripts/render-docs-pdf.sh`
 
 This will:
 
@@ -216,10 +216,10 @@ This will:
 - render Mermaid diagrams (including the figures at the end of the document), and
 - produce a PDF at `docs-pdf/patents/CPSC-CPAC-Provisional-2026-01.pdf`.
 
-The render script also supports a small test mode to verify Mermaid rendering
-without touching the provisional:
+The render scripts also support a test mode to verify Mermaid rendering without touching the provisional:
 
-- `pwsh -File .github/scripts/render-docs-pdf.ps1 -TestDiagrams`
+- Windows: `pwsh -File scripts/render-docs-pdf.ps1 -TestDiagrams`
+- Linux/macOS: `bash scripts/render-docs-pdf.sh --test-diagrams`
 
 ### 3. Notes
 

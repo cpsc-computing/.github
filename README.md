@@ -85,9 +85,11 @@ This organization maintains a separate `docs/patents/` directory for non-normati
 For local draft PDFs of the CPSC/CPAC provisional (including Mermaid figures),
 this repository provides:
 
-- A Python wrapper script: `.github/scripts/render_markdown_to_pdf.py`
-- PowerShell helpers: `.github/scripts/setup-render-docs-env.ps1` and
-  `.github/scripts/render-docs-pdf.ps1`
+- A Python wrapper script: `scripts/render_markdown_to_pdf.py`
+- PowerShell helper: `scripts/render-docs-pdf.ps1`
+- Bash helper: `scripts/render-docs-pdf.sh` (Linux/macOS)
+
+To install PDF rendering tools, run `./setup.ps1 -RenderTools` (Windows) or `./setup.sh --render-tools` (Linux/macOS).
 
 These are convenience tools around the `md2pdf` CLI from the `md2pdf-mermaid`
 package and use a headless Chromium engine to render Markdown (with Mermaid
