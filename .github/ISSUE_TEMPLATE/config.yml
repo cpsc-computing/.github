@@ -1,10 +1,14 @@
 blank_issues_enabled: false
 
 contact_links:
-  - name: Security / Responsible Disclosure
-    url: mailto:support@bitconcepts.tech?subject=CPSC%20Security%20Disclosure
-    about: Report security-sensitive issues privately to BitConcepts, LLC.
+  - name: 💬 Questions & Discussion
+    url: https://github.com/cpsc-computing/.github/discussions
+    about: For questions, use Discussions instead of Issues
 
-  - name: Licensing / Commercial Use
+  - name: 🔒 Security / Responsible Disclosure
+    url: https://github.com/cpsc-computing/.github/blob/main/SECURITY.md
+    about: Report security-sensitive issues privately
+
+  - name: 📜 Licensing / Commercial Use
     url: mailto:info@bitconcepts.tech?subject=CPSC%20Licensing%20Inquiry
-    about: Contact BitConcepts, LLC for commercial licensing and usage inquiries.
+    about: Contact BitConcepts, LLC for commercial licensing inquiries

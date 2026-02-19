@@ -1,97 +1,80 @@
 # Constraint-Projected State Computing (CPSC)
 
-Constraint-Projected State Computing (CPSC) is a declarative computing model in which
-computation is performed by projecting system state onto explicit constraints,
-rather than executing ordered instructions.
+**A declarative computing model where computation is constraint projection, not instruction execution.**
 
-CPSC provides a foundation for deterministic, constraint-driven systems across
-software, compression, control systems, and hardware (FPGA / ASIC).
+CPSC provides a foundation for deterministic, constraint-driven systems across software, compression, control systems, and hardware (FPGA/ASIC).
 
 ---
 
-## What This Organization Hosts
+## 🏗️ Organization Repositories
 
-This organization contains:
-
-- The **CPSC technical specification**
-- Declarative constraint models (CAS-YAML)
-- Reference documentation and examples
-- Licensing and governance materials
-- Future reference implementations
-
-The specification is the primary source of truth.
+| Repository | Description |
+|------------|-------------|
+| **[cpsc-core](https://github.com/cpsc-computing/cpsc-core)** | Core specifications, CAS-YAML schema, and governance |
+| **[cpsc-engine-python](https://github.com/cpsc-computing/cpsc-engine-python)** | Python reference implementation with adaptive projection engines |
+| **[cpsc-engine-rtl](https://github.com/cpsc-computing/cpsc-engine-rtl)** | RTL/FPGA implementation for Zynq-7000 (Pynq-Z2) |
+| **[cpac-engine-python](https://github.com/cpsc-computing/cpac-engine-python)** | CPAC lossless compression engine (+20% over gzip-9) |
 
 ---
 
-## Why CPSC Exists
+## 🎯 Why CPSC?
 
-Many real-world systems are governed by strong rules:
-- physical limits
-- protocol invariants
-- safety constraints
-- structural relationships
+Many real-world systems are governed by strong rules: physical limits, protocol invariants, safety constraints, structural relationships.
 
-Traditional instruction-based computing handles these indirectly,
-often resulting in complex control logic, tuning, and fragile edge cases.
+Traditional computing handles these indirectly through control logic, tuning, and exception handling — increasing complexity as systems grow.
 
-CPSC makes **constraints the primary abstraction**.
+**CPSC makes constraints the primary computational primitive.**
 
 ---
 
-## Core Concepts
+## 💡 Core Concepts
 
 - **State** — the full configuration of a system
-- **Constraints** — rules defining valid states
+- **Constraints** — declarative rules defining valid states  
 - **Projection** — resolving state into validity
-- **Degrees of Freedom** — minimal independent information
+- **Degrees of Freedom (DoF)** — minimal independent information needed
 - **Constraint Fabric** — parallel enforcement of rules
 
 ---
 
-## Applications
+## 🚀 Applications
 
-CPSC is applicable to:
-
-- Semantic and structure-aware compression
-- Streaming and edge data reduction
-- Power electronics and control systems
-- Deterministic AI inference pipelines
-- FPGA and ASIC acceleration
-- Secure state reconstruction
-- Protocol enforcement and validation
+- **Compression** — Structure-aware lossless compression (CPAC)
+- **FPGA/ASIC** — Hardware constraint fabrics
+- **Control Systems** — Power electronics, robotics
+- **Protocol Enforcement** — Network validation, state machines
+- **Secure Reconstruction** — Deterministic state recovery
 
 ---
 
-## Status
+## 📊 Status
 
-CPSC is currently in the **specification and early reference phase**.
+CPSC is in the **specification and early reference phase**.
 
-The specification is released for research and evaluation.
-Reference implementations will follow.
-
----
-
-## Licensing
-
-The CPSC specification and related documents are released under the
-**CPSC Research & Evaluation License**.
-
-- Non-commercial research, evaluation, and educational use is permitted
-- Commercial use requires a separate license
-
-For a plain-language explanation, see `LEGAL-FAQ.md`.
+- ✅ Core specification published
+- ✅ Python reference engine available
+- ✅ RTL implementation for Pynq-Z2
+- ✅ CPAC compression achieving +20% over gzip-9
 
 ---
 
-## Getting Started
+## 📜 Licensing
 
-1. Read `CPSC-Specification.md`
-2. Review CAS-YAML examples
-3. Consult `LEGAL-FAQ.md` for licensing guidance
+All specifications and implementations are released under the **CPSC Research & Evaluation License v1.0**.
+
+- ✅ Non-commercial research, evaluation, and educational use
+- ❌ Commercial use requires separate license
 
 ---
 
-## Contact
+## 📖 Getting Started
 
-For research questions, discussion, or licensing inquiries,
-contact BitConcepts, LLC.
+1. Read the [CPSC Specification](https://github.com/cpsc-computing/cpsc-core/blob/main/docs/specification/CPSC-Specification.md)
+2. Explore [CAS-YAML examples](https://github.com/cpsc-computing/cpsc-core/tree/main/docs/specification)
+3. Try the [Python engine](https://github.com/cpsc-computing/cpsc-engine-python)
+
+---
+
+## 📬 Contact
+
+For research questions, discussion, or licensing inquiries, contact **BitConcepts, LLC**.
