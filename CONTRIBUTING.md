@@ -135,7 +135,28 @@ Maintainers may request revisions or reject contributions.
 
 ---
 
-## 9. Summary
+## 9. Documentation Standards
+
+**All CPSC family projects follow unified documentation standards.**
+
+See [docs/DOCUMENTATION_STANDARDS.md](docs/DOCUMENTATION_STANDARDS.md) for:
+- Copyright header templates (Python, Markdown, config files)
+- Google-style docstrings for ReadTheDocs/Sphinx
+- Type annotation requirements
+- Module, class, and function documentation examples
+- README.md and CONTRIBUTING.md structure guidelines
+
+**When working on any CPSC repository:**
+1. Add copyright headers to all new Python files
+2. Use Google-style docstrings for all public APIs
+3. Include type annotations on all functions
+4. Add copyright footers to documentation files
+
+**For agents:** Reference `docs/DOCUMENTATION_STANDARDS.md` when creating or updating files in CPSC family projects.
+
+---
+
+## 10. Summary
 
 CPSC prioritizes:
 - correctness over speed
@@ -143,3 +164,7 @@ CPSC prioritizes:
 - specification authority over convenience
 
 Thank you for contributing responsibly.
+
+---
+
+**CONTRIBUTING.md** | © 2024-2026 BitConcepts, LLC | Licensed under CPAC Research & Evaluation License v1.1
