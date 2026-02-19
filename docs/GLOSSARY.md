@@ -4,13 +4,13 @@ This document defines canonical terminology used across all BitConcepts reposito
 
 ## Core Technologies
 
-### CPSC (Constraint Projection Symbolic Compression)
-A constraint-satisfaction engine for data compression that operates on symbolic representations. Uses algebraic constraint solvers (MaxSAT, Ising/QUBO, MILP, etc.) to find optimal encodings that satisfy domain constraints.
+### CPSC (Constraint-Projected State Computing)
+A declarative computing model in which computation is performed by projecting system state onto a space defined by explicit constraints, rather than by executing ordered instructions. Provides a foundation for deterministic, constraint-driven systems across software, compression, control systems, and hardware (FPGA/ASIC).
 
-**Repositories**: `cpsc-engine-python`, `cpac-engine-python`, `cpsc-python`
+**Repositories**: `cpsc-core` (specifications), `cpsc-engine-python`, `cpac-engine-python`
 
-### CPAC (Constraint Projection Algebraic Compression)
-A compression pipeline built on CPSC that adds data normalization (MSN), entropy coding, and framing. Provides end-to-end compression for structured data formats.
+### CPAC (Constraint-Projected Adaptive Compression)
+A compression scheme built directly on CPSC that uses constraint-based state projection to identify degrees of freedom, applies optional prediction, and uses standard entropy coding on the simplified representation. Provides end-to-end compression for structured data formats.
 
 **Repositories**: `cpac-engine-python`, `cpsc-python`
 

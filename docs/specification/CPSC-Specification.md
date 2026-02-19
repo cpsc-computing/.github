@@ -231,16 +231,6 @@ Properties:
 One non-limiting class of hardware embodiments realizes the constraint fabric as a regular array or graph of **proto-cells** under control of a global **epoch controller**. In such embodiments, each proto-cell holds local configuration and state, exchanges signals with neighboring proto-cells, and applies fixed local update rules, while an epoch controller orchestrates globally synchronized epochs with commit-only state updates. This arrangement preserves the CPSC requirement that, for a fixed initial state, configuration, and epoch schedule, the sequence of projected states is deterministic. Other hardware fabrics that satisfy the same constraint-projected state semantics, but use different internal organizations, remain within the scope of this specification.
 
 ---
-```
-
-Properties:
-- no instruction sequencing
-- no program counter
-- local, parallel interactions
-- fixed-point friendly arithmetic
-- streamable operation
-
----
 
 ## 13. Applications
 

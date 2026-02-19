@@ -81,7 +81,7 @@ Every CAS-YAML document MUST declare a version:
 
 ```yaml
 version: 1.0
-````
+```
 
 The version refers to the CAS-YAML specification version, not the CPSC core specification.
 
@@ -376,7 +376,7 @@ CAS-YAML does not redefine those semantics.
 
 ---
 
-## 14. Design Rationale (Informational)
+## 15. Design Rationale (Informational)
 
 CAS-YAML is intentionally:
 
@@ -388,7 +388,7 @@ It exists to describe **what must be true**, not how to compute it.
 
 ---
 
-## 15. Summary
+## 16. Summary
 
 CAS-YAML provides a portable, deterministic, and composable way to describe constraint-based systems for CPSC. By separating declarative system definition from execution mechanics, CAS-YAML enables reuse across domains, implementations, and hardware targets.
 
