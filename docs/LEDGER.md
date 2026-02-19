@@ -136,6 +136,31 @@ Session note – Documentation harmonization and repository reorganization (Febr
 
 ---
 
+Session note – KANDLES Demo MVP and CPSC-MAXSAT Architecture (February 19, 2026)
+---------------------------------------------------------------------------------
+- Date: 2026-02-19
+- Context: Created demo specification for Mike Merkur's patent (US 2024/0248922 A1) and research specification for CPSC-guided MAX-SAT solving.
+- New documents:
+  1. **docs/proposals/KANDLES-Block-Demo-MVP.md** — MVP specification for physical colored block encoding demo:
+     - Implements KANDLES color-number-sound mapping from Merkur patent (7 colors → 7 phonetic groups)
+     - 7×7 grid physical blocks as "scannable QR code" alternative
+     - Section 2: Physical stacking = data layering concept
+     - Section 10: CPSC integration as future enhancement (error recovery, increased density)
+     - Demo scenarios: investor pitch, educational, trade show
+     - Implementation roadmap with 4 phases
+  2. **docs/specification/CPSC-MAXSAT-Architecture.md** — Research specification for CPSC-guided exact MAX-SAT solving:
+     - CPSC as guidance layer for RC2 core-guided solver (preserves completeness)
+     - Clause-Cell Matrix mapping CNF to CPSC state model
+     - Iterative Mode: global conflict analysis via constraint projection
+     - Cellular Mode: local conflict propagation via clause-clause adjacency
+     - Incremental learning from extracted cores
+     - Ideal variation: predictive core projection to skip SAT calls
+     - Expected 10-30% SAT call reduction for structured instances
+- Cross-references: CPSC-Specification.md, CPSC-Engine-Modes-Specification.md, CAS-YAML-Specification.md
+- Status: Draft specifications, ready for commit.
+
+---
+
 Session note – Provisional patent filing preparation (February 11, 2026)
 -----------------------------------------------------------------------
 - Date: 2026-02-11
