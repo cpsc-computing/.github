@@ -11,7 +11,7 @@ CPSC is a computing model in which computation is performed by projecting system
 - **[cpsc-core](https://github.com/cpsc-computing/cpsc-core)** — CPSC specifications, CAS-YAML format, CGAD governance, and documentation
 - **[cpsc-engine-rtl](https://github.com/cpsc-computing/cpsc-engine-rtl)** — CPSC Reasoning Engine (CPSC-RE) implementation — Layers 0–5
 - **[cpsc-engine-python](https://github.com/cpsc-computing/cpsc-engine-python)** — Python reference engine for CPSC
-- **[cpac-engine-python](https://github.com/cpsc-computing/cpac-engine-python)** — Constraint-Projected Adaptive Compression (CPAC) engine
+- **[cpac](https://github.com/cpsc-computing/cpac)** — Constraint-Projected Adaptive Compression (CPAC) engine (Rust)
 
 ---
 
